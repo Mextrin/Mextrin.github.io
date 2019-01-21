@@ -2,6 +2,21 @@ body, head {
 	margin:0;
 }
 
+hr {
+	position:relative;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	border: 1px solid white;
+	margin: 25 25 0 0;
+	width:100%;
+}
+
+video {
+	border: 2px solid white;
+}
+
 .header {
 	width:100%;
 	height:25%;
@@ -15,9 +30,7 @@ body, head {
 	background-size: cover;
 	background-position: center;
 	position:relative;
-	min-height: 75%;
-	display:flex;
-	flex-wrap: wrap;
+	padding:25px;
 }
 
 .content::before {
@@ -33,9 +46,16 @@ body, head {
 
 .content * {
 	position:relative;
-	margin:25px;
 	color:white;
 	font: normal 16px sans-serif;
+	box-sizing:border-box;
+	float:left;
+}
+
+.content::after {
+	content:"";
+	clear:both;
+	display:block;
 }
 
 .description {
@@ -45,4 +65,25 @@ body, head {
 #title {
 	font: bold 48px sans-serif;
 	text-align:center;
+	width:100%;
+}
+
+.aspectRatio {
+	background-color:black;
+	padding-top:56.25%;
+	position:relative;
+	width:100%;
+}
+
+.aspectRatio * {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	overflow:hidden;
+}
+
+.topic {
+	width:100%;
 }
