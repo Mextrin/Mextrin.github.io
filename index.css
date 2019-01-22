@@ -34,6 +34,18 @@ button {
 .profile img {
 	width:150px;
 	height:150px;
+	border-radius: 150px;
+	float:left;
+}
+
+.info {
+	float:left;
+	top:0;
+	left:150px;
+	width:150px;
+	height:150px;
+	text-align:center;
+	font: normal 16px sans-serif;
 }
 
 .links {
