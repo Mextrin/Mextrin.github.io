@@ -151,3 +151,13 @@ header {
 	margin-left: 10px;
 	display: inline;
 }
+
+.project div img {
+	position: absolute;
+	top: 50%;
+	right: 5px;
+	transform: translate(0, -50%);
+	height: 80%;
+	width: 40px;
+	float: right;
+}
