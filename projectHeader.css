@@ -16,12 +16,13 @@ body {
 header {
     width: 100%;
     height: 500px;
-    position: relative;
+    top: 0;
 }
 
 header div {
     position: relative;
     top: 50px;
+    display: flex;
 }
 
 #profile {
@@ -31,10 +32,9 @@ header div {
 	/*Style*/
 	border-radius: 150px 150px 150px 150px;
     display: flex;
-    flex-wrap: wrap;
 
     /*Location*/
-    position: absolute;
+    position: relative;
     left: 5%;
 }
 
@@ -57,15 +57,3 @@ header div {
 	margin-left: 10px;
 	display: inline;
 }
-
-.tint::before {
-	content:"";
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background-color:black;
-	opacity: 0.4;
-}
-

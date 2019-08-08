@@ -1,7 +1,7 @@
 header {
-    background-image: url('Fennec_Peak/Poster.jpg');
+    background-image: url('Terra_Got_Away/Background.png');
     background-size: cover;
-    background-position-y: 29%;
+    background-position-y: 40%;
     background-repeat: no-repeat;
 }
 
@@ -15,5 +15,6 @@ header {
     position: relative;
     width: 100%;
     height: 300%;
-    background-image: url('Fennec_Peak/Background.png');
+    background-image: url('Terra_Got_Away/BackgroundEmpty.png');
+    background-size: cover;
 }
