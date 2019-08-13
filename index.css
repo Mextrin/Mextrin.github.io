@@ -25,6 +25,7 @@ header {
 
 #profile {
 	/*Scale*/
+	min-width: 620px;
 	height: 200px;
 
 	/*Style*/
@@ -66,22 +67,21 @@ header {
 
 #projects {
 	position: relative;
-	height: 100%;
-	display: flex;
-	flex-wrap: wrap;
+	min-height: 100%;
 	background-image:url('Swe_Heli.jpg');
 	background-size: cover;
-	padding:5px;
+	padding: 10px 5px 5px 5px;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 400px);
+	grid-template-rows: repeat(auto-fill, 250px);
+	grid-gap: 25px;
 	justify-content: center;
-	align-content: flex-start;
 }
 
 .Project {
 	position: relative;
-	float: left;
 	width: 400px;
 	height: 250px;
-	margin:	10px;
 	border: 5px solid white;
 }
 
