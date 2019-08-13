@@ -1,3 +1,9 @@
+h1 {
+    margin:0;
+    padding:0;
+    color:white;
+}
+
 header {
     background-image: url('Fennec_Peak/Poster.jpg');
     background-size: cover;
@@ -11,9 +17,26 @@ header {
     right: 5%;
 }
 
-#content {
+#contentframe {
+    position: relative;
+    background-image: url('Fennec_Peak/Background.png');
+    padding: 25px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto, 25%);
+}
+
+#details {
     position: relative;
     width: 100%;
-    height: 300%;
-    background-image: url('Fennec_Peak/Background.png');
+    height: 400px;
+    background-color:red;
+}
+
+#desc {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background-color:lime;
+    grid-column: 2 / 5;
 }
