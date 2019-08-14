@@ -22,15 +22,41 @@ header {
     background-image: url('Fennec_Peak/Background.png');
     padding: 25px;
     display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto, 25%);
+    grid-gap: 25px;
+    grid-template-columns: repeat(auto-fill, 33%)
 }
 
 #details {
     position: relative;
-    width: 100%;
+    width: 350px;
     height: 400px;
-    background-color:red;
+}
+
+#details div {
+    padding: 0px 10px 0px 10px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+#details #q {
+    float: left;
+    width: 50%;
+}
+
+#q p {
+    color:limegreen;
+    font-size: 18px;
+    text-align: right;
+}
+
+#details #a {
+    float: right;
+    width: 50%;
+}
+
+#a p {
+    color:white;
+    font-size: 18px;
 }
 
 #desc {
@@ -38,5 +64,11 @@ header {
     width: 100%;
     height: 400px;
     background-color:lime;
-    grid-column: 2 / 5;
+}
+
+.line {
+    border-left: 2px solid white;
+    height: 400px;
+    position: absolute;
+    left: 50%;
 }
