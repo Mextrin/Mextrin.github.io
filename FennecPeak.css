@@ -21,39 +21,66 @@ header {
     position: relative;
     background-image: url('Fennec_Peak/Background.png');
     padding: 25px;
-    display: grid;
     grid-gap: 25px;
-    grid-template-columns: repeat(4, 25%);
+    display: grid;
+    grid-template-columns: 400px 1fr;
 }
 
 #details {
     position: relative;
-    height: 400px;
-    background-color: red;
-    box-sizing: border-box;
+    width: 400px;
 }
 
-#details p {
+#details img {
+    width: 100%;
+}
+
+#QA {
+    position: relative;
+    margin-top: 25px;
+}
+
+#QA p {
     font-size: 18px;
 }
 
 #q {
-    float: left;
+    text-align: right;
+    width: 50%;
+    padding: 0px 10px 0px 10px;
+    box-sizing: border-box;
+    color: limegreen;
 }
 
 #a {
-    float: right;
+    text-align: left;
+    width: 50%;
+    padding: 0px 10px 0px 10px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 0;
+
+    color: white;
 }
 
 #desc {
     position: relative;
     width: 100%;
     height: 400px;
+    background-color: red;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+#desc p {
+    color:white;
+    font-size: 18px;
 }
 
 .line {
     border-left: 2px solid white;
-    height: 400px;
+    height: 100%;
     position: absolute;
     left: 50%;
 }
