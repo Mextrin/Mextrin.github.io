@@ -4,6 +4,11 @@ h1 {
     color:white;
 }
 
+button {
+    border: none;
+    background-color: transparent;
+}
+
 header {
     background-image: url('Fennec_Peak/Poster.jpg');
     background-size: cover;
@@ -33,6 +38,24 @@ header {
 
 #details img {
     width: 100%;
+}
+
+#details button {
+    width: 100%;
+    height: 80px;
+    position: relative;
+}
+
+#details button img {
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#details button p {
+    color: white;
 }
 
 #QA {
