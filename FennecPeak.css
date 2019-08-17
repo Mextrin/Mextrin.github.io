@@ -25,6 +25,8 @@ header {
 #contentframe {
     position: relative;
     background-image: url('Fennec_Peak/Background.png');
+    background-size: cover;
+    background-position-x: 50%;
     padding: 25px;
     grid-gap: 25px;
     display: grid;
@@ -33,7 +35,7 @@ header {
 
 #details {
     position: relative;
-    width: 400px;
+    width: 100%;
 }
 
 #details img {
@@ -90,7 +92,6 @@ header {
 #desc {
     position: relative;
     width: 100%;
-    height: 400px;
     box-sizing: border-box;
     padding: 20px;
     overflow: hidden;
