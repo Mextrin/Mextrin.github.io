@@ -34,8 +34,10 @@ header {
 }
 
 #details {
-    position: relative;
+    position: sticky;
     width: 100%;
+    height: 500px;
+    top: 0;
 }
 
 #details img {
