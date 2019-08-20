@@ -1,3 +1,8 @@
+/*
+Anything that uses this class will be tinted 60%; (100% - opacity * 100).
+All elements inside it will also recieve a tint if their position type is static (default).
+*/
+
 .tint::before {
 	content:"";
 	position: absolute;
@@ -7,4 +12,16 @@
 	right: 0;
 	background-color:black;
 	opacity: 0.4;
+}
+
+/*
+Creates a line in the middle of the container
+*/
+
+.line::before {
+	content:"";
+    position: absolute;
+    border-left: 2px solid white;
+    height: 100%;
+    left: 50%;
 }
