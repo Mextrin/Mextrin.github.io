@@ -29,21 +29,14 @@ header {
     background-size: cover;
     background-position-x: 50%;
     min-height: 100%;
-}
-
-#overview {
-    position: relative;
-    display: grid;
-    grid-template-columns: 400px 1fr 600px;
     padding: 25px;
-    grid-gap: 25px;
 }
 
 #details {
     position: sticky;
-    width: 100%;
-    height: 500px;
+    width: 400px;
     top: 0;
+    float: left;
 }
 
 #details img {
@@ -98,7 +91,7 @@ header {
 
 #desc {
     position: relative;
-    width: 100%;
+    width: 1fr;
     box-sizing: border-box;
     padding: 20px;
     overflow: hidden;
@@ -118,4 +111,23 @@ header {
     position: relative;
     width: 100%;
     box-shadow: 5px 5px 5px black;
+}
+
+#test {
+    background-color: red;
+    height: 100px;
+    width: 100px;
+    position: relative;
+    float: left;
+}
+
+@media screen and (max-width: 1600px)
+{
+    #overview {
+        grid-template-columns: 400px 1fr;
+    }
+
+    #slideshow {
+        display:none;
+    }
 }
