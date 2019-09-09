@@ -94,6 +94,8 @@ header {
     position: relative;
     float: left;
     width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 #content img {
@@ -102,15 +104,11 @@ header {
     box-shadow: 5px 5px 5px black;
 }
 
-#desc {
-    position: relative;
-    width: 1fr;
-    box-sizing: border-box;
-    padding: 20px;
-    overflow: hidden;
+#content * {
+    margin-bottom: 15px;
 }
 
-#desc p {
+#content p {
     color:white;
     font-size: 18px;
 }
