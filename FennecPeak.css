@@ -37,6 +37,7 @@ header {
     width: 400px;
     top: 0;
     float: left;
+    margin-right: 20px;
 }
 
 #details img {
@@ -89,6 +90,18 @@ header {
     color: white;
 }
 
+#content {
+    position: relative;
+    float: left;
+    width: 50%;
+}
+
+#content img {
+    position: relative;
+    width: 100%;
+    box-shadow: 5px 5px 5px black;
+}
+
 #desc {
     position: relative;
     width: 1fr;
@@ -105,29 +118,4 @@ header {
 #slideshow {
     position: relative;
     width: 100%;
-}
-
-#slideshow img {
-    position: relative;
-    width: 100%;
-    box-shadow: 5px 5px 5px black;
-}
-
-#test {
-    background-color: red;
-    height: 100px;
-    width: 100px;
-    position: relative;
-    float: left;
-}
-
-@media screen and (max-width: 1600px)
-{
-    #overview {
-        grid-template-columns: 400px 1fr;
-    }
-
-    #slideshow {
-        display:none;
-    }
 }
