@@ -37,7 +37,6 @@ header {
     width: 400px;
     top: 0;
     float: left;
-    margin-right: 20px;
 }
 
 #details img {
@@ -91,29 +90,25 @@ header {
 }
 
 #content {
+    margin: 0px auto;
     position: relative;
-    float: left;
     width: 50%;
     padding: 20px;
     box-sizing: border-box;
-}
-
-#content img {
-    position: relative;
-    width: 100%;
-    box-shadow: 5px 5px 5px black;
 }
 
 #content * {
     margin-bottom: 15px;
 }
 
+#content img {
+    position: relative;
+    max-width: 100%;
+    box-shadow: 5px 5px 5px black;
+    margin: 0px 0px 15px 0px;
+}
+
 #content p {
     color:white;
     font-size: 18px;
-}
-
-#slideshow {
-    position: relative;
-    width: 100%;
 }
