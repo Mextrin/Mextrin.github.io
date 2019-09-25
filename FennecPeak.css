@@ -112,3 +112,7 @@ header {
     color:white;
     font-size: 18px;
 }
+
+#codebox {
+    tab-size: 2em;
+}
