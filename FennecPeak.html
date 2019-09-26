@@ -48,22 +48,16 @@
 				<h1>Project Overview</h1>
 				<p>
 					Fennec Peak is a 2-4 player, local multiplayer game.
-					It was created in a seven week project with twelve team members.
+					It was created in a seven week project in a team of twelve.
 					In the game, players fight each other to be the last one standing by knocking each other off of the
 					steep edges that surround the level.
 					To reach that goal, they must make use of their snappy movement, attacks and objects in the
-					environment.	
+					environment.
 				</p>
-				<p>
-					My role in this project was to assign and have a look out on time needed for programming tasks to be
-					completed as well as implemented the more complicated systems while also helping out other team
-					members with programming related issues.
-					I have created and guided the team through a system for easier in-game menu editing and implemented
-					the new Unity Input system without which, the local multiplayer in the game would not be possible.
-					For the input system, I have designed a structure for other programmers to code in, in order to
-					maintain modularity of the code and significantly reduce bottleneck caused by multiple programmers
-					having to work on the same script.
-				</p>
+				<h1>My Role</h1>
+				<p>The most notable points I was responsible for as a programmer were:</p>
+				<p>- </p>
+				
 				<img src="Fennec_Peak/Screenshot.png">
 				<h1>UI System</h1>
 				<img src="Fennec_Peak/HUD_Hierarchy.png" style="float: right; margin: 0px 0px 5px 5px;">
@@ -87,12 +81,7 @@
 					having to work on the same script.
 				</p>
 				<div id="codebox" class="codeTint">
-<pre><code class="C#">using System.Collections; 
-using System.Collections.Generic; 
-using UnityEngine; 
-using UnityEngine.EventSystems; 
-
-public class MenuManager : MonoBehaviour 
+<pre><code class="C#">public class MenuManager : MonoBehaviour 
 { 	
 	[SerializeField] Menu startMenu; 
 	[SerializeField] bool startPaused; 
@@ -120,7 +109,6 @@ public class MenuManager : MonoBehaviour
 	{ 
 		DontDestroyOnLoad(gameObject); 
 		
-		//Singleton 
 		if (!instance) 
 		{ 
 			instance = this; 
@@ -132,7 +120,6 @@ public class MenuManager : MonoBehaviour
 			return; 
 		} 
 		
-		//Actual awake 
 		isPaused = startPaused; 
 		menus = GetComponentsInChildren&#60;Menu&#62;(); 
 		for (int i = 0; i &#60; menus.Length; i++)
