@@ -114,5 +114,8 @@ header {
 }
 
 #codebox {
+    position: relative;
+    font-size: 14px;
     tab-size: 2em;
+    box-sizing: border-box;
 }
