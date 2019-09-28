@@ -5,9 +5,12 @@
 	<link rel="stylesheet" href="projectHeader.css">
 	<link rel="stylesheet" href="FennecPeak.css">
 	<link rel="stylesheet" href="specials.css">
+	<link rel="stylesheet" href="codebox.css">
 	<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
 	<script src="CodeHighlight/highlight.pack.js"></script>
 	<script>hljs.initHighlightingOnLoad();</script>
+	
+	<script src="script.js"></script>
 </head>
 
 <body>
@@ -56,32 +59,22 @@
 				</p>
 				<h1>My Role</h1>
 				<p>The most notable points I was responsible for as a programmer were:</p>
-				<p>- </p>
-				
+				<p style="margin-bottom:0px;">The <span style="color:limegreen;">UI system</span></p>
+				<p style="margin-bottom:0px;">The <span style="color:limegreen;">Camera system</span></p>
+				<p>The <span style="color:limegreen;">Input system</span></p>
+				<p>Together with other miscellaneous tasks such as bug-fixing.</p>
 				<img src="Fennec_Peak/Screenshot.png">
 				<h1>UI System</h1>
 				<img src="Fennec_Peak/HUD_Hierarchy.png" style="float: right; margin: 0px 0px 5px 5px;">
-				<p>
+				<p style="margin-bottom: 250px">
 					The UI system has been written with the goal of allowing other team members to
-					quickly easily set up fully working UI elements. Setting up a new UI page 
-					only requires the user to create an empty gameObject, add a premade component to it
-					and fill it with desired UI elements. A UI page or element with custom functionality
-					can also be created by creating a new class and connecting it with the already existing system.
-				</p>
-				<br>
-				<p>
-					Here will be a description of how it works in detail.
-					My role in this project was to assign and have a look out on time needed for programming tasks to be
-					completed as well as implemented the more complicated systems while also helping out other team
-					members with programming related issues.
-					I have created and guided the team through a system for easier in-game menu editing and implemented
-					the new Unity Input system without which, the local multiplayer in the game would not be possible.
-					For the input system, I have designed a structure for other programmers to code in, in order to
-					maintain modularity of the code and significantly reduce bottleneck caused by multiple programmers
-					having to work on the same script.
+					quickly set up fully working UI elements. It consists of multiple scripts
+					which take care of displaying and hiding selected UI pages, and providing basic
+					menu Functionality like pressing a "back" button to return to a previously opened menu page. 
 				</p>
 				<div id="codebox" class="codeTint">
-<pre><code class="C#">public class MenuManager : MonoBehaviour 
+					<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
+<pre id="MenuManager"><code class="C#">public class MenuManager : MonoBehaviour 
 { 	
 	[SerializeField] Menu startMenu; 
 	[SerializeField] bool startPaused; 
@@ -159,13 +152,15 @@
 		menuHierarchy.Clear(); 
 	} 
 }</code></pre>
+
+
 				</div>
 
+				<h1>Camera System</h1>
 				<h1>Input System</h1>
 			</div>
 	</div>
 </body>
-
 </html>
 
 <!--

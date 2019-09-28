@@ -1,0 +1,33 @@
+#codebox {
+    position: relative;
+    font-size: 14px;
+    tab-size: 2em;
+    box-sizing: border-box;
+    box-shadow: 5px 5px 5px black;
+}
+
+#codebox pre {
+    transition: height 1s;
+    height: 0px;
+    max-height: 50%;
+    overflow-y: scroll;
+    position: relative;
+}
+
+#codebox pre::-webkit-scrollbar
+{
+    width: 5px;
+}
+
+#codebox pre::-webkit-scrollbar-thumb
+{
+    width: 1px;
+	background-color: white;
+}
+
+#codebox button {
+    height: 50px;
+    background-color: white;
+    position:relative;
+    margin-bottom: 0px;
+}
