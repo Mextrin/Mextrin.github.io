@@ -7,6 +7,6 @@ function CodeButton(id) {
     }
     else {
         currentDisplayID = id;
-        document.getElementById(currentDisplayID).style.height = '500px';
+        document.getElementById(currentDisplayID).style.height = '50%';
     }
 }
