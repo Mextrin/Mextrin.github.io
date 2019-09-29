@@ -1,22 +1,135 @@
 <html>
-	<head>
-		<title>Terra Got Away</title>
-		<link rel="stylesheet" href="projectHeader.css">
-		<link rel="stylesheet" href="TerraGotAway.css">
-	</head>
-	<body>
-		<header>
-			<div>
-				<a id="profile" href="index.html">
-					<img src="ProfPic.jpg">
-					<p>Sebastian Tryscien</p>
-				</a>
-				<img id="logo" src="Terra_Got_Away/Logo.png">
-			</div>
-		</header>
-		<div id="content" class="tint">
+
+<head>
+	<title>Terra Got Away</title>
+	<link rel="stylesheet" href="projectHeader.css">
+	<link rel="stylesheet" href="projectContent.css">
+	<link rel="stylesheet" href="TerraGotAway.css">
+	<link rel="stylesheet" href="specials.css">
+	<link rel="stylesheet" href="codebox.css">
+	<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
+	<script src="CodeHighlight/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<script src="codebox.js"></script>
+</head>
+
+<body>
+	<header>
+		<div>
+			<a id="profile" href="index.html">
+				<img src="ProfPic.jpg">
+				<p>Sebastian Tryscien</p>
+			</a>
+			<img id="logo" src="Terra_Got_Away/Logo.png">
 		</div>
-	</body>
+	</header>
+	<div id="contentframe" class="tint">
+		<div id="details">
+			<img src="Terra_Got_Away/Logo.png" style="margin: 30px 0px;">
+			<div id="QA" class="line">
+				<!--<div class="line"></div>-->
+				<!--Q & A-->
+				<div id="q">
+					<p>Platform</p>
+					<p>Engine</p>
+					<p>Language</p>
+					<p>Development Time</p>
+					<p>Team Size</p>
+				</div>
+				<div id="a">
+					<p>PC</p>
+					<p>Unity</p>
+					<p>C#</p>
+					<p>48 hours</p>
+					<p>3 prog + 2 art</p>
+				</div>
+			</div>
+		</div>
+		<div id="content">
+			<h1>Project Overview</h1>
+			<p>
+				Terra Got Away is a singleplayer sprint-survival game.
+				The player's goal is to progress across multiple levels without running out
+				of heat or water in order to complete the game.
+				
+				The game was created during the 2019 Global Game Jam event in a team of five.
+			</p>
+			<img src="Fennec_Peak/Screenshot.png">
+			<h1>UI System</h1>
+			<img src="Fennec_Peak/HUD_Hierarchy.png" style="float: right; margin: 0px 0px 5px 5px;">
+			<p style="margin-bottom: 250px">
+				The UI system has been written with the goal of allowing other team members to
+				quickly set up fully working UI elements. It consists of multiple scripts
+				which take care of displaying and hiding selected UI pages, and providing basic
+				menu Functionality like pressing a "back" button to return to a previously opened menu page. 
+			</p>
+			<div id="codebox" class="tint">
+				<button onclick="CodeButton('Player');">Player.cs</button>
+				<button onclick="CodeButton('AlignWithSphere');">AlignWithSphere.cs</button>
+<pre id="Player"><code class="C#">public class Player : MonoBehaviour 
+{ 
+	[SerializeField] float moveSpeed = 15; 
+	[SerializeField] bool randomRotStart = true; 
+	
+	void Start() 
+	{ 
+		if (randomRotStart) 
+		{ 
+			transform.eulerAngles = new Vector3(0, 0, Random.Range(0, 360)); 
+		} 
+	} 
+	
+	void Update() 
+	{ 
+		float up = Input.GetAxis("Vertical"); 
+		float right = Input.GetAxis("Horizontal"); 
+		
+		Vector3 movement = transform.rotation * new Vector3(-up, right);
+		transform.RotateAround(Vector3.zero, -movement, moveSpeed * Time.deltaTime); 
+	} 
+}</code></pre>
+						
+<pre id="AlignWithSphere"><code class="C#">[ExecuteInEditMode] 
+public class AlignWithSphere : MonoBehaviour 
+{ 
+	public Vector3 centerRot = Vector3.forward; 
+	Transform player; 
+	
+	void Start() 
+	{ 
+		player = GameObject.Find("Player").transform; 
+	} 
+	
+	void Update() 
+	{ 
+		transform.position = Quaternion.Euler(centerRot) * Vector3.forward * 55; 
+		transform.eulerAngles = centerRot; 
+		
+		if (player) 
+		{ 
+			transform.rotation = player.transform.rotation; 
+			Vector3 toPlayer = Vector3.Normalize(player.position); 
+			float dotDistance = Vector3.Dot(toPlayer, transform.position); 
+			
+			if (dotDistance &#62; 0) 
+			{ 
+				float difference = player.position.magnitude - dotDistance;
+				Vector3 fixedPosition = transform.position + (toPlayer * difference); 
+				transform.position = fixedPosition; 
+			} 
+		} 
+	} 
+}</code></pre>
+
+
+			</div>
+
+			<h1>Camera System</h1>
+			<h1>Input System</h1>
+		</div>
+</div>
+</body>
+
 </html>
 
 <!--
