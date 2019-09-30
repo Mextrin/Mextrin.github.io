@@ -54,14 +54,16 @@
 				
 				The game was created during the 2019 Global Game Jam event in a team of five.
 			</p>
-			<img src="Fennec_Peak/Screenshot.png">
-			<h1>UI System</h1>
-			<img src="Fennec_Peak/HUD_Hierarchy.png" style="float: right; margin: 0px 0px 5px 5px;">
-			<p style="margin-bottom: 250px">
-				The UI system has been written with the goal of allowing other team members to
-				quickly set up fully working UI elements. It consists of multiple scripts
-				which take care of displaying and hiding selected UI pages, and providing basic
-				menu Functionality like pressing a "back" button to return to a previously opened menu page. 
+			<img src="Terra_Got_Away/Screenshot.png">
+			<h1>The Recursive World</h1>
+			<p>
+				The world's recursivity has been achieved by orienting the
+				2D elements of the game around a 3D sphere. 
+
+				A drawback to this method is that other objects will
+				appear to have clipped the "background" sphere and suffer from
+				innacurate collisions due to their angle and positioning relative to each other.
+				To fix those issues, the objects align with the player.
 			</p>
 			<div id="codebox" class="tint">
 				<button onclick="CodeButton('Player');">Player.cs</button>
@@ -123,9 +125,6 @@ public class AlignWithSphere : MonoBehaviour
 
 
 			</div>
-
-			<h1>Camera System</h1>
-			<h1>Input System</h1>
 		</div>
 </div>
 </body>
