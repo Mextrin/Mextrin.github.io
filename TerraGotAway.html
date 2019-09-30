@@ -63,8 +63,11 @@
 				A drawback to this method is that other objects will
 				appear to have clipped the "background" sphere and suffer from
 				innacurate collisions due to their angle and positioning relative to each other.
-				To fix those issues, the objects align with the player.
+				To fix those issues, the objects align with the player when on the same side of the sphere.
 			</p>
+			<video autoplay muted loop>
+				<source src="Terra_Got_Away/WorldAlignment.mp4" type="video/mp4">
+			</video>
 			<div id="codebox" class="tint">
 				<button onclick="CodeButton('Player');">Player.cs</button>
 				<button onclick="CodeButton('AlignWithSphere');">AlignWithSphere.cs</button>

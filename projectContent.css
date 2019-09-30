@@ -3,6 +3,10 @@ button {
     background-color: transparent;
 }
 
+video {
+    width: 100%;
+}
+
 #contentframe {
     position: relative;
     background-size: cover;
