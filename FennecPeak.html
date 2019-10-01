@@ -24,57 +24,57 @@
 		</div>
 	</header>
 	<div id="contentframe" class="tint">
-			<div id="details">
-				<img src="Fennec_Peak/Logo.png">
-				<div id="QA" class="line">
-					<!--<div class="line"></div>-->
-					<!--Q & A-->
-					<div id="q">
-						<p>Platform</p>
-						<p>Engine</p>
-						<p>Language</p>
-						<p>Development Time</p>
-						<p>Team Size</p>
-						<p>My Role</p>
-					</div>
-					<div id="a">
-						<p>PC</p>
-						<p>Unity</p>
-						<p>C#</p>
-						<p>7 weeks</p>
-						<p>3 prog + 9 design / art</p>
-						<p>Lead Programmer</p>
-					</div>
+		<div id="details">
+			<img src="Fennec_Peak/Logo.png">
+			<div id="QA" class="line">
+				<!--<div class="line"></div>-->
+				<!--Q & A-->
+				<div id="q">
+					<p>Platform</p>
+					<p>Engine</p>
+					<p>Language</p>
+					<p>Development Time</p>
+					<p>Team Size</p>
+					<p>My Role</p>
+				</div>
+				<div id="a">
+					<p>PC</p>
+					<p>Unity</p>
+					<p>C#</p>
+					<p>7 weeks</p>
+					<p>3 prog + 9 design / art</p>
+					<p>Lead Programmer</p>
 				</div>
 			</div>
-			<div id="content">
-				<h1>Project Overview</h1>
-				<p>
-					Fennec Peak is a 2-4 player, local multiplayer game.
-					It was created in a seven week project in a team of twelve.
-					In the game, players fight each other to be the last one standing by knocking each other off of the
-					steep edges that surround the level.
-					To reach that goal, they must make use of their snappy movement, attacks and objects in the
-					environment.
-				</p>
-				<h1>My Role</h1>
-				<p>The most notable points I was responsible for as a programmer were:</p>
-				<p style="margin-bottom:0px;">The <span style="color:limegreen;">UI system</span></p>
-				<p style="margin-bottom:0px;">The <span style="color:limegreen;">Camera system</span></p>
-				<p>The <span style="color:limegreen;">Input system</span></p>
-				<p>Together with other miscellaneous tasks such as bug-fixing.</p>
-				<img src="Fennec_Peak/Screenshot.png">
-				<h1>UI System</h1>
-				<img src="Fennec_Peak/HUD_Hierarchy.png" style="float: right; margin: 0px 0px 5px 5px;">
-				<p style="margin-bottom: 250px">
-					The UI system has been written with the goal of allowing other team members to
-					quickly set up fully working UI elements. It consists of multiple scripts
-					which take care of displaying and hiding selected UI pages, and providing basic
-					menu Functionality like pressing a "back" button to return to a previously opened menu page. 
-				</p>
-				<div id="codebox" class="codeTint">
-					<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
-<pre id="MenuManager"><code class="C#">public class MenuManager : MonoBehaviour 
+		</div>
+		<div id="content">
+			<h1>Project Overview</h1>
+			<p>
+				Fennec Peak is a 2-4 player, local multiplayer game.
+				It was created in a seven week project in a team of twelve.
+				In the game, players fight each other to be the last one standing by knocking each other off of the
+				steep edges that surround the level.
+				To reach that goal, they must make use of their snappy movement, attacks and objects in the
+				environment.
+			</p>
+			<h1>My Role</h1>
+			<p>The most notable points I was responsible for as a programmer were:</p>
+			<p style="margin-bottom:0px;">The <span style="color:limegreen;">UI system</span></p>
+			<p style="margin-bottom:0px;">The <span style="color:limegreen;">Camera system</span></p>
+			<p>The <span style="color:limegreen;">Character Death Management</span></p>
+			<p>Together with other miscellaneous tasks such as bug-fixing.</p>
+			<img src="Fennec_Peak/Screenshot.png">
+			<h1>UI System</h1>
+			<img src="Fennec_Peak/HUD_Hierarchy.png" style="float: right; margin: 0px 0px 5px 5px;">
+			<p style="margin-bottom: 250px">
+				The UI system has been written with the goal of allowing other team members to
+				quickly set up fully working UI elements. It consists of multiple scripts
+				which take care of displaying and hiding selected UI pages, and providing basic
+				menu Functionality like pressing a "back" button to return to a previously opened menu page.
+			</p>
+			<div id="codebox" class="codeTint">
+				<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
+				<pre id="MenuManager"><code class="C#">public class MenuManager : MonoBehaviour 
 { 	
 	[SerializeField] Menu startMenu; 
 	[SerializeField] bool startPaused; 
@@ -152,20 +152,77 @@
 		menuHierarchy.Clear(); 
 	} 
 }</code></pre>
-
-
-				</div>
-
-				<h1>Camera System</h1>
-				<h1>Input System</h1>
 			</div>
+			<h1>Camera System</h1>
+			<p>
+				The goal of the camera was to show all the players at once while maintaining
+				a distance which provides a good view of the surrounding area.
+			</p>
+			<video autoplay muted loop>
+				<source src="Terra_Got_Away/WorldAlignment.mp4" type="video/mp4">
+			</video>
+			<div id="codebox" class="codeTint">
+				<button onclick="CodeButton('AutoCamera');">AutoCamera.cs</button>				
+<pre id="AutoCamera"><code class="C#">public class AutoCamera : MonoBehaviour 
+{ 
+	[SerializeField] GameObject[] targetsToFollow;
+	[SerializeField] float distanceMultiplier = 2; 
+	[SerializeField] public float shortestDistance = 10; 
+	[SerializeField, Range(1, 10)] public float camSpeed = 1; 
+	public float currentDistance; 
+	
+	void Update() 
+	{ 
+		if (targetsToFollow.Length &#62; 0) 
+		{ 
+			//Find the current longest distance between the players the furtherest away 
+			Vector3 finalPosition = Vector3.zero; 
+			float longestDistance = 0; 
+			
+			if (targetsToFollow.Length &#62; 1) 
+			{ 
+				for (int i = 0; i &#60; targetsToFollow.Length; i++) 
+				{ 
+					for (int j = 0; j &#60; targetsToFollow.Length; j++) 
+					{ 
+						if (i != j) 
+						{ 
+							float distance = Vector3.Distance(targetsToFollow[i].transform.position, targetsToFollow[j].transform.position); 
+							
+							if (distance &#62; longestDistance) 
+							{ 
+								longestDistance = distance;
+								
+								//Set center position 
+								finalPosition = (targetsToFollow[i].transform.position + targetsToFollow[j].transform.position) / 2;
+							} 
+						} 
+					} 
+				} 
+			} 
+			else 
+			{ 
+				finalPosition = targetsToFollow[0].transform.position; 
+			} 
+			
+			currentDistance = Mathf.Max(longestDistance * distanceMultiplier, shortestDistance); 
+			finalPosition += transform.forward * -currentDistance; 
+			transform.position = Vector3.Lerp(transform.position, finalPosition, (float)((camSpeed * Time.timeScale) / 100));
+		} 
+	} 
+}
+</code></pre>
+			</div>
+			<h1>Character Death Management</h1>
+		</div>
 	</div>
 </body>
+
 </html>
 
 <!--
 	To show list:
 	UI system
 	Camera System
-	Player interface
+	Player Deaths
 -->
