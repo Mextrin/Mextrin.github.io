@@ -17,15 +17,12 @@ p {
 header {
 	height: 300px;
 	width: 100%;
-	background-image: url('Aus_Heli.jpg');
-	background-position: center;
-	background-size:cover;
 	position: relative;
+	box-sizing: border-box;
 }
 
 header video{
 	width: 100%;
-	object-position: 0px -300px;
 }
 
 #profile {
@@ -68,58 +65,13 @@ header video{
 	font-size: 28px;
 }
 
-/*Projects*/
+/* Content */
 
-#projects {
+#content {
 	position: relative;
-	min-height: 100%;
-	background-image:url('Swe_Heli.jpg');
-	background-size: cover;
-	padding: 10px 5px 5px 5px;
-	display: grid;
-	grid-template-columns: repeat(auto-fill, 400px);
-	grid-template-rows: repeat(auto-fill, 250px);
-	grid-gap: 25px;
-	justify-content: center;
-}
-
-.Project {
-	position: relative;
-	width: 400px;
-	height: 250px;
-	border: 5px solid white;
-}
-
-.project a div {
-	position: absolute;
+	height: calc(100% - 300px);
 	width: 100%;
-	height: 20%;
-	top:80%;
-	vertical-align: middle;
-}
-
-.project a div h1 {
-	position: relative;
-	font: bold 36px sans-serif;
-	color:white;
-	line-height: 50px;
-	margin-left: 10px;
-	display: inline;
-}
-
-#info {
-	position: absolute;
-	top: 50%;
-	right: 5px;
-	transform: translate(0, -50%);
-	height: 80%;
-	width: 40px;
-	float: right;
-}
-
-#info div {
-	width: 100px;
-	height: 100px;
 	background-color: red;
-	border-radius: 20px;
 }
+
+/* Projects */
