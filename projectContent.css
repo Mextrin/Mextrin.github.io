@@ -1,10 +1,10 @@
+h1 {
+    margin-top: 75px;
+}
+
 button {
     border: none;
     background-color: transparent;
-}
-
-video {
-    width: 100%;
 }
 
 #contentframe {
@@ -87,6 +87,12 @@ video {
     max-width: 100%;
     box-shadow: 5px 5px 5px black;
     margin: 0px 0px 15px 0px;
+}
+
+#content video {
+    width: 100%;
+    position: relative;
+    box-shadow: 5px 5px 5px black;
 }
 
 #content p {

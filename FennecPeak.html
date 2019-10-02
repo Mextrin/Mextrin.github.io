@@ -48,7 +48,7 @@
 			</div>
 		</div>
 		<div id="content">
-			<h1>Project Overview</h1>
+			<h1 style="margin: 0px;">Project Overview</h1>
 			<p>
 				Fennec Peak is a 2-4 player, local multiplayer game.
 				It was created in a seven week project in a team of twelve.
@@ -57,23 +57,30 @@
 				To reach that goal, they must make use of their snappy movement, attacks and objects in the
 				environment.
 			</p>
+			<img src="Fennec_Peak/Screenshot.png">
 			<h1>My Role</h1>
 			<p>The most notable points I was responsible for as a programmer were:</p>
 			<p style="margin-bottom:0px;">The <span style="color:limegreen;">UI system</span></p>
 			<p style="margin-bottom:0px;">The <span style="color:limegreen;">Camera system</span></p>
 			<p>The <span style="color:limegreen;">Character Death Management</span></p>
 			<p>Together with other miscellaneous tasks such as bug-fixing.</p>
-			<img src="Fennec_Peak/Screenshot.png">
 			<h1>UI System</h1>
-			<img src="Fennec_Peak/HUD_Hierarchy.png" style="float: right; margin: 0px 0px 5px 5px;">
-			<p style="margin-bottom: 250px">
-				The UI system has been written with the goal of allowing other team members to
-				quickly set up fully working UI elements. It consists of multiple scripts
-				which take care of displaying and hiding selected UI pages, and providing basic
-				menu Functionality like pressing a "back" button to return to a previously opened menu page.
-			</p>
+				<p style="">
+						The UI system has been written with the goal of allowing other team members to
+						quickly set up fully working UI elements. It consists of multiple scripts
+						which take care of displaying and hiding selected UI pages, and providing basic
+						menu Functionality like pressing a "back" button to return to a previously opened menu page.
+					</p>
+					<img src="Fennec_Peak/HUD_CharacterSelectionComponent.png"></img>
+					<img src="Fennec_Peak/HUD_VictoryScreenComponent.png"></img>
+					<p>
+						Creating a script which inherits from the Menu class automatically allows the object to act as a new menu page.
+						This makes it possible to create a page with custom functionality such as a Character Selection menu.
+					</p>
+					<img src="Fennec_Peak/HUD_LobbyPage.png"></img>
 			<div id="codebox" class="codeTint">
 				<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
+				<button onclick="CodeButton('CharacterSelection');">CharacterSelection.cs</button>
 				<pre id="MenuManager"><code class="C#">public class MenuManager : MonoBehaviour 
 { 	
 	[SerializeField] Menu startMenu; 
@@ -152,6 +159,84 @@
 		menuHierarchy.Clear(); 
 	} 
 }</code></pre>
+<pre id="CharacterSelection"><code class="C#">public class CharacterSelection : Menu 
+{ 
+	[Header("Loading")] 
+	[SerializeField] string nextLevel; 
+	[SerializeField] Menu nextMenu; 
+	
+	[Header("Layout")] 
+	[SerializeField] GameObject playerSelector; 
+	List&#60;MenuNavigation&#62; registeredPlayers = new List&#60;MenuNavigation&#62;(); 
+	[SerializeField] Vector2 offset; 
+	[SerializeField] List&#60;GameObject&#62; availableCharacters = new List&#60;GameObject&#62;(); 
+	
+	public int PlayerCount =&#62; registeredPlayers.Count; 
+	
+	private void OnEnable() 
+	{ 
+		if (menuManager &#38;&#38; menuManager.currentMenu is CharacterSelection) 
+		{ 
+			for (int i = 0; i &#60; MenuPlayerHandler.playerList.Count; i++) 
+			{ 
+				Destroy(MenuPlayerHandler.playerList[i].GetComponent&#60;MenuNavigation&#62;().playerCharacterStruct); 
+			} 
+		} 
+	} 
+	
+	void Update() 
+	{ 
+		//Add unregistered players to list 
+		for (int i = 0; i &#60; MenuPlayerHandler.playerList.Count; i++) 
+		{ 
+			MenuNavigation playerInput = MenuPlayerHandler.playerList[i].GetComponent&#60;MenuNavigation&#62;(); 
+			
+			if (playerInput.hasJoined) 
+			{ 
+				if (!registeredPlayers.Contains(playerInput)) 
+				{ 
+					registeredPlayers.Add(playerInput); 
+					playerInput.playerPrefab = availableCharacters[registeredPlayers.Count - 1]; 
+				} 
+			} 
+			else 
+			{
+				if (registeredPlayers.Contains(playerInput)) 
+				{ 
+					registeredPlayers.Remove(playerInput); 
+				} 
+			} 
+		} 
+
+		//Check game ready status int readyPlayers = 0; 
+		for (int i = 0; i &#60; registeredPlayers.Count; i++) 
+		{ 
+			readyPlayers += (registeredPlayers[i].isReady) ? 1 : 0; 
+		} 
+		
+		if (readyPlayers &#62;= 2 &#38;&#38; readyPlayers == registeredPlayers.Count) 
+		{ 
+			PlayerHandler.playerList.Clear(); 
+			
+			for (int i = 0; i &#60; registeredPlayers.Count; i++) 
+			{ 
+				PlayerHandler.playerList.Add(registeredPlayers[i].gameObject); 
+				gameObject.name = "Player " + (PlayerHandler.playerList.Count); 
+			} 
+			
+			SceneManager.LoadScene(nextLevel); 
+			menuManager.EnterMenu(nextMenu); 
+			
+			for (int i = 0; i &#60; registeredPlayers.Count; i++) 
+			{ 
+				registeredPlayers[i].Spawn(); 
+			} 
+			
+			MenuManager.isPaused = false; 
+		} 
+	} 
+}
+</code></pre>
 			</div>
 			<h1>Camera System</h1>
 			<p>
@@ -159,7 +244,7 @@
 				a distance which provides a good view of the surrounding area.
 			</p>
 			<video autoplay muted loop>
-				<source src="Terra_Got_Away/WorldAlignment.mp4" type="video/mp4">
+				<source src="Fennec_Peak/Gameplay.mp4" type="video/mp4">
 			</video>
 			<div id="codebox" class="codeTint">
 				<button onclick="CodeButton('AutoCamera');">AutoCamera.cs</button>				
@@ -169,7 +254,7 @@
 	[SerializeField] float distanceMultiplier = 2; 
 	[SerializeField] public float shortestDistance = 10; 
 	[SerializeField, Range(1, 10)] public float camSpeed = 1; 
-	public float currentDistance; 
+	float currentDistance; 
 	
 	void Update() 
 	{ 
@@ -213,7 +298,7 @@
 }
 </code></pre>
 			</div>
-			<h1>Character Death Management</h1>
+			<h1>Player Respawn System</h1>
 		</div>
 	</div>
 </body>

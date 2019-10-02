@@ -23,6 +23,11 @@ header {
 	position: relative;
 }
 
+header video{
+	width: 100%;
+	object-position: 0px -300px;
+}
+
 #profile {
 	/*Scale*/
 	min-width: 620px;
