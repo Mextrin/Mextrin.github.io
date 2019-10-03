@@ -4,6 +4,8 @@
 	<title>Portfolio</title>
 	<link rel="stylesheet" href="index.css">
 	<link rel="stylesheet" href="specials.css">
+
+	<script src="index.js"></script>
 </head>
 
 <body>
@@ -17,11 +19,43 @@
 			<p id="title">Junior Programmer</p>
 		</div>
 	</header>
-	<div id="content">
-		<p>Reworking this part, sorry!</p>
-		<a href="FennecPeak.html">Fennec Peak</a>
-		<a href="TerraGotAway.html">Terra Got Away</a>
-		<a href="DirectX12Engine.html">DirectX 12 Engine</a>
+	<div id="content" class="tint">
+		<nav>
+			<button onclick="SetPage(0)">Projects</button>
+			<button onclick="SetPage(1)">About</button>
+		</nav>
+		<div id="projects" class="contentPage">
+			<a href="FennecPeak.html">
+				<img src="Fennec_Peak/ProjectImage.png">
+				<div id="desc" class="tint">
+					<h1>Fennec Peak</h1>
+					<img src="UnityIcon.png">
+					<img src="csharpLogo.png">
+					<img src="perforceIcon.png">
+				</div>
+			</a>
+			<a href="TerraGotAway.html">
+				<img src="Terra_Got_Away/Screenshot.png">
+				<div id="desc" class="tint">
+					<h1>Terra Got Away</h1>
+					<img src="UnityIcon.png">
+					<img src="csharpLogo.png">
+					<img src="githubIcon.png">
+				</div>
+			</a>
+			<a href="DirectX12Engine.html">
+				<img src="DirectX12_Engine/Screenshot.png">
+				<div id="desc" class="tint">
+					<h1>DirectX 12 Engine</h1>
+					<img src="cppLogo.png">
+				</div>
+			</a>
+		</div>
+		
+		
+		<div id="about" class="contentPage">
+			
+		</div>
 	</div>
 </body>
 

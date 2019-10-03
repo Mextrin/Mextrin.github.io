@@ -8,10 +8,19 @@ img {
 	height:100%;
 }
 
+h1 {
+	margin: 0;
+}
+
 p {
 	font-size: 24px;
 	font-family: Arial, Helvetica, sans-serif;
 	margin: 0;
+}
+
+button {
+	border:none;
+	background-color:transparent;
 }
 
 header {
@@ -69,9 +78,91 @@ header video{
 
 #content {
 	position: relative;
-	height: calc(100% - 300px);
 	width: 100%;
-	background-color: red;
+	background-image: url('Fennec_Peak/Background.png');
+	height: 100%;
+
+	overflow: hidden;
+}
+
+#content nav
+{
+	display: flex;
+	padding: 25px;
+	position: relative;
+	height: 50px;
+	justify-content: space-evenly;
+}
+
+nav button {
+	height: 100%;
+	min-width: 200px;
+	color: white;
+	border-width: 4px 0px 4px 0px;
+	border-style: solid;
+	border-color: white;
+	font-size: 24px;
+}
+
+.contentPage {
+	position: absolute;
+	top: 100px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: calc(100% - 100px);
+	transition: all 1s;
 }
 
 /* Projects */
+
+#projects {
+	padding: 25px;
+	box-sizing: border-box;
+
+	display: flex;
+	justify-content: space-evenly;
+}
+
+#projects a {
+	position: relative;
+	width: 400px;
+	height: 100%;
+}
+
+#projects img {
+	object-fit: cover;
+}
+
+#desc {
+	position: absolute;
+	bottom: 0;
+	top: calc(100% - 100px);
+	width: 100%;
+}
+
+#desc * {
+	position: relative;
+	font-family: sans-serif;
+}
+
+#desc h1 {
+	color: white;
+	font-size: 34px;
+	margin-left: 10px;
+	margin-top: 5px;
+}
+#desc img {
+	float: left;
+	height: 50px;
+	width: 50px;
+	margin-left: 5px;
+}
+
+/* About */
+
+#about {
+	background-color:red;
+	left: 100%;
+	right: -100%;
+}
