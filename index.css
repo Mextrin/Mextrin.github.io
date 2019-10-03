@@ -10,6 +10,7 @@ img {
 
 h1 {
 	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 p {
@@ -143,7 +144,6 @@ nav button {
 
 #desc * {
 	position: relative;
-	font-family: sans-serif;
 }
 
 #desc h1 {
@@ -162,7 +162,28 @@ nav button {
 /* About */
 
 #about {
-	background-color:red;
 	left: 100%;
 	right: -100%;
+	color: white;
+	text-align: center;
+}
+
+#about * {
+	position: relative;
+	margin: 25px;
+}
+
+#me {
+	width: 1fr;
+	height: 25%;
+}
+
+#education {
+	width: 1fr;
+	height: 25%;
+}
+
+#skills {
+	width: 1fr;
+	height: 50%;
 }
