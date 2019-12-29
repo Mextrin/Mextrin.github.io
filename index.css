@@ -101,10 +101,13 @@ header video{
 #content {
 	position: relative;
 	width: 100%;
-	background-image: url('Fennec_Peak/Background.png');
 	height: 100%;
 
 	overflow: hidden;
+	background-image: url('Fennec_Peak/Background.png');
+}
+
+#content #background {
 }
 
 #content nav
@@ -184,8 +187,6 @@ nav button {
 /* About */
 
 #about {
-	left: 100%;
-	right: -100%;
 	color: white;
 	text-align: center;
 
