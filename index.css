@@ -64,15 +64,36 @@ header video{
 	font-size: 44px;
 	font-weight: bold;
 	position: relative;
-	top: calc(50% - 22px);
+	top: 10%;
 	margin-left: 20px;
 }
 
 #profile #title {
 	position: absolute;
 	left: 220px;
-	top: 62.5%;
+	top: 35%;
 	font-size: 28px;
+}
+
+#profile #links {
+	position: absolute;
+	height: 40px;
+	left: 220px;
+	top: 55%;
+}
+
+#profile #links a {
+	position: relative;
+	float: left;
+	height: 40px;
+	width: 40px;
+	margin-right: 10px;
+}
+
+#links a img {
+	width: 100%;
+	height: 100%;
+	border-radius: 0px;
 }
 
 /* Content */
@@ -103,6 +124,7 @@ nav button {
 	border-style: solid;
 	border-color: white;
 	font-size: 24px;
+	cursor: pointer;
 }
 
 .contentPage {
@@ -280,3 +302,4 @@ nav button {
 #skill p {
 	font-size: 20px;
 }
+
