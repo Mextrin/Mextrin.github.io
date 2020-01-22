@@ -12,7 +12,3 @@ function SetPage(index, animate = true) {
         pages[i].style.right = window.innerWidth * -(i - currentIndex);
     }
 }
-
-function SetBackground(index) {
-    
-}

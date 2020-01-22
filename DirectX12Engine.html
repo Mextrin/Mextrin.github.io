@@ -5,6 +5,12 @@
 		<link rel="stylesheet" href="projectContent.css">
 		<link rel="stylesheet" href="DirectX12Engine.css">
 		<link rel="stylesheet" href="specials.css">
+		<link rel="stylesheet" href="codebox.css">
+
+		<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
+		<script src="CodeHighlight/highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="codebox.js"></script>
 	</head>
 	<body>
 		<header>
@@ -29,10 +35,113 @@
 					<div id="a">
 						<p>Windows 10</p>
 						<p>DirectX 12</p>
-						<p>C#</p>
+						<p>C++</p>
 						<p>Solo</p>
 					</div>
 				</div>
+			</div>
+			<div id="content">
+				<h1 style="margin: 0px;">Project Overview</h1>
+				<p>
+					This game engine is a solo project created with the intent of learning how to utilize the
+					DirectX 12 Graphics API in order to create a game. The engine continues to be in development.
+				</p>
+				<img src="DirectX12_Engine/Screenshot2.png">
+				<h1>The Engine Layout</h1>
+				<p>
+					The layout of the engine is based around making it easy to modify and change between different systems.
+
+				</p>
+				<div id="codebox" class="tint">
+					<button onclick="CodeButton('EngineCore');">EngineCore Functions</button>
+					<button onclick="CodeButton('GameObject');">GameObject Header</button>
+
+<pre id="EngineCore"><code class="C++">
+//Gets called at the start of the program
+void EngineCore::Setup()
+{
+	//Setup time
+	Time::Initialize();
+
+	//Setup renderer
+	renderer = D3D12Renderer::Initialize();
+
+	Level::Load("Resource/Level.level");
+
+	//Demo to show cube
+	Material mat = 
+	{ 
+		renderer->CreatePipelineState(L"Resource/Shaders/shader1.hlsl"), 
+		renderer->LoadTexture(L"Resource/Patterns.png") 
+	};
+
+	Mesh cubeMesh = Mesh::LoadMesh("Resource/Cube.obj");
+
+	GameObject* gameObject = new GameObject();
+	Transform* transform = gameObject->AddComponent&#60;Transform&#62;();
+	transform->position = Vector3(0, 0, 0);
+	MeshRenderer* meshRenderer = gameObject->AddComponent&#60;MeshRenderer&#62;();
+	meshRenderer->mesh = cubeMesh;
+	meshRenderer->material = mat;
+}
+
+//Gets called each frame
+void EngineCore::Update()
+{
+	renderer->RenderInit();
+
+	//Each game object's mesh component makes the call to render itself
+	for (int i = 0; i &#60; gameObjects.length; i++)
+	{
+		gameObjects[i]->Update();
+	}
+
+	//Present texture to screen
+	renderer->RenderTexture();
+}
+</code></pre>
+<pre id="GameObject"><code class="C++">
+#pragma once
+#include &#60;string&#62;
+#include "Array.h"
+
+class GameObject
+{
+public:
+	GameObject();
+	~GameObject();
+
+	void Start();
+	void Update();
+
+	Array&#60;class Component*&#62; components;
+
+	template&#60;typename T&#62;
+	T* AddComponent()
+	{
+		Component* newComponent = new T;
+		newComponent->gameObject = this;
+		components.Add(newComponent);
+		return (T*)newComponent;
+	}
+
+	template&#60;typename T&#62;
+	T* GetComponent()
+	{
+		for (int i = 0; i &#60; components.length; i++)
+		{
+			Component* currentComponent = components[i];
+			T* component = dynamic_cast&#60;T*&#62;(currentComponent);
+			if (component != nullptr)
+			{
+				return component;
+			}
+		}
+
+		return nullptr;
+	}
+};
+</code></pre>
 			</div>
 		</div>
 	</body>
