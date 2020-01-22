@@ -43,15 +43,18 @@
 			<div id="content">
 				<h1 style="margin: 0px;">Project Overview</h1>
 				<p>
-					This game engine is a solo project created with the intent of learning how to utilize the
+					This engine is a solo project created with the intent of learning how to utilize the
 					DirectX 12 Graphics API in order to create a game. The engine continues to be in development.
 				</p>
 				<img src="DirectX12_Engine/Screenshot2.png">
-				<h1>The Engine Layout</h1>
+				<h1>Engine Layout</h1>
 				<p>
-					The layout of the engine is based around making it easy to modify and change between different systems.
-
+					
+					The EngineCore class's task is to initialize and update systems which
+					take care of specific tasks. Those tasks are rendering, keeping track of the program's game time
+					and update the game object's states depending on their components behavior.
 				</p>
+				<img src="DirectX12_Engine/EngineLayoutDiagram.png">
 				<div id="codebox" class="tint">
 					<button onclick="CodeButton('EngineCore');">EngineCore Functions</button>
 					<button onclick="CodeButton('GameObject');">GameObject Header</button>
@@ -93,6 +96,7 @@ void EngineCore::Update()
 	//Each game object's mesh component makes the call to render itself
 	for (int i = 0; i &#60; gameObjects.length; i++)
 	{
+		//A list of the GameObject class is defined in the header of this class
 		gameObjects[i]->Update();
 	}
 
@@ -108,7 +112,7 @@ void EngineCore::Update()
 class GameObject
 {
 public:
-	GameObject();
+	GameObject();	//When called, adds a pointer to self in EngineCore's GameObject list
 	~GameObject();
 
 	void Start();
