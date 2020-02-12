@@ -1,0 +1,159 @@
+<html>
+	<head>
+		<title>Volumetric Clouds</title>
+		<link rel="stylesheet" href="projectHeader.css">
+		<link rel="stylesheet" href="projectContent.css">
+		<link rel="stylesheet" href="Clouds.css">
+		<link rel="stylesheet" href="specials.css">
+		<link rel="stylesheet" href="codebox.css">
+
+		<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
+		<script src="CodeHighlight/highlight.pack.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="codebox.js"></script>
+	</head>
+	<body>
+		<header>
+			<div>
+				<a id="profile" href="index.html">
+					<img src="ProfPic.jpg">
+					<p>Sebastian Tryscien</p>
+				</a>
+			</div>
+		</header>
+		<div id="contentFrame" class="tint">
+			<div id="details">
+				<div id="QA" class="line">
+					<!--<div class="line"></div>-->
+					<!--Q & A-->
+					<div id="q">
+						<p>Platform</p>
+						<p>Engine</p>
+						<p>Language</p>
+						<p>Team Size</p>
+					</div>
+					<div id="a">
+						<p>PC</p>
+						<p>Unity</p>
+						<p>C#</p>
+						<p>Solo</p>
+					</div>
+				</div>
+			</div>
+			<div id="content">
+				<h1 style="margin: 0px;">Project Overview</h1>
+				<p>
+					The volumetric clouds were made with the idea to create a dynamic and realistic looking cloudscape.
+				</p>
+				
+				<h1>Systems Created</h1>
+				<p style="margin-bottom:0px;">Creating volumetric clouds for this project required the usage and creation of the following:</p style="margin-bottom:0px;">
+				<p style="margin-bottom:0px;"><span style="color:limegreen;">Perlin Noise Generator</span></p>
+				<p style="margin-bottom:0px;"><span style="color:limegreen;">Worley Noise Generator</span></p>
+				<p style="margin-bottom:0px;"><span style="color:limegreen;">Raymarching</span></p style="margin-bottom:0px;">
+				<p>Together, these systems got combined into creating a realistic looking volumetric clouds effect.</p>
+				
+				<img src="DirectX12_Engine/Screenshot2.png">
+				<h1>Engine Layout</h1>
+				<p>
+					
+					The EngineCore class's task is to initialize and update systems which
+					take care of specific tasks. Those tasks are rendering, keeping track of the program's game time
+					and update the game object's states depending on their components behavior.
+				</p>
+				<img src="DirectX12_Engine/EngineLayoutDiagram.png">
+				<div id="codebox" class="tint">
+					<button onclick="CodeButton('EngineCore');">EngineCore Functions</button>
+					<button onclick="CodeButton('GameObject');">GameObject Header</button>
+
+<pre id="EngineCore"><code class="C++">
+//Gets called at the start of the program
+void EngineCore::Setup()
+{
+	//Setup time
+	Time::Initialize();
+
+	//Setup renderer
+	renderer = D3D12Renderer::Initialize();
+
+	Level::Load("Resource/Level.level");
+
+	//Demo to show cube
+	Material mat = 
+	{ 
+		renderer->CreatePipelineState(L"Resource/Shaders/shader1.hlsl"), 
+		renderer->LoadTexture(L"Resource/Patterns.png") 
+	};
+
+	Mesh cubeMesh = Mesh::LoadMesh("Resource/Cube.obj");
+
+	GameObject* gameObject = new GameObject();
+	Transform* transform = gameObject->AddComponent&#60;Transform&#62;();
+	transform->position = Vector3(0, 0, 0);
+	MeshRenderer* meshRenderer = gameObject->AddComponent&#60;MeshRenderer&#62;();
+	meshRenderer->mesh = cubeMesh;
+	meshRenderer->material = mat;
+}
+
+//Gets called each frame
+void EngineCore::Update()
+{
+	renderer->RenderInit();
+
+	//Each game object's mesh component makes the call to render itself
+	for (int i = 0; i &#60; gameObjects.length; i++)
+	{
+		//A list of the GameObject class is defined in the header of this class
+		gameObjects[i]->Update();
+	}
+
+	//Present texture to screen
+	renderer->RenderTexture();
+}
+</code></pre>
+<pre id="GameObject"><code class="C++">
+#pragma once
+#include &#60;string&#62;
+#include "Array.h"
+
+class GameObject
+{
+public:
+	GameObject();	//When called, adds a pointer to self in EngineCore's GameObject list
+	~GameObject();
+
+	void Start();
+	void Update();
+
+	Array&#60;class Component*&#62; components;
+
+	template&#60;typename T&#62;
+	T* AddComponent()
+	{
+		Component* newComponent = new T;
+		newComponent->gameObject = this;
+		components.Add(newComponent);
+		return (T*)newComponent;
+	}
+
+	template&#60;typename T&#62;
+	T* GetComponent()
+	{
+		for (int i = 0; i &#60; components.length; i++)
+		{
+			Component* currentComponent = components[i];
+			T* component = dynamic_cast&#60;T*&#62;(currentComponent);
+			if (component != nullptr)
+			{
+				return component;
+			}
+		}
+
+		return nullptr;
+	}
+};
+</code></pre>
+			</div>
+		</div>
+	</body>
+</html>
