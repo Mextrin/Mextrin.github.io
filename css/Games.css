@@ -1,0 +1,129 @@
+body {
+	margin:0;
+	padding:0;
+
+    --headerHeight: 10vh;
+}
+
+img {
+	width:100%;
+	height:100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+p {
+	font-size: 24px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+}
+
+button {
+	border:none;
+	background-color:transparent;
+}
+
+/*Header*/
+header {
+	position: relative;
+	width: 100%;
+	height: var(--headerHeight);
+}
+
+header img {
+    object-fit: cover;
+    object-position: 0% 20%;
+    position:absolute;
+}
+
+header div {
+    position: absolute;
+}
+
+#profile {
+    position: relative;
+    width: 97vw;
+    height: 50px;
+
+    padding: calc(var(--headerHeight) / 4);
+
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#profile p {
+	font-size: calc(var(--headerHeight) / 2);
+}
+
+#links {
+    position: absolute;
+    background-color: cyan;
+}
+
+/* Content */
+
+#content {
+	position: absolute;
+	width: 100%;
+	height: calc(100% - var(--headerHeight));
+
+	overflow: hidden;
+	background-image: url('../Assets/Fennec_Peak/Background.png');
+	background-size: cover;
+}
+
+.contentPage {
+	position: absolute;
+	top: 100px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: calc(100% - 100px);
+}
+
+/* Projects */
+
+#projects {
+	padding: 25px;
+	box-sizing: border-box;
+
+	display: flex;
+	justify-content: space-evenly;
+}
+
+#projects a {
+	position: relative;
+	width: 20%;
+	height: 100%;
+}
+
+#projects img {
+	object-fit: cover;
+}
+
+#desc {
+	position: absolute;
+	bottom: 0;
+	top: calc(100% - 100px);
+	width: 100%;
+}
+
+#desc * {
+	position: relative;
+}
+
+#desc h1 {
+	color: white;
+	font-size: 34px;
+	margin-left: 10px;
+	margin-top: 5px;
+}
+#desc img {
+	float: left;
+	height: 50px;
+	width: 50px;
+	margin-left: 5px;
+}

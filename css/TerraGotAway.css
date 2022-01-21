@@ -1,0 +1,27 @@
+h1 {
+    padding:0;
+    color:white;
+    font-family: sans-serif;
+}
+
+header {
+    background-image: url('Terra_Got_Away/Background.png');
+    background-size: cover;
+    background-position-y: 40%;
+    background-repeat: no-repeat;
+}
+
+#logo {
+    position: absolute;
+    height: 80px;
+    right: 5%;
+}
+
+#contentframe {
+    background-image: url('Terra_Got_Away/BackgroundEmpty.png');
+    background-position-x: 50%;
+}
+
+#q {
+    color: #1f75ff;
+}

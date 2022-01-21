@@ -2,30 +2,29 @@
 
 <head>
 	<title>Fennec Peak</title>
-	<link rel="stylesheet" href="projectHeader.css">
-	<link rel="stylesheet" href="projectContent.css">
-	<link rel="stylesheet" href="FennecPeak.css">
-	<link rel="stylesheet" href="specials.css">
-	<link rel="stylesheet" href="codebox.css">
-	<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
+	<link rel="stylesheet" href="css/projectHeader.css">
+	<link rel="stylesheet" href="css/projectContent.css">
+	<link rel="stylesheet" href="css/FennecPeak.css">
+	<link rel="stylesheet" href="css/specials.css">
+	<link rel="stylesheet" href="css/codebox.css">
+	<link rel="stylesheet" href="css/CodeHighlight/styles/vs2015.css">
 	<script src="CodeHighlight/highlight.pack.js"></script>
 	<script>hljs.initHighlightingOnLoad();</script>
-	<script src="codebox.js"></script>
+	<script src="js/codebox.js"></script>
 </head>
 
 <body>
 	<header>
-		<div>
-			<a id="profile" href="index.html">
-				<img src="ProfPic.jpg">
-				<p>Sebastian Tryscien</p>
-			</a>
-			<img id="logo" src="Fennec_Peak/Logo.png">
-		</div>
+	<nav class="tint">
+		<a id="profile" href="Games.html">
+			<img src="Assets/ProfPic.jpg">
+		</a>
+		<img id="logo" src="Assets/Fennec_Peak/Logo.png">
+	</nav>
 	</header>
 	<div id="contentframe" class="tint">
 		<div id="details">
-			<img src="Fennec_Peak/Logo.png">
+			<img src="Assets/Fennec_Peak/Logo.png">
 			<div id="QA" class="line">
 				<!--<div class="line"></div>-->
 				<!--Q & A-->
@@ -59,7 +58,7 @@
 					To reach that goal, they must make use of their snappy movement, attacks and objects in the
 					environment.
 				</p>
-				<img src="Fennec_Peak/Screenshot.png">
+				<img src="Assets/Fennec_Peak/Screenshot.png">
 			<h1>My Role</h1>
 			<p>The most notable points I was responsible for as a programmer were:</p>
 			<p style="margin-bottom:0px;">The <span style="color:limegreen;">Player Component Structure</span></p>
@@ -71,7 +70,7 @@
 				From the planning stages during the project, it has become 
 				apparent that the player game object will have many funcionalities connected to it.
 			</p>
-			<img src="Fennec_Peak/Player Structure Diagram.png">
+			<img src="Assets/Fennec_Peak/Player Structure Diagram.png">
 			<p>
 				With the above structure, everyone could work on each of the components without having to work in the same file.
 				The structure allowed for easier access to reach variables needed by outside scripts like the HUD elements.
@@ -83,13 +82,13 @@
 					quickly set up fully working UI elements. It consists of multiple scripts
 					which take care of displaying and hiding selected UI pages, and providing basic
 					menu Functionality like pressing a "back" button to return to a previously opened menu page.					</p>
-					<img src="Fennec_Peak/HUD_CharacterSelectionComponent.png"></img>
-					<img src="Fennec_Peak/HUD_VictoryScreenComponent.png"></img>
+					<img src="Assets/Fennec_Peak/HUD_CharacterSelectionComponent.png"></img>
+					<img src="Assets/Fennec_Peak/HUD_VictoryScreenComponent.png"></img>
 					<p>
 						Creating a script which inherits from the Menu class automatically allows the object to act as a new menu page.
 						This makes it possible to create a page with custom functionality such as a Character Selection menu.
 					</p>
-					<img src="Fennec_Peak/HUD_LobbyPage.png"></img>
+					<img src="Assets/Fennec_Peak/HUD_LobbyPage.png"></img>
 			<div id="codebox" class="codeTint">
 				<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
 				<button onclick="CodeButton('CharacterSelection');">CharacterSelection.cs</button>
@@ -257,7 +256,7 @@
 				a distance which provides a good view of the surrounding area.
 			</p>
 			<video autoplay muted loop>
-				<source src="Fennec_Peak/Gameplay.mp4" type="video/mp4">
+				<source src="Assets/Fennec_Peak/Gameplay.mp4" type="video/mp4">
 			</video>
 			<div id="codebox" class="codeTint">
 				<button onclick="CodeButton('AutoCamera');">AutoCamera.cs</button>				
