@@ -1,0 +1,7 @@
+body {
+    --transitionTime: 0.5s;
+	--headerHeight: 10vh;
+    --skewAngle: -20deg;
+    --tintOpacity: 0.4;
+    --marginWidth: 0.1%;
+}

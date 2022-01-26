@@ -27,16 +27,6 @@ button {
 }
 
 /*Header*/
-.headerTint::before {
-	content:"";
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background-color:black;
-	opacity: 0.4;
-}
 
 header {
 	position: relative;
@@ -75,6 +65,33 @@ header img {
     margin-right: 10px;
 }
 
+/* Back Button*/
+
+#backButton {
+    position: absolute;
+
+    --backButtonMul: 1.5;
+    
+    width: calc(var(--headerHeight) * var(--backButtonMul));
+    height: var(--headerHeight);
+    top: 0;
+    left: calc(var(--headerHeight) * -0.5);
+    
+    transition: width var(--transitionTime);
+    background-color: white;
+	text-decoration: none;
+
+    transform: skew(var(--skewAngle));
+	-moz-transform: skew(calc(--skewAngle));
+}
+
+#backButton h1 {
+	position: absolute;
+	top: 25%;
+	right: 25px;
+	color: black;
+}
+
 /* Content */
 
 #content {
@@ -89,53 +106,63 @@ header img {
 
 .contentPage {
 	position: absolute;
-	top: 100px;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	height: calc(100% - 100px);
+	top: 100px;
 }
 
 /* Projects */
 
 #projects {
-	padding: 25px;
-	box-sizing: border-box;
+	position: absolute;
 
 	display: flex;
 	justify-content: space-evenly;
+	box-sizing: content-box;
+
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+
+	--tintOpacity: 0.5;
 }
 
-#projects a {
+.project {
 	position: relative;
-	width: 20%;
-	height: 100%;
+
+	top: 12.5%;
+	transition: width var(--transitionTime);
+
+	--sizeScale: 0.75;
+	--size: calc((100vh - var(--headerHeight)) * var(--sizeScale));
+
+	width: var(--size);
+	height: var(--size);
+
+	overflow: hidden;
+	margin-right: var(--marginWidth);
+	margin-left: var(--marginWidth);
 }
 
-#projects img {
+.project:hover {
+	width: 75%;
+}
+
+.projectImage {
+	position: absolute;
+	width: 150%;
+	left: -25%;
+
 	object-fit: cover;
 }
 
-#desc {
+.projectLogo {
 	position: absolute;
-	bottom: 0;
-	top: calc(100% - 100px);
-	width: 100%;
-}
-
-#desc * {
-	position: relative;
-}
-
-#desc h1 {
-	color: white;
-	font-size: 34px;
-	margin-left: 10px;
-	margin-top: 5px;
-}
-#desc img {
-	float: left;
-	height: 50px;
-	width: 50px;
-	margin-left: 5px;
+	object-fit:contain;
+	width: 150%;
+	height: 50%;
+	left: -25%;
+	top: 25%;
 }

@@ -1,12 +1,8 @@
-
 body {
 	margin:0;
 	padding:0;
 	
 	overflow-x: hidden;
-	
-	--transitionTime: 0.5s;
-	--headerHeight: 10vh;
 }
 
 a {
@@ -67,9 +63,6 @@ header p, header h1 {
 
 	display: flex;
 
-	--skewAngle: -20deg;
-	--marginWidth: 0.1%;
-
 	--innerTint: 0%;
 	--outerTint: 0%;
 }
@@ -84,7 +77,7 @@ header p, header h1 {
 
 	transition: left var(--transitionTime), right var(--transitionTime);
 	background-color:black;
-	opacity: 0.4;
+	opacity: var(--tintOpacity);
 }
 
 .racingTint::before {
@@ -97,7 +90,7 @@ header p, header h1 {
 
 	transition: left var(--transitionTime), right var(--transitionTime);
 	background-color:black;
-	opacity: 0.4;
+	opacity: var(--tintOpacity);
 }
 
 #category {
@@ -111,8 +104,6 @@ header p, header h1 {
 	margin-left: var(--marginWidth);
 
 	transition: width var(--transitionTime);
-	transform: skew(var(--skewAngle));
-	-moz-transform: skew(var(--skewAngle));
 }
 
 .gamesVideo {
@@ -125,11 +116,6 @@ header p, header h1 {
 	position: absolute;
 	right: 20%;
 	height: auto;
-}
-
-.unskew {
-	transform: skew(calc(var(--skewAngle)*-1));
-	-moz-transform: skew(calc(var(--skewAngle) * -1));
 }
 
 #content {
