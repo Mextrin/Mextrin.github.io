@@ -3,6 +3,17 @@ Anything that uses this class will be tinted 60%; (100% - opacity * 100).
 All elements inside it will also recieve a tint if their position type is static (default).
 */
 
+.weakTint::before {
+	content:"";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color:black;
+	opacity: 0.3;
+}
+
 .tint::before {
 	content:"";
 	position: absolute;
@@ -23,6 +34,16 @@ All elements inside it will also recieve a tint if their position type is static
 	right: 0;
 	background-color:#1E1E1E;
 	opacity: 0.8;
+}
+
+.blur {
+	backdrop-filter: blur(var(--blurSize));
+}
+
+@-moz-document url-prefix() {
+	.blur {
+		background-color: #3c3c3c;
+	}
 }
 
 /*

@@ -43,33 +43,6 @@ button {
     color: white;
 }
 
-#QA {
-    position: relative;
-}
-
-#QA p {
-    font-size: 18px;
-}
-
-#q {
-    text-align: right;
-    width: 50%;
-    padding: 0px 10px 0px 10px;
-    box-sizing: border-box;
-}
-
-#a {
-    text-align: left;
-    width: 50%;
-    padding: 0px 10px 0px 10px;
-    box-sizing: border-box;
-    position: absolute;
-    left: 50%;
-    top: 0;
-
-    color: white;
-}
-
 #content {
     margin: 0px auto;
     position: relative;

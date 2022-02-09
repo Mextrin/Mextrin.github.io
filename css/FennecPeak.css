@@ -4,19 +4,6 @@ h1 {
     font-family: sans-serif;
 }
 
-header {
-    background-image: url('../Assets/Fennec_Peak/Poster.jpg');
-    background-size: cover;
-    background-position-y: 29%;
-    background-repeat: no-repeat;
-}
-
-#logo {
-    position: absolute;
-    height: 80px;
-    right: 5%;
-}
-
 #contentframe {
     background-image: url('../Assets/Fennec_Peak/Background.png');
     background-position-x: 50%;

@@ -9,53 +9,139 @@ p {
 }
 
 body {
+    position: relative;
     margin: 0;
     padding: 0;
 }
 
 header {
+    position: relative;
     width: 100%;
-    height: 500px;
-    top: 0;
+    height: 100vh;
+}
+
+header img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 0px 29%;
 }
 
 nav {
+    position: fixed;
+    top: 0;
+
     z-index: 1;
-    position:fixed;
+    
     width: 100%;
-    display: flex;
-    padding: 10px;
+    height: var(--headerHeight);
+    box-shadow: 0px 0px 5px;
+
 }
 
 #profile {
-    /*Scale*/
-	height: 80px;
-
-	/*Style*/
-	border-radius: 150px 150px 150px 150px;
-    display: flex;
-
-    /*Location*/
     position: relative;
-    left: 5%;
-}
+    width: 100%;
+    height: 100%;
 
-#profile img {
-    width: 80px;
-    height: 80px;
-    border-radius: 150px;
+    display: flex;
+    justify-content: space-evenly;
+
+    margin-top: calc(var(--headerHeight) / 4);
 }
 
 #profile p {
+    position: relative;
+	font-size: calc(var(--headerHeight) / 2);
     color: white;
-    margin: 25px 10px 0px 10px;
 }
 
-.project a div h1 {
-	position: relative;
-	font: bold 36px sans-serif;
-	color:white;
-	line-height: 50px;
-	margin-left: 10px;
-	display: inline;
+#profile img {
+    position: relative;
+    height: 100%;
+}
+
+#links a {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Back Button*/
+
+#backButton {
+    z-index: 1;
+    position: fixed;
+
+    --backButtonMul: 1.5;
+    
+    width: calc(var(--headerHeight) * var(--backButtonMul));
+    height: var(--headerHeight);
+    top: 0;
+    left: calc(var(--headerHeight) * -0.5);
+    
+    transition: width var(--transitionTime);
+    background-color: white;
+	text-decoration: none;
+
+    transform: skew(var(--skewAngle));
+	-moz-transform: skew(calc(--skewAngle));
+}
+
+#backButton h1 {
+	position: absolute;
+	top: 25%;
+	right: 25px;
+    margin: 0px;
+	color: black;
+}
+
+/*Project Desc*/
+#project {
+    position: absolute;
+    width: 400px;
+    height: 250px;
+
+    bottom: 50px;
+    left: 150px;
+
+    padding: 25px;
+
+    color: white;
+    text-shadow: 0.5px 0.5px black;
+}
+
+.title {
+    font-size: 42px;
+}
+
+.QA {
+    position: relative;
+}
+
+.QA p {
+    font-size: 18px;
+}
+
+#q {
+    text-align: right;
+    width: 50%;
+    padding: 0px 10px 0px 10px;
+    box-sizing: border-box;
+}
+
+#a {
+    text-align: left;
+    width: 50%;
+    padding: 0px 10px 0px 10px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 0;
+
+    color: white;
 }

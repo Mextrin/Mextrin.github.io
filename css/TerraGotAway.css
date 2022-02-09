@@ -4,13 +4,6 @@ h1 {
     font-family: sans-serif;
 }
 
-header {
-    background-image: url('Terra_Got_Away/Background.png');
-    background-size: cover;
-    background-position-y: 40%;
-    background-repeat: no-repeat;
-}
-
 #logo {
     position: absolute;
     height: 80px;
@@ -18,7 +11,7 @@ header {
 }
 
 #contentframe {
-    background-image: url('Terra_Got_Away/BackgroundEmpty.png');
+    background-image: url('../Assets/Terra_Got_Away/BackgroundEmpty.png');
     background-position-x: 50%;
 }
 
