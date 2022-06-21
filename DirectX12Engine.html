@@ -1,11 +1,13 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>DirectX 12 Engine</title>
-		<link rel="stylesheet" href="projectHeader.css">
-		<link rel="stylesheet" href="projectContent.css">
-		<link rel="stylesheet" href="DirectX12Engine.css">
-		<link rel="stylesheet" href="specials.css">
-		<link rel="stylesheet" href="codebox.css">
+		<link rel="stylesheet" href="css/projectHeader.css">
+		<link rel="stylesheet" href="css/projectContent.css">
+		<link rel="stylesheet" href="css/DirectX12Engine.css">
+		<link rel="stylesheet" href="css/specials.css">
+		<link rel="stylesheet" href="css/codebox.css">
+		<link rel="stylesheet" href="css/global.css">
 
 		<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
 		<script src="CodeHighlight/highlight.pack.js"></script>
@@ -14,139 +16,77 @@
 	</head>
 	<body>
 		<header>
-			<div>
-				<a id="profile" href="index.html">
-					<img src="ProfPic.jpg">
+			<img src="Assets/DirectX12_Engine/World.png">
+			<div class="weakTint"></div>
+			<nav class="blur">
+				<div id="profile">
 					<p>Sebastian Tryscien</p>
-				</a>
-			</div>
-		</header>
-		<div id="contentFrame" class="tint">
-			<div id="details">
-				<div id="QA" class="line">
+					<div id="links">
+						<a href="https://github.com/Mextrin"><img src="Assets/Icons/githubIcon.png"></a>
+						<a href="https://www.linkedin.com/in/sebastian-tryscien-875b13171/"><img src="Assets/Icons/linkedin_icon.png"></a>
+						<a href="mailto:seba3552@hotmail.com"><img src="Assets/Icons/mail_icon.png"></a>
+						<a style="display: none;" href=""><img src="Assets/Icons/cv_icon.png"></a>
+					</div>
+				</div>
+			</nav>
+			<a id="backButton" class="resizableButton" href="Games.html">
+				<h1>←</h1>
+			</a>
+			<div id="project">
+				<p class="title">Personal DirectX 12 Engine</p>
+				<hr>
+				<div class="QA line">
 					<!--<div class="line"></div>-->
 					<!--Q & A-->
 					<div id="q">
 						<p>Platform</p>
-						<p>API</p>
+						<p>Version Control</p>
 						<p>Language</p>
-						<p>Team Size</p>
+						<p>Development Time</p>
 					</div>
 					<div id="a">
-						<p>Windows 10</p>
-						<p>DirectX 12</p>
+						<p>Windows</p>
+						<p>GitHub</p>
 						<p>C++</p>
-						<p>Solo</p>
+						<p>3 Years</p>
 					</div>
 				</div>
 			</div>
+		</header>
+		<div id="contentframe" class="tint">
+
 			<div id="content">
 				<h1 style="margin: 0px;">Project Overview</h1>
 				<p>
 					This engine is a solo project created with the intent of learning how to utilize the
-					DirectX 12 Graphics API in order to create a game. The engine continues to be in development.
+					DirectX 12 Graphics API in order to create a game.
+					The project is actively in continuing development with more tools and features being added as time goes on.
 				</p>
-				<img src="DirectX12_Engine/Screenshot2.png">
-				<h1>Engine Layout</h1>
+				<img src="Assets/DirectX12_Engine/Screenshot2.png">
+
+				<h1>Entity Component System</h1>
 				<p>
-					
-					The EngineCore class's task is to initialize and update systems which
-					take care of specific tasks. Those tasks are rendering, keeping track of the program's game time
-					and update the game object's states depending on their components behavior.
+					The engine utlizes ECS which splits up data from functionality to gain better performance while also maintaining a structure which is easy to change.
+					Variable values are being serialized which allows for easy saving of progress and quick testing of any recent changes.
+					This also opens up the possibility to easier implement networking and multiplayer in the future.
 				</p>
-				<img src="DirectX12_Engine/EngineLayoutDiagram.png">
-				<div id="codebox" class="tint">
-					<button onclick="CodeButton('EngineCore');">EngineCore Functions</button>
-					<button onclick="CodeButton('GameObject');">GameObject Header</button>
+				<img src="Assets/DirectX12_Engine/ECSTools.png">
 
-<pre id="EngineCore"><code class="C++">
-//Gets called at the start of the program
-void EngineCore::Setup()
-{
-	//Setup time
-	Time::Initialize();
+				<h1>World Editor</h1>
+				<p>
+					In order to make iterating as easy as possible for modifying a scene, 
+					handles have been added which can be grabbed in order to move, rotate or scale an object along a selected axis.
+					These handles can be used for both objects that have their own local space.
+				</p>
+				<img src="Assets/DirectX12_Engine/MoveHandle.png">
 
-	//Setup renderer
-	renderer = D3D12Renderer::Initialize();
-
-	Level::Load("Resource/Level.level");
-
-	//Demo to show cube
-	Material mat = 
-	{ 
-		renderer->CreatePipelineState(L"Resource/Shaders/shader1.hlsl"), 
-		renderer->LoadTexture(L"Resource/Patterns.png") 
-	};
-
-	Mesh cubeMesh = Mesh::LoadMesh("Resource/Cube.obj");
-
-	GameObject* gameObject = new GameObject();
-	Transform* transform = gameObject->AddComponent&#60;Transform&#62;();
-	transform->position = Vector3(0, 0, 0);
-	MeshRenderer* meshRenderer = gameObject->AddComponent&#60;MeshRenderer&#62;();
-	meshRenderer->mesh = cubeMesh;
-	meshRenderer->material = mat;
-}
-
-//Gets called each frame
-void EngineCore::Update()
-{
-	renderer->RenderInit();
-
-	//Each game object's mesh component makes the call to render itself
-	for (int i = 0; i &#60; gameObjects.length; i++)
-	{
-		//A list of the GameObject class is defined in the header of this class
-		gameObjects[i]->Update();
-	}
-
-	//Present texture to screen
-	renderer->RenderTexture();
-}
-</code></pre>
-<pre id="GameObject"><code class="C++">
-#pragma once
-#include &#60;string&#62;
-#include "Array.h"
-
-class GameObject
-{
-public:
-	GameObject();	//When called, adds a pointer to self in EngineCore's GameObject list
-	~GameObject();
-
-	void Start();
-	void Update();
-
-	Array&#60;class Component*&#62; components;
-
-	template&#60;typename T&#62;
-	T* AddComponent()
-	{
-		Component* newComponent = new T;
-		newComponent->gameObject = this;
-		components.Add(newComponent);
-		return (T*)newComponent;
-	}
-
-	template&#60;typename T&#62;
-	T* GetComponent()
-	{
-		for (int i = 0; i &#60; components.length; i++)
-		{
-			Component* currentComponent = components[i];
-			T* component = dynamic_cast&#60;T*&#62;(currentComponent);
-			if (component != nullptr)
-			{
-				return component;
-			}
-		}
-
-		return nullptr;
-	}
-};
-</code></pre>
+				<h1>Newtonian Rigidbody Physics</h1>
+				<p>
+					An efficient rigidbody physics model has been implemented to allow simulating objects that collide by moving them away from each other if they intersect.
+					The collision model is able to take into account any convex mesh and accurately measure the intersection in order to resolve a collision.
+				</p>
+				<img src="Assets/DirectX12_Engine/PhysicsCubes.png">
 			</div>
 		</div>
-	</body>
-</html>
+		</body>
+		</html>

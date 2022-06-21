@@ -4,14 +4,6 @@ h1 {
     font-family: sans-serif;
 }
 
-header {
-    background-image: url('DirectX12_Engine/Screenshot.png');
-    background-size: contain;
-    background-position-x: 50%;
-    background-repeat: no-repeat;
-    background-color: #003366;
-}
-
 #logo {
     position: absolute;
     height: 80px;
@@ -19,11 +11,8 @@ header {
 }
 
 #contentframe {
-    background-color: #003366;
-}
-
-#QA {
-    margin-top: 20px;
+    background-image: url('../Assets/DirectX12_Engine/FloorGrid.png');
+    background-position-x: 50%;
 }
 
 #q {

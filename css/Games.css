@@ -141,3 +141,11 @@ header img {
 	left: -25%;
 	top: 25%;
 }
+
+.projectText {
+	position: absolute;
+	top: 45%;
+	color: white;
+	width: 100%;
+	text-align: center;
+}
