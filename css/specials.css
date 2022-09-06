@@ -40,12 +40,6 @@ All elements inside it will also recieve a tint if their position type is static
 	backdrop-filter: blur(var(--blurSize));
 }
 
-@-moz-document url-prefix() {
-	.blur {
-		background-color: #3c3c3c;
-	}
-}
-
 /*
 Creates a line in the middle of the container
 */
