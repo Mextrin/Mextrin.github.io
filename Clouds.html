@@ -1,11 +1,13 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Volumetric Clouds</title>
-		<link rel="stylesheet" href="projectHeader.css">
-		<link rel="stylesheet" href="projectContent.css">
-		<link rel="stylesheet" href="Clouds.css">
-		<link rel="stylesheet" href="specials.css">
-		<link rel="stylesheet" href="codebox.css">
+		<link rel="stylesheet" href="css/projectHeader.css">
+		<link rel="stylesheet" href="css/projectContent.css">
+		<link rel="stylesheet" href="css/Clouds.css">
+		<link rel="stylesheet" href="css/specials.css">
+		<link rel="stylesheet" href="css/codebox.css">
+		<link rel="stylesheet" href="css/global.css">
 
 		<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
 		<script src="CodeHighlight/highlight.pack.js"></script>
@@ -14,146 +16,196 @@
 	</head>
 	<body>
 		<header>
-			<div>
-				<a id="profile" href="index.html">
-					<img src="ProfPic.jpg">
+			<img src="Assets/MyProjects/Clouds/Screenshot3.png">
+			<div class="weakTint"></div>
+			<nav class="blur">
+				<div id="profile">
 					<p>Sebastian Tryscien</p>
-				</a>
-			</div>
-		</header>
-		<div id="contentFrame" class="tint">
-			<div id="details">
-				<div id="QA" class="line">
-					<!--<div class="line"></div>-->
+					<div id="links">
+						<a href="https://github.com/Mextrin"><img src="Assets/Icons/githubIcon.png"></a>
+						<a href="https://www.linkedin.com/in/sebastian-tryscien-875b13171/"><img src="Assets/Icons/linkedin_icon.png"></a>
+						<a href="mailto:seba3552@hotmail.com"><img src="Assets/Icons/mail_icon.png"></a>
+						<a style="display: none;" href=""><img src="Assets/Icons/cv_icon.png"></a>
+					</div>
+				</div>
+			</nav>
+			<a id="backButton" class="resizableButton" href="Games.html">
+				<h1>←</h1>
+			</a>
+			<div id="project">
+				<p class="title">Volumetric Clouds</p>
+				<hr>
+				<div class="QA line">
 					<!--Q & A-->
 					<div id="q">
-						<p>Platform</p>
 						<p>Engine</p>
 						<p>Language</p>
-						<p>Team Size</p>
 					</div>
 					<div id="a">
-						<p>PC</p>
 						<p>Unity</p>
-						<p>C#</p>
-						<p>Solo</p>
+						<p>C# + Unity's custom shading language</p>
 					</div>
 				</div>
 			</div>
+		</header>
+		<div id="contentframe">
 			<div id="content">
-				<h1 style="margin: 0px;">Project Overview</h1>
+				<h1 class="topHeader">Project Overview</h1>
 				<p>
 					The volumetric clouds were made with the idea to create a dynamic and realistic looking cloudscape.
+					Creating volumetric clouds was possible by combining generating noise textures, using raymarching techniques and utilizing the GPU compute shader to improve performance.
 				</p>
 				
-				<h1>Systems Created</h1>
-				<p style="margin-bottom:0px;">Creating volumetric clouds for this project required the usage and creation of the following:</p style="margin-bottom:0px;">
-				<p style="margin-bottom:0px;"><span style="color:limegreen;">Perlin Noise Generator</span></p>
-				<p style="margin-bottom:0px;"><span style="color:limegreen;">Worley Noise Generator</span></p>
-				<p style="margin-bottom:0px;"><span style="color:limegreen;">Raymarching</span></p style="margin-bottom:0px;">
-				<p>Together, these systems got combined into creating a realistic looking volumetric clouds effect.</p>
-				
-				<img src="DirectX12_Engine/Screenshot2.png">
-				<h1>Engine Layout</h1>
+				<h1>Generated Noise</h1>
 				<p>
-					
-					The EngineCore class's task is to initialize and update systems which
-					take care of specific tasks. Those tasks are rendering, keeping track of the program's game time
-					and update the game object's states depending on their components behavior.
+					In order to give clouds a realistic look, two noise textures had to be generated and later combined to form a final texture.
+					Textured used here were the Perlin and Worley noises which combine their look into one.
 				</p>
-				<img src="DirectX12_Engine/EngineLayoutDiagram.png">
-				<div id="codebox" class="tint">
-					<button onclick="CodeButton('EngineCore');">EngineCore Functions</button>
-					<button onclick="CodeButton('GameObject');">GameObject Header</button>
+				<img src="Assets/MyProjects/Clouds/PerlinNoise.png">
+				<img src="Assets/MyProjects/Clouds/WorleyNoise.png">
 
-<pre id="EngineCore"><code class="C++">
-//Gets called at the start of the program
-void EngineCore::Setup()
+				<p>
+					The result of combining those noises becomes a mix which keeps the distinct features of both: 
+					The "bubbles" of Worley noise and cloudy blur of the Perlin noise.
+				</p>
+				<img src="Assets/MyProjects/Clouds/PerlinWorleyNoise.png">
+				<p>
+					Generating those textures using the CPU takes a lot of time (2-3 minutes per texture in some cases) so instead,
+					the texture generation has been moved to the GPU compute shader where the whole generation process takes less than a second.
+				</p>
+
+				<h1>Rendering</h1>
+				<p>
+					The clouds themselves are rendered by using the GPU's fragment shader and ray-marching. 
+					At each ray-marching interval, the shader samples the color value from the generated texture and uses the total result to determine how much light is able to pass through the cloud for that given pixel.
+					This process is repeated for every pixel in the viewport and results in a realistic looking cloud.
+				</p>
+				<img src="Assets/MyProjects/Clouds/Screenshot3.png">
+				<pre id="CloudShader">
+					<code class="HLSL">
+float2 RayBoxDst(float3 boundsMin, float3 boundsMax, float3 rayOrigin, float3 rayDir)
 {
-	//Setup time
-	Time::Initialize();
+	float3 t0 = (boundsMin - rayOrigin) / rayDir;
+	float3 t1 = (boundsMax - rayOrigin) / rayDir;
+	float3 tMin = min(t0, t1);
+	float3 tMax = max(t0, t1);
 
-	//Setup renderer
-	renderer = D3D12Renderer::Initialize();
+	float dstA = max(max(tMin.x, tMin.y), tMin.z);
+	float dstB = min(tMax.x, min(tMax.y, tMax.z));
 
-	Level::Load("Resource/Level.level");
-
-	//Demo to show cube
-	Material mat = 
-	{ 
-		renderer->CreatePipelineState(L"Resource/Shaders/shader1.hlsl"), 
-		renderer->LoadTexture(L"Resource/Patterns.png") 
-	};
-
-	Mesh cubeMesh = Mesh::LoadMesh("Resource/Cube.obj");
-
-	GameObject* gameObject = new GameObject();
-	Transform* transform = gameObject->AddComponent&#60;Transform&#62;();
-	transform->position = Vector3(0, 0, 0);
-	MeshRenderer* meshRenderer = gameObject->AddComponent&#60;MeshRenderer&#62;();
-	meshRenderer->mesh = cubeMesh;
-	meshRenderer->material = mat;
+	float dstToBox = max(0, dstA);
+	float dstInsideBox = max(0, dstB - dstToBox);
+	return float2(dstToBox, dstInsideBox);
 }
 
-//Gets called each frame
-void EngineCore::Update()
+Texture3D<float4> ShapeNoise;
+SamplerState samplerShapeNoise;
+
+Texture2D<float4> WeatherSignal;
+SamplerState samplerWeatherSignal;
+
+float4 cloudWeights;
+float3 cloudOffset;
+float cloudScale;
+float densityThreshold;
+float densityMultiplier;
+int numSteps;
+int lightSteps;
+float4 _LightColor0;
+float lightStrength;
+float maxDistance;
+
+float SampleDensity(float3 position)
 {
-	renderer->RenderInit();
+	//Height Gradient
+	float3 size = BoundsMax - BoundsMin;
+	float heightPercentage = (position.y - BoundsMin.y) / size.y;
+	float4 heightGradient = WeatherSignal.SampleLevel(samplerWeatherSignal, float2(0, heightPercentage), 0);
 
-	//Each game object's mesh component makes the call to render itself
-	for (int i = 0; i &#60; gameObjects.length; i++)
+	//Density Sampling
+	float3 uvw = (position * cloudScale * 0.0001);
+	float cloudShape = ShapeNoise.SampleLevel(samplerShapeNoise, uvw, 0) * heightGradient;
+
+	if (cloudShape > 0)
 	{
-		//A list of the GameObject class is defined in the header of this class
-		gameObjects[i]->Update();
-	}
+		float uvwDetail = uvw * 4;
+		float detailShape = ShapeNoise.SampleLevel(samplerShapeNoise, uvwDetail, 0).b;
+		float detailWeights = (1 - cloudShape) * (1 - cloudShape) * (1 - cloudShape);
+		float cloudDensity = cloudShape - (1 - detailShape) * detailWeights;
 
-	//Present texture to screen
-	renderer->RenderTexture();
+		return max(0, cloudDensity - densityThreshold) * densityMultiplier * 0.01;
+	}
+	return 0;
 }
-</code></pre>
-<pre id="GameObject"><code class="C++">
-#pragma once
-#include &#60;string&#62;
-#include "Array.h"
 
-class GameObject
+float LightMarch(float3 position)
 {
-public:
-	GameObject();	//When called, adds a pointer to self in EngineCore's GameObject list
-	~GameObject();
+	float3 sunDir = normalize(_WorldSpaceLightPos0.xyz);
+	float dstInBox = RayBoxDst(BoundsMin, BoundsMax, position, sunDir).y;
 
-	void Start();
-	void Update();
+	float stepSize = dstInBox / lightSteps;
 
-	Array&#60;class Component*&#62; components;
+	float totalDensity = 0;
 
-	template&#60;typename T&#62;
-	T* AddComponent()
+	for (int i = 0; i < lightSteps; i++)
 	{
-		Component* newComponent = new T;
-		newComponent->gameObject = this;
-		components.Add(newComponent);
-		return (T*)newComponent;
+		position += sunDir * stepSize;
+		totalDensity += SampleDensity(position) * stepSize;
 	}
 
-	template&#60;typename T&#62;
-	T* GetComponent()
+	return exp(-totalDensity * lightStrength);
+}
+
+float4 frag(v2f input) : SV_Target
+{
+	float4 col = tex2D(_MainTex, input.uv);
+
+	//Prep data
+	float nonLinearDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, input.uv);
+	float depth = LinearEyeDepth(nonLinearDepth) * length(input.ray);
+
+	float3 origin = _WorldSpaceCameraPos;
+	float3 dir = normalize(input.ray);
+
+	float2 rayBoxInfo = RayBoxDst(BoundsMin, BoundsMax, origin, dir);
+	float dstToBox = rayBoxInfo.x;
+	float dstInBox = rayBoxInfo.y;
+
+	//Results
+	float stepSize = dstInBox / numSteps;
+
+	float dstTravelled = 0;
+	float transmittance = 1;
+	float lightReached = 0;
+
+	for (int i = 0; i < numSteps; i++)
 	{
-		for (int i = 0; i &#60; components.length; i++)
+		if (dstTravelled >= min(depth - dstToBox, dstInBox))
+			break;
+
+		float3 rayPos = origin + dir * (dstToBox + dstTravelled);
+
+		float cloudDensity = SampleDensity(rayPos) * stepSize;
+
+		if (cloudDensity > 0)
 		{
-			Component* currentComponent = components[i];
-			T* component = dynamic_cast&#60;T*&#62;(currentComponent);
-			if (component != nullptr)
-			{
-				return component;
-			}
+			float lightReachingPoint = LightMarch(rayPos);
+			lightReached += lightReachingPoint * cloudDensity * transmittance;
+			transmittance *= exp(-cloudDensity);
 		}
+					
+		if (transmittance < 0.01)
+			break;
 
-		return nullptr;
+		dstTravelled += stepSize;
 	}
-};
-</code></pre>
+
+	return col * transmittance + lightReached;
+}
+					</code>
+				</pre>
 			</div>
 		</div>
 	</body>
+	<script src="js/backButton.js"></script>
 </html>

@@ -72,57 +72,51 @@ header img {
 #content {
 	position: absolute;
 	width: 100%;
-	height: calc(100% - var(--headerHeight));
 	top: var(--headerHeight);
 
 	overflow: hidden;
 	background-size: cover;
 }
 
-.contentPage {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	top: 100px;
-}
-
 /* Projects */
 
 #projects {
-	position: absolute;
-
 	display: flex;
-	justify-content: space-evenly;
-	box-sizing: content-box;
-
-	bottom: 0;
-	left: 0;
-	right: 0;
-	top: 0;
-
-	--tintOpacity: 0.5;
+	flex-wrap: wrap;
 }
 
 .project {
 	position: relative;
 
-	top: 12.5%;
-	transition: width var(--transitionTime);
-
-	--sizeScale: 0.75;
-	--size: calc((100vh - var(--headerHeight)) * var(--sizeScale));
+	--size: calc((100vw - 17px) / 3);
 
 	width: var(--size);
 	height: var(--size);
 
 	overflow: hidden;
-	margin-right: var(--marginWidth);
-	margin-left: var(--marginWidth);
+	justify-content: center;
 }
 
-.project:hover {
-	width: 75%;
+@media only screen and (max-width: 1400px) {
+	.project {
+		--size: calc((100vw) / 2);
+	
+		width: var(--size);
+		height: var(--size);
+
+		overflow: hidden;
+	}
+}
+
+.project > .projectHighlight {
+	height: 100%;
+	display: none;
+
+	object-fit: cover;
+}
+
+.project:hover > .projectHighlight {
+	display: block;
 }
 
 .projectImage {

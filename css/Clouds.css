@@ -4,14 +4,6 @@ h1 {
     font-family: sans-serif;
 }
 
-header {
-    background-image: url('MyProjects/Clouds/Screenshot2.png');
-    background-size: cover;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-color: #003366;
-}
-
 #logo {
     position: absolute;
     height: 80px;
@@ -19,7 +11,7 @@ header {
 }
 
 #contentframe {
-    background-color: #003366;
+    background-color: #494440;
 }
 
 #QA {

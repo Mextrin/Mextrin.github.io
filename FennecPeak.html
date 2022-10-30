@@ -9,14 +9,15 @@
 	<link rel="stylesheet" href="css/specials.css">
 	<link rel="stylesheet" href="css/codebox.css">
 	<link rel="stylesheet" href="css/global.css">
-	<link rel="stylesheet" href="css/CodeHighlight/styles/vs2015.css">
+	<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
+	
 	<script src="CodeHighlight/highlight.pack.js"></script>
 	<script>hljs.initHighlightingOnLoad();</script>
 	<script src="js/codebox.js"></script>
 </head>
 <body>
 	<header>
-		<img src="../Assets/Fennec_Peak/Poster.jpg">
+		<img src="Assets/Fennec_Peak/Poster.jpg">
 		<nav class="blur">
 			<div id="profile">
 				<p>Sebastian Tryscien</p>
@@ -89,22 +90,22 @@
 				It also opened up a possibility to change the playable character without a need for a new GameObject.
 			</p>
 			<h1>UI System</h1>
-				<p>
-					The UI system has been written with the goal of allowing other team members to
-					quickly set up fully working UI elements. It consists of multiple scripts
-					which take care of displaying and hiding selected UI pages, and providing basic
-					menu Functionality like pressing a "back" button to return to a previously opened menu page.					</p>
-					<img src="Assets/Fennec_Peak/HUD_CharacterSelectionComponent.png"></img>
-					<img src="Assets/Fennec_Peak/HUD_VictoryScreenComponent.png"></img>
-					<p>
-						Creating a script which inherits from the Menu class automatically allows the object to act as a new menu page.
-						This makes it possible to create a page with custom functionality such as a Character Selection menu.
-					</p>
-					<img src="Assets/Fennec_Peak/HUD_LobbyPage.png"></img>
+			<p>
+			The UI system has been written with the goal of allowing other team members to
+			quickly set up fully working UI elements. It consists of multiple scripts
+			which take care of displaying and hiding selected UI pages, and providing basic
+			menu Functionality like pressing a "back" button to return to a previously opened menu page.					</p>
+			<img src="Assets/Fennec_Peak/HUD_CharacterSelectionComponent.png"></img>
+			<img src="Assets/Fennec_Peak/HUD_VictoryScreenComponent.png"></img>
+			<p>
+				Creating a script which inherits from the Menu class automatically allows the object to act as a new menu page.
+				This makes it possible to create a page with custom functionality such as a Character Selection menu.
+			</p>
+			<img src="Assets/Fennec_Peak/HUD_LobbyPage.png"></img>
 			<div id="codebox" class="codeTint">
-				<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
-				<button onclick="CodeButton('CharacterSelection');">CharacterSelection.cs</button>
-				<pre id="MenuManager"><code class="C#">public class MenuManager : MonoBehaviour 
+			<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
+			<button onclick="CodeButton('CharacterSelection');">CharacterSelection.cs</button>
+<pre id="MenuManager"><code class="C#">public class MenuManager : MonoBehaviour 
 { 	
 	[SerializeField] Menu startMenu; 
 	[SerializeField] bool startPaused; 

@@ -72,3 +72,7 @@ button {
     color:white;
     font-size: 18px;
 }
+
+.topHeader {
+    margin: 0;
+}
