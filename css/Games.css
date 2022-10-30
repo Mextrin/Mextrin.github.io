@@ -99,7 +99,7 @@ header img {
 
 @media only screen and (max-width: 1400px) {
 	.project {
-		--size: calc((100vw) / 2);
+		--size: calc((100vw - 18px) / 2);
 	
 		width: var(--size);
 		height: var(--size);
