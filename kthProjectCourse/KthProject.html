@@ -66,6 +66,169 @@
       text-transform: uppercase;
     }
 
+    .downloads {
+      position: relative;
+      z-index: 1;
+      padding: 90px 40px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 34px;
+    }
+
+    .downloads h2 {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .download-options {
+      width: min(100%, 820px);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 64px;
+    }
+
+    .download-card {
+      min-height: 230px;
+      padding: 12px 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .platform-label {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .platform-logo {
+      width: 70px;
+      height: 70px;
+      display: block;
+      color: rgba(255, 120, 40, 0.72);
+    }
+
+    .download-button {
+      width: 100%;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      text-align: center;
+      text-decoration: none;
+      background-color: rgba(255, 120, 40, 0.76);
+      border: 1px solid rgba(255, 120, 40, 0.9);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(255, 120, 40, 0.16);
+      transition: border-color 160ms ease, color 160ms ease, transform 160ms ease, background-color 160ms ease;
+    }
+
+    .download-button:not(:disabled):hover,
+    .download-button:not(:disabled):focus-visible {
+      color: #ffffff;
+      background-color: rgba(255, 145, 62, 0.96);
+      border-color: rgba(255, 168, 92, 1);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .download-button:disabled {
+      cursor: not-allowed;
+      color: rgba(255, 255, 255, 0.48);
+      background-color: rgba(255, 120, 40, 0.22);
+      border-color: rgba(255, 120, 40, 0.22);
+      box-shadow: none;
+    }
+
+    .download-status {
+      color: rgba(255, 255, 255, 0.42);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .project-sections {
+      position: relative;
+      z-index: 1;
+      padding: 90px 40px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 80px;
+    }
+
+    .project-section {
+      width: min(100%, 960px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+      align-items: center;
+      gap: 56px;
+    }
+
+    .project-section:nth-child(even) {
+      grid-template-columns: minmax(260px, 420px) minmax(0, 1fr);
+    }
+
+    .project-section:nth-child(even) .project-copy {
+      order: 2;
+    }
+
+    .project-section:nth-child(even) .project-image {
+      order: 1;
+    }
+
+    .project-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .project-copy h2 {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .project-copy p {
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 15px;
+      line-height: 1.8;
+      max-width: 62ch;
+    }
+
+    .project-image {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(30, 30, 34, 0.55);
+      border: 1px solid rgba(255, 120, 40, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .team-row {
       display: flex;
       flex-wrap: nowrap;
@@ -119,6 +282,45 @@
     }
 
     @media (max-width: 700px) {
+      .project-sections {
+        padding: 70px 24px 80px;
+        gap: 68px;
+      }
+
+      .downloads {
+        padding: 70px 24px 80px;
+      }
+
+      .download-options {
+        gap: 24px;
+      }
+
+      .download-card {
+        min-height: 210px;
+        padding-top: 8px;
+      }
+
+      .platform-logo {
+        width: 58px;
+        height: 58px;
+      }
+
+      .download-button {
+        min-height: 46px;
+        font-size: 11px;
+      }
+
+      .project-section,
+      .project-section:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .project-section:nth-child(even) .project-copy,
+      .project-section:nth-child(even) .project-image {
+        order: initial;
+      }
+
       .team-row {
         flex-direction: column;
         align-items: center;
@@ -134,6 +336,65 @@
   <section class="hero">
     <img src="Airchestra.svg" width="320" height="240" alt="Logo" />
     <p>WORK IN PROGRESS</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="project-sections">
+    <article class="project-section">
+      <div class="project-copy">
+        <h2>Project Overview</h2>
+        <p>Airchestra makes it possible to play instruments and create music without owning a single physical instrument. Instead of needing a violin, a drum kit, or a keyboard in front of you, the project uses software to turn your body into the interface. A webcam observes your movement and passes that motion into the system. The software then interprets your gestures and translates them into musical actions. In this way, anyone can begin experimenting with instrumental sound using only a camera, a screen, and their own movement.</p>
+      </div>
+      <div class="project-image">
+        <img src="Waving_Screenshot.png" alt="Waving interface screenshot" />
+      </div>
+    </article>
+
+    <article class="project-section">
+      <div class="project-copy">
+        <h2>Concept</h2>
+        <p>The core idea is to make music feel more accessible, playful, and immediate. Many instruments can be expensive, difficult to store, or intimidating to learn at first. Airchestra removes that barrier by letting the user choose the instrument they want to play inside the software. Once an instrument is selected, the webcam tracks the user's motion and maps it to sounds associated with that instrument. The result is a digital performance space where movement becomes music.</p>
+      </div>
+      <div class="project-image">
+        <img src="Waving_Top.jpg" alt="Top view of waving gesture" />
+      </div>
+    </article>
+
+    <article class="project-section">
+      <div class="project-copy">
+        <h2>Experience</h2>
+        <p>Using Airchestra should feel like stepping into an invisible orchestra. The player can move naturally in front of the webcam and hear their gestures transformed into sound in real time. Different movements can be connected to different notes, rhythms, or expressive qualities depending on the selected instrument. This creates a way to explore music through motion rather than through traditional hardware. It opens up a space where performance, technology, and creativity meet in a simple and approachable form.</p>
+      </div>
+      <div class="project-image">
+        <img src="Waving_Far.png" alt="Far view of waving gesture" />
+      </div>
+    </article>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="downloads">
+    <h2>Downloads</h2>
+    <div class="download-options">
+      <div class="download-card">
+        <div class="platform-label">Windows 11</div>
+        <svg class="platform-logo" viewBox="0 0 64 64" aria-hidden="true">
+          <path fill="currentColor" d="M8 8h22v22H8V8Zm26 0h22v22H34V8ZM8 34h22v22H8V34Zm26 0h22v22H34V34Z" />
+        </svg>
+        <button class="download-button" type="button" disabled>Download for Windows</button>
+        <div class="download-status">Come back later</div>
+      </div>
+
+      <div class="download-card">
+        <div class="platform-label">ARM Mac</div>
+        <svg class="platform-logo" viewBox="0 0 64 64" aria-hidden="true">
+          <path fill="currentColor" d="M45.7 34.3c-.1-6.1 5-9.1 5.2-9.2-2.9-4.2-7.3-4.8-8.9-4.9-3.8-.4-7.4 2.2-9.3 2.2-2 0-5-2.2-8.2-2.1-4.2.1-8.1 2.5-10.3 6.3-4.4 7.6-1.1 18.8 3.1 25 2.1 3 4.6 6.4 7.8 6.3 3.1-.1 4.3-2 8.1-2 3.8 0 4.9 2 8.2 1.9 3.4-.1 5.5-3.1 7.5-6.1 2.4-3.5 3.4-6.9 3.4-7.1-.1-.1-6.5-2.5-6.6-10.3ZM39.5 16.2c1.7-2 2.8-4.8 2.5-7.6-2.4.1-5.3 1.6-7 3.6-1.5 1.8-2.9 4.7-2.5 7.4 2.7.2 5.3-1.4 7-3.4Z" />
+        </svg>
+        <button class="download-button" type="button" disabled>Download for Mac</button>
+        <div class="download-status">Come back later</div>
+      </div>
+    </div>
   </section>
 
   <div class="divider"></div>
