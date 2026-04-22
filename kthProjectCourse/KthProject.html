@@ -5,467 +5,1117 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Airchestra</title>
   <style>
+    :root {
+      --orange: #ff7828;
+      --orange-hot: #ff9c36;
+      --ink: #080809;
+      --charcoal: #111113;
+      --smoke: #e9e2da;
+      --muted: rgba(255, 255, 255, 0.66);
+      --line: rgba(255, 120, 40, 0.34);
+      --intro-progress: 0;
+      --page-progress: 0;
+      --intro-scale: 1;
+      --intro-logo-scale: 1;
+      --page-scale: 1.12;
+      --nav-offset: -18px;
+      --cue-opacity: 1;
+    }
+
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html, body {
-      width: 100%;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      background-color: #0f0f11;
-      font-family: system-ui, sans-serif;
+      width: 100%;
+      min-width: 320px;
+      color: var(--smoke);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 120, 40, 0.22), transparent 26rem),
+        linear-gradient(135deg, #050505 0%, #111113 46%, #20120b 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 78%);
     }
 
     canvas {
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
       z-index: 0;
     }
 
-    .hero {
+    img {
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
       position: relative;
       z-index: 1;
+      margin-top: -92vh;
+    }
+
+    .page main,
+    .footer {
+      opacity: var(--page-progress);
+      transform: scale(var(--page-scale));
+      transform-origin: 50% 0;
+    }
+
+    .intro {
+      position: relative;
+      z-index: 5;
+      height: 192vh;
+      pointer-events: none;
+    }
+
+    .intro-sticky {
+      position: sticky;
+      top: 0;
+      min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      gap: 20px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 46%, rgba(255, 120, 40, 0.24), transparent 28rem),
+        linear-gradient(135deg, #050505 0%, #121112 54%, #211109 100%);
+      opacity: calc(1 - var(--intro-progress));
+      transform: scale(var(--intro-scale));
+      transform-origin: center;
     }
 
-    .hero p {
-      color: #888890;
-      font-size: 13px;
-      letter-spacing: 0.08em;
+    .intro-sticky::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 72px 72px;
+      transform: scale(var(--intro-scale));
     }
 
-    .team {
+    .intro-logo {
       position: relative;
       z-index: 1;
-      padding: 100px 40px 120px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 60px;
+      width: min(72vw, 760px);
+      transform: scale(var(--intro-logo-scale));
+      filter: drop-shadow(0 26px 70px rgba(255, 120, 40, 0.2));
     }
 
-    .team h2 {
-      color: rgba(255, 255, 255, 0.75);
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 34px;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(255, 120, 40, 0.48);
+      border-radius: 50%;
+      background: rgba(255, 120, 40, 0.12);
+      pointer-events: auto;
+      transform: translateX(-50%);
+      opacity: var(--cue-opacity);
+      animation: cue-bob 1.4s ease-in-out infinite;
+    }
+
+    .scroll-cue::before {
+      content: "";
+      width: 11px;
+      height: 11px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: translateY(-2px) rotate(45deg);
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px clamp(18px, 4vw, 56px);
+      color: rgba(255, 255, 255, 0.88);
+      background: linear-gradient(to bottom, rgba(5, 5, 5, 0.78), transparent);
+      opacity: var(--page-progress);
+      transform: translateY(var(--nav-offset));
+      pointer-events: none;
+      transition: opacity 120ms ease, transform 120ms ease;
+    }
+
+    body.intro-complete .topbar {
+      pointer-events: auto;
+    }
+
+    .mark {
+      display: inline-flex;
+      align-items: center;
+      width: 148px;
+      min-width: 116px;
+      text-decoration: none;
+    }
+
+    .mark img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 18px rgba(255, 120, 40, 0.34));
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 2vw, 26px);
       font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
+      font-weight: 800;
+      letter-spacing: 0.11em;
       text-transform: uppercase;
+    }
+
+    .nav a {
+      color: rgba(255, 255, 255, 0.68);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      color: #fff;
+      outline: none;
+    }
+
+    .hero {
+      min-height: 96vh;
+      padding: 116px clamp(18px, 5vw, 72px) 48px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 520px);
+      align-items: end;
+      gap: clamp(28px, 5vw, 72px);
+      overflow: hidden;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 22px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 36px;
+      height: 3px;
+      background: var(--orange);
+      box-shadow: 0 0 18px rgba(255, 120, 40, 0.76);
+    }
+
+    h1 {
+      max-width: 9ch;
+      font-size: clamp(70px, 15vw, 210px);
+      line-height: 0.78;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-text {
+      max-width: 620px;
+      color: rgba(255, 255, 255, 0.74);
+      font-size: clamp(17px, 2.1vw, 24px);
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 6px;
+    }
+
+    .button {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      color: #14100d;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      background: var(--orange);
+      border: 1px solid rgba(255, 168, 92, 0.95);
+      border-radius: 8px;
+      box-shadow: 0 14px 30px rgba(255, 120, 40, 0.24);
+      transition: transform 160ms ease, background 160ms ease;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      background: var(--orange-hot);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .button.secondary {
+      color: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: none;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-logo {
+      width: min(92vw, 520px);
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background:
+        linear-gradient(135deg, rgba(255, 120, 40, 0.14), rgba(255, 255, 255, 0.02)),
+        rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 120, 40, 0.32);
+      box-shadow:
+        inset 0 0 60px rgba(255, 120, 40, 0.08),
+        0 0 80px rgba(255, 120, 40, 0.16);
+      animation: float 5.8s ease-in-out infinite;
+    }
+
+    .hero-logo img {
+      width: 76%;
+      height: auto;
+      filter: drop-shadow(0 22px 38px rgba(0, 0, 0, 0.46));
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 6%;
+      border: 2px solid rgba(255, 120, 40, 0.72);
+      border-left-color: transparent;
+      border-bottom-color: rgba(255, 255, 255, 0.18);
+      border-radius: 50%;
+      animation: spin 11s linear infinite;
+    }
+
+    .stage-tag {
+      position: absolute;
+      right: 0;
+      bottom: 7%;
+      width: min(220px, 46vw);
+      padding: 16px;
+      color: #0e0e0f;
+      background: var(--orange);
+      border-radius: 8px;
+      transform: rotate(-3deg);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.36);
+    }
+
+    .stage-tag strong {
+      display: block;
+      font-size: 40px;
+      line-height: 0.85;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .stage-tag span {
+      display: block;
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .ticker {
+      display: flex;
+      overflow: hidden;
+      border-block: 1px solid var(--line);
+      background: rgba(255, 120, 40, 0.1);
+    }
+
+    .ticker-track {
+      flex: 0 0 auto;
+      display: flex;
+      min-width: max-content;
+      animation: marquee 22s linear infinite;
+    }
+
+    .ticker span {
+      padding: 16px 28px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: clamp(28px, 5vw, 64px);
+      line-height: 0.9;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .ticker b {
+      color: var(--orange);
+    }
+
+    .section {
+      padding: clamp(72px, 10vw, 130px) clamp(18px, 5vw, 72px);
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(280px, 1fr);
+      gap: clamp(24px, 6vw, 82px);
+      align-items: end;
+      margin-bottom: clamp(34px, 6vw, 76px);
+    }
+
+    .section-kicker {
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      margin-top: 14px;
+      color: rgba(255, 255, 255, 0.94);
+      font-size: clamp(54px, 10vw, 132px);
+      line-height: 0.82;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .section-lede {
+      color: rgba(255, 255, 255, 0.67);
+      font-size: clamp(17px, 2vw, 23px);
+      line-height: 1.45;
+      font-weight: 620;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .stat {
+      min-height: 160px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(8, 8, 9, 0.38);
+    }
+
+    .stat strong {
+      color: #fff;
+      font-size: clamp(44px, 7vw, 82px);
+      line-height: 0.86;
+      font-weight: 950;
+      letter-spacing: 0;
+    }
+
+    .stat span {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .story {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .story-card {
+      min-height: 560px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #171717;
+    }
+
+    .story-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 58%);
+    }
+
+    .story-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.82;
+      transform: scale(1.03);
+      transition: transform 500ms ease, opacity 500ms ease;
+    }
+
+    .story-card:hover img {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+
+    .story-copy {
+      position: relative;
+      z-index: 1;
+      padding: 24px;
+    }
+
+    .story-copy h3 {
+      max-width: 10ch;
+      color: #fff;
+      font-size: clamp(34px, 4vw, 56px);
+      line-height: 0.86;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .story-copy p {
+      margin-top: 16px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .feature-band {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+      gap: clamp(28px, 6vw, 88px);
+      align-items: center;
+      padding-block: clamp(82px, 12vw, 150px);
+      border-block: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(255, 120, 40, 0.17), transparent 52%),
+        rgba(5, 5, 5, 0.34);
+    }
+
+    .feature-image {
+      min-height: 450px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 120, 40, 0.22);
+      transform: rotate(-1.5deg);
+    }
+
+    .feature-image img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+    }
+
+    .feature-copy {
+      padding-right: clamp(18px, 5vw, 72px);
+    }
+
+    .feature-copy h2 {
+      max-width: 8ch;
+      color: #fff;
+      font-size: clamp(64px, 11vw, 150px);
+      line-height: 0.8;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .feature-copy p {
+      max-width: 640px;
+      margin-top: 24px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.5;
+      font-weight: 610;
     }
 
     .downloads {
-      position: relative;
-      z-index: 1;
-      padding: 90px 40px 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 34px;
-    }
-
-    .downloads h2 {
-      color: rgba(255, 255, 255, 0.75);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      display: grid;
+      grid-template-columns: minmax(260px, 0.78fr) minmax(280px, 1fr);
+      gap: clamp(28px, 6vw, 80px);
+      align-items: start;
     }
 
     .download-options {
-      width: min(100%, 820px);
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 64px;
+      gap: 16px;
     }
 
     .download-card {
-      min-height: 230px;
-      padding: 12px 0 0;
+      min-height: 260px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: space-between;
       gap: 24px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 8px;
+    }
+
+    .platform-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
 
     .platform-label {
-      color: rgba(255, 255, 255, 0.78);
+      color: rgba(255, 255, 255, 0.84);
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 900;
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
     .platform-logo {
-      width: 70px;
-      height: 70px;
+      width: 54px;
+      height: 54px;
       display: block;
-      color: rgba(255, 120, 40, 0.72);
+      color: var(--orange);
     }
 
     .download-button {
       width: 100%;
-      min-height: 48px;
+      min-height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(255, 255, 255, 0.82);
+      color: rgba(255, 255, 255, 0.54);
       font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
+      font-weight: 900;
+      letter-spacing: 0.08em;
       line-height: 1.2;
       text-align: center;
-      text-decoration: none;
-      background-color: rgba(255, 120, 40, 0.76);
-      border: 1px solid rgba(255, 120, 40, 0.9);
+      text-transform: uppercase;
+      background: rgba(255, 120, 40, 0.16);
+      border: 1px solid rgba(255, 120, 40, 0.28);
       border-radius: 8px;
-      box-shadow: 0 8px 24px rgba(255, 120, 40, 0.16);
-      transition: border-color 160ms ease, color 160ms ease, transform 160ms ease, background-color 160ms ease;
-    }
-
-    .download-button:not(:disabled):hover,
-    .download-button:not(:disabled):focus-visible {
-      color: #ffffff;
-      background-color: rgba(255, 145, 62, 0.96);
-      border-color: rgba(255, 168, 92, 1);
-      transform: translateY(-2px);
-      outline: none;
-    }
-
-    .download-button:disabled {
-      cursor: not-allowed;
-      color: rgba(255, 255, 255, 0.48);
-      background-color: rgba(255, 120, 40, 0.22);
-      border-color: rgba(255, 120, 40, 0.22);
-      box-shadow: none;
     }
 
     .download-status {
-      color: rgba(255, 255, 255, 0.42);
-      font-size: 12px;
-      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 13px;
+      line-height: 1.5;
     }
 
-    .project-sections {
-      position: relative;
-      z-index: 1;
-      padding: 90px 40px 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 80px;
-    }
-
-    .project-section {
-      width: min(100%, 960px);
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
-      align-items: center;
-      gap: 56px;
-    }
-
-    .project-section:nth-child(even) {
-      grid-template-columns: minmax(260px, 420px) minmax(0, 1fr);
-    }
-
-    .project-section:nth-child(even) .project-copy {
-      order: 2;
-    }
-
-    .project-section:nth-child(even) .project-image {
-      order: 1;
-    }
-
-    .project-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .project-copy h2 {
-      color: rgba(255, 255, 255, 0.78);
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .project-copy p {
-      color: rgba(255, 255, 255, 0.58);
-      font-size: 15px;
-      line-height: 1.8;
-      max-width: 62ch;
-    }
-
-    .project-image {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: rgba(30, 30, 34, 0.55);
-      border: 1px solid rgba(255, 120, 40, 0.2);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .project-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    .team {
+      padding-bottom: clamp(74px, 9vw, 120px);
     }
 
     .team-row {
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      gap: 36px;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(120px, 1fr));
+      gap: 12px;
     }
 
     .member {
+      min-height: 250px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      justify-content: space-between;
       gap: 14px;
-      flex: 0 0 auto;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
     }
 
     .member img {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
+      width: 100%;
+      aspect-ratio: 1 / 1;
       object-fit: cover;
-      background-color: #1e1e22;
-      border: 1.5px solid rgba(255, 120, 40, 0.25);
-      display: block;
-    }
-
-    .member-info {
-      text-align: center;
+      border-radius: 6px;
+      background: #1e1e22;
+      filter: grayscale(0.15) contrast(1.06);
     }
 
     .member-name {
-      color: rgba(255, 255, 255, 0.85);
+      color: rgba(255, 255, 255, 0.9);
       font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      margin-bottom: 4px;
+      font-weight: 850;
+      line-height: 1.25;
     }
 
     .member-role {
-      color: rgba(255, 120, 40, 0.7);
+      margin-top: 7px;
+      color: var(--orange);
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: 0.09em;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    .footer {
+      padding: 28px clamp(18px, 5vw, 72px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: rgba(255, 255, 255, 0.5);
       font-size: 11px;
-      letter-spacing: 0.06em;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-top: 1px solid var(--line);
+      background: rgba(5, 5, 5, 0.48);
     }
 
-    .divider {
-      position: relative;
-      z-index: 1;
-      width: 1px;
-      height: 80px;
-      background: linear-gradient(to bottom, transparent, rgba(255,120,40,0.3), transparent);
-      margin: 0 auto;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
-    @media (max-width: 700px) {
-      .project-sections {
-        padding: 70px 24px 80px;
-        gap: 68px;
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-16px) rotate(1.4deg); }
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @keyframes cue-bob {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
       }
+    }
 
+    @media (max-width: 1100px) {
+      .hero,
+      .section-header,
+      .feature-band,
       .downloads {
-        padding: 70px 24px 80px;
-      }
-
-      .download-options {
-        gap: 24px;
-      }
-
-      .download-card {
-        min-height: 210px;
-        padding-top: 8px;
-      }
-
-      .platform-logo {
-        width: 58px;
-        height: 58px;
-      }
-
-      .download-button {
-        min-height: 46px;
-        font-size: 11px;
-      }
-
-      .project-section,
-      .project-section:nth-child(even) {
         grid-template-columns: 1fr;
-        gap: 28px;
       }
 
-      .project-section:nth-child(even) .project-copy,
-      .project-section:nth-child(even) .project-image {
-        order: initial;
+      .hero {
+        align-items: center;
+      }
+
+      .hero-visual {
+        min-height: 440px;
+      }
+
+      .feature-copy {
+        padding-inline: clamp(18px, 5vw, 72px);
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .story {
+        grid-template-columns: 1fr;
+      }
+
+      .story-card {
+        min-height: 430px;
       }
 
       .team-row {
-        flex-direction: column;
-        align-items: center;
+        grid-template-columns: repeat(4, minmax(120px, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        margin-top: -86vh;
+      }
+
+      .intro {
+        height: 186vh;
+      }
+
+      .intro-logo {
+        width: min(82vw, 520px);
+      }
+
+      .topbar {
+        position: absolute;
+        align-items: flex-start;
+      }
+
+      .mark {
+        width: 118px;
+      }
+
+      .nav {
         flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px 14px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 106px;
+      }
+
+      h1 {
+        font-size: clamp(62px, 23vw, 116px);
+      }
+
+      .hero-visual {
+        min-height: 340px;
+      }
+
+      .stage-tag {
+        right: 10px;
+        bottom: 0;
+      }
+
+      .section-title,
+      .feature-copy h2 {
+        font-size: clamp(52px, 19vw, 94px);
+      }
+
+      .stats,
+      .download-options,
+      .team-row {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-image {
+        min-height: 330px;
+        transform: none;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
-
   <canvas id="c"></canvas>
 
-  <section class="hero">
-    <img src="Airchestra.svg" width="320" height="240" alt="Logo" />
-    <p>WORK IN PROGRESS</p>
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="project-sections">
-    <article class="project-section">
-      <div class="project-copy">
-        <h2>Project Overview</h2>
-        <p>Airchestra makes it possible to play instruments and create music without owning a single physical instrument. Instead of needing a violin, a drum kit, or a keyboard in front of you, the project uses software to turn your body into the interface. A webcam observes your movement and passes that motion into the system. The software then interprets your gestures and translates them into musical actions. In this way, anyone can begin experimenting with instrumental sound using only a camera, a screen, and their own movement.</p>
-      </div>
-      <div class="project-image">
-        <img src="Waving_Screenshot.png" alt="Waving interface screenshot" />
-      </div>
-    </article>
-
-    <article class="project-section">
-      <div class="project-copy">
-        <h2>Concept</h2>
-        <p>The core idea is to make music feel more accessible, playful, and immediate. Many instruments can be expensive, difficult to store, or intimidating to learn at first. Airchestra removes that barrier by letting the user choose the instrument they want to play inside the software. Once an instrument is selected, the webcam tracks the user's motion and maps it to sounds associated with that instrument. The result is a digital performance space where movement becomes music.</p>
-      </div>
-      <div class="project-image">
-        <img src="Waving_Top.jpg" alt="Top view of waving gesture" />
-      </div>
-    </article>
-
-    <article class="project-section">
-      <div class="project-copy">
-        <h2>Experience</h2>
-        <p>Using Airchestra should feel like stepping into an invisible orchestra. The player can move naturally in front of the webcam and hear their gestures transformed into sound in real time. Different movements can be connected to different notes, rhythms, or expressive qualities depending on the selected instrument. This creates a way to explore music through motion rather than through traditional hardware. It opens up a space where performance, technology, and creativity meet in a simple and approachable form.</p>
-      </div>
-      <div class="project-image">
-        <img src="Waving_Far.png" alt="Far view of waving gesture" />
-      </div>
-    </article>
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="downloads">
-    <h2>Downloads</h2>
-    <div class="download-options">
-      <div class="download-card">
-        <div class="platform-label">Windows 11</div>
-        <svg class="platform-logo" viewBox="0 0 64 64" aria-hidden="true">
-          <path fill="currentColor" d="M8 8h22v22H8V8Zm26 0h22v22H34V8ZM8 34h22v22H8V34Zm26 0h22v22H34V34Z" />
-        </svg>
-        <button class="download-button" type="button" disabled>Download for Windows</button>
-        <div class="download-status">Come back later</div>
-      </div>
-
-      <div class="download-card">
-        <div class="platform-label">ARM Mac</div>
-        <svg class="platform-logo" viewBox="0 0 64 64" aria-hidden="true">
-          <path fill="currentColor" d="M45.7 34.3c-.1-6.1 5-9.1 5.2-9.2-2.9-4.2-7.3-4.8-8.9-4.9-3.8-.4-7.4 2.2-9.3 2.2-2 0-5-2.2-8.2-2.1-4.2.1-8.1 2.5-10.3 6.3-4.4 7.6-1.1 18.8 3.1 25 2.1 3 4.6 6.4 7.8 6.3 3.1-.1 4.3-2 8.1-2 3.8 0 4.9 2 8.2 1.9 3.4-.1 5.5-3.1 7.5-6.1 2.4-3.5 3.4-6.9 3.4-7.1-.1-.1-6.5-2.5-6.6-10.3ZM39.5 16.2c1.7-2 2.8-4.8 2.5-7.6-2.4.1-5.3 1.6-7 3.6-1.5 1.8-2.9 4.7-2.5 7.4 2.7.2 5.3-1.4 7-3.4Z" />
-        </svg>
-        <button class="download-button" type="button" disabled>Download for Mac</button>
-        <div class="download-status">Come back later</div>
-      </div>
+  <section class="intro" aria-label="Airchestra intro">
+    <div class="intro-sticky">
+      <img class="intro-logo" src="Airchestra.svg" alt="Airchestra" />
+      <a class="scroll-cue" href="#top" aria-label="Scroll to the project"></a>
     </div>
   </section>
 
-  <div class="divider"></div>
+  <div class="page">
+    <header class="topbar">
+      <a class="mark" href="#top" aria-label="Airchestra home">
+        <img src="Airchestra.svg" alt="Airchestra" />
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#experience">Experience</a>
+        <a href="#stage">On Stage</a>
+        <a href="#downloads">Downloads</a>
+        <a href="#team">Team</a>
+      </nav>
+    </header>
 
-  <section class="team">
-    <h2>The Team</h2>
-    <div class="team-row">
-
-      <div class="member">
-        <img src="Mugshots/IMG_20260415_163658.jpg" alt="Member 1" />
-        <div class="member-info">
-          <div class="member-name">Sachin Prabhu Ram</div>
-          <div class="member-role">Engagement Strategist</div>
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow">KTH Project Course</div>
+          <h1 id="hero-title">Air Orchestra</h1>
+          <p class="hero-text">A webcam-powered music playground where your hands become the instrument, your room becomes the stage, and motion turns into sound.</p>
+          <div class="hero-actions">
+            <a class="button" href="#experience">Enter the set</a>
+            <a class="button secondary" href="#downloads">Get the build</a>
+          </div>
         </div>
-      </div>
 
-      <div class="member">
-        <img src="Mugshots/IMG_20260415_163705.jpg" alt="Member 2" />
-        <div class="member-info">
-          <div class="member-name">Stanislaw Jerzy Rybak</div>
-          <div class="member-role">Waving Quality Expert</div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orbit"></div>
+          <div class="hero-logo">
+            <img src="Airchestra.svg" alt="" />
+          </div>
+          <div class="stage-tag">
+            <strong>Live</strong>
+            <span>Gesture controlled sound</span>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="member">
-        <img src="Mugshots/IMG_20260415_163710.jpg" alt="Member 3" />
-        <div class="member-info">
-          <div class="member-name">Raghav Khurana</div>
-          <div class="member-role">Senior Scrum Associate</div>
+      <section class="ticker" aria-label="Airchestra themes">
+        <div class="ticker-track">
+          <span><b>Gesture</b> to sound</span>
+          <span><b>No</b> instruments needed</span>
+          <span><b>Move</b> like music</span>
+          <span><b>Gesture</b> to sound</span>
+          <span><b>No</b> instruments needed</span>
+          <span><b>Move</b> like music</span>
         </div>
-      </div>
+      </section>
 
-      <div class="member">
-        <img src="Mugshots/IMG_20260415_163722.jpg" alt="Member 4" />
-        <div class="member-info">
-          <div class="member-name">Dajue Qiu</div>
-          <div class="member-role">Tech Ops Node Yield</div>
+      <section class="section" id="experience">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Project Overview</div>
+            <h2 class="section-title">Built for motion</h2>
+          </div>
+          <p class="section-lede">Airchestra makes it possible to play instruments and create music without owning a single physical instrument. A webcam observes your movement, the software interprets your gestures, and the system translates that motion into musical actions.</p>
         </div>
-      </div>
 
-      <div class="member">
-        <img src="Mugshots/IMG_20260415_163736.jpg" alt="Member 5" />
-        <div class="member-info">
-          <div class="member-name">Petros Efraim Koukios</div>
-          <div class="member-role">Petros</div>
+        <div class="stats" aria-label="Airchestra highlights">
+          <div class="stat">
+            <strong>01</strong>
+            <span>Webcam input</span>
+          </div>
+          <div class="stat">
+            <strong>All</strong>
+            <span>Virtual instruments</span>
+          </div>
+          <div class="stat">
+            <strong>0</strong>
+            <span>Hardware required</span>
+          </div>
+          <div class="stat">
+            <strong>Live</strong>
+            <span>Real-time response</span>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="member">
-        <img src="Mugshots/IMG_20260415_163749.jpg" alt="Member 6" />
-        <div class="member-info">
-          <div class="member-name">Alex Rystrom</div>
-          <div class="member-role">Senior Product Responsible</div>
+      <section class="section" id="stage">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">On Stage</div>
+            <h2 class="section-title">From wave to track</h2>
+          </div>
+          <p class="section-lede">Inspired by high-impact athlete sites, this version treats Airchestra like a headliner: bold visuals, movement, and a clear path from concept to performance.</p>
         </div>
-      </div>
 
-      <div class="member">
-        <img src="Mugshots/IMG_20260415_163845.jpg" alt="Member 7" />
-        <div class="member-info">
-          <div class="member-name">Sebastian Tryscien</div>
-          <div class="member-role">Orange Color Expert</div>
+        <div class="story">
+          <article class="story-card">
+            <img src="Waving_Screenshot.png" alt="Airchestra interface screenshot" />
+            <div class="story-copy">
+              <h3>Pick the sound</h3>
+              <p>Choose the instrument inside the software and set the tone before performing.</p>
+            </div>
+          </article>
+
+          <article class="story-card">
+            <img src="Waving_Top.jpg" alt="Top view of a user gesture" />
+            <div class="story-copy">
+              <h3>Move the body</h3>
+              <p>The camera tracks expressive gestures and turns the user into the controller.</p>
+            </div>
+          </article>
+
+          <article class="story-card">
+            <img src="Waving_Far.png" alt="User performing a gesture from far away" />
+            <div class="story-copy">
+              <h3>Play it live</h3>
+              <p>Different movements can become notes, rhythms, or expressive musical changes.</p>
+            </div>
+          </article>
         </div>
-      </div>
+      </section>
 
-    </div>
-  </section>
+      <section class="feature-band" aria-labelledby="concept-title">
+        <div class="feature-image">
+          <img src="Waving_Top.jpg" alt="Airchestra gesture tracking view" />
+        </div>
+        <div class="feature-copy">
+          <h2 id="concept-title">Music without walls</h2>
+          <p>The core idea is to make music more accessible, playful, and immediate. Many instruments are expensive, hard to store, or intimidating at first. Airchestra removes that barrier by letting anyone experiment with instrumental sound using only a camera, a screen, and their own movement.</p>
+        </div>
+      </section>
+
+      <section class="section downloads" id="downloads">
+        <div>
+          <div class="section-kicker">Downloads</div>
+          <h2 class="section-title">Try the demo</h2>
+          <p class="section-lede">The builds are still warming up. When they are ready, this becomes the launch area for Windows and ARM Mac.</p>
+        </div>
+
+        <div class="download-options">
+          <div class="download-card">
+            <div class="platform-top">
+              <div class="platform-label">Windows 11</div>
+              <svg class="platform-logo" viewBox="0 0 64 64" aria-hidden="true">
+                <path fill="currentColor" d="M8 8h22v22H8V8Zm26 0h22v22H34V8ZM8 34h22v22H8V34Zm26 0h22v22H34V34Z" />
+              </svg>
+            </div>
+            <button class="download-button" type="button" disabled>Download for Windows</button>
+            <div class="download-status">Coming soon after the next project milestone.</div>
+          </div>
+
+          <div class="download-card">
+            <div class="platform-top">
+              <div class="platform-label">ARM Mac</div>
+              <svg class="platform-logo" viewBox="0 0 64 64" aria-hidden="true">
+                <path fill="currentColor" d="M45.7 34.3c-.1-6.1 5-9.1 5.2-9.2-2.9-4.2-7.3-4.8-8.9-4.9-3.8-.4-7.4 2.2-9.3 2.2-2 0-5-2.2-8.2-2.1-4.2.1-8.1 2.5-10.3 6.3-4.4 7.6-1.1 18.8 3.1 25 2.1 3 4.6 6.4 7.8 6.3 3.1-.1 4.3-2 8.1-2 3.8 0 4.9 2 8.2 1.9 3.4-.1 5.5-3.1 7.5-6.1 2.4-3.5 3.4-6.9 3.4-7.1-.1-.1-6.5-2.5-6.6-10.3ZM39.5 16.2c1.7-2 2.8-4.8 2.5-7.6-2.4.1-5.3 1.6-7 3.6-1.5 1.8-2.9 4.7-2.5 7.4 2.7.2 5.3-1.4 7-3.4Z" />
+              </svg>
+            </div>
+            <button class="download-button" type="button" disabled>Download for Mac</button>
+            <div class="download-status">Coming soon after the next project milestone.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section team" id="team">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">The Team</div>
+            <h2 class="section-title">The band</h2>
+          </div>
+          <p class="section-lede">Seven people building the bridge between body movement, playful interaction, and digital performance.</p>
+        </div>
+
+        <div class="team-row">
+          <div class="member">
+            <img src="Mugshots/IMG_20260415_163658.jpg" alt="Sachin Prabhu Ram" />
+            <div class="member-info">
+              <div class="member-name">Sachin Prabhu Ram</div>
+              <div class="member-role">Engagement Strategist</div>
+            </div>
+          </div>
+
+          <div class="member">
+            <img src="Mugshots/IMG_20260415_163705.jpg" alt="Stanislaw Jerzy Rybak" />
+            <div class="member-info">
+              <div class="member-name">Stanislaw Jerzy Rybak</div>
+              <div class="member-role">Waving Quality Expert</div>
+            </div>
+          </div>
+
+          <div class="member">
+            <img src="Mugshots/IMG_20260415_163710.jpg" alt="Raghav Khurana" />
+            <div class="member-info">
+              <div class="member-name">Raghav Khurana</div>
+              <div class="member-role">Senior Scrum Associate</div>
+            </div>
+          </div>
+
+          <div class="member">
+            <img src="Mugshots/IMG_20260415_163722.jpg" alt="Dajue Qiu" />
+            <div class="member-info">
+              <div class="member-name">Dajue Qiu</div>
+              <div class="member-role">Tech Ops Node Yield</div>
+            </div>
+          </div>
+
+          <div class="member">
+            <img src="Mugshots/IMG_20260415_163736.jpg" alt="Petros Efraim Koukios" />
+            <div class="member-info">
+              <div class="member-name">Petros Efraim Koukios</div>
+              <div class="member-role">Petros</div>
+            </div>
+          </div>
+
+          <div class="member">
+            <img src="Mugshots/IMG_20260415_163749.jpg" alt="Alex Rystrom" />
+            <div class="member-info">
+              <div class="member-name">Alex Rystrom</div>
+              <div class="member-role">Senior Product Responsible</div>
+            </div>
+          </div>
+
+          <div class="member">
+            <img src="Mugshots/IMG_20260415_163845.jpg" alt="Sebastian Tryscien" />
+            <div class="member-info">
+              <div class="member-name">Sebastian Tryscien</div>
+              <div class="member-role">Orange Color Expert</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Airchestra</span>
+      <span>KTH Project Course</span>
+    </footer>
+  </div>
 
   <script>
+    const root = document.documentElement;
+    const intro = document.querySelector('.intro');
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
-    const DOT_COUNT = 80;
+    const DOT_COUNT = 96;
     const dots = [];
 
     function resize() {
@@ -477,14 +1127,45 @@
       return a + Math.random() * (b - a);
     }
 
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function updateIntro() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const revealDistance = Math.max(window.innerHeight * 0.92, 1);
+      const introProgress = clamp(scrollY / revealDistance, 0, 1);
+      const pageProgress = clamp((scrollY - window.innerHeight * 0.18) / (window.innerHeight * 0.62), 0, 1);
+      const introScale = 1 + introProgress * 0.14;
+      const introLogoScale = 1 - introProgress * 0.76;
+      const pageScale = 1.12 - pageProgress * 0.12;
+      const navOffset = (1 - pageProgress) * -18;
+      const cueOpacity = clamp(1 - introProgress * 2.4, 0, 1);
+
+      root.style.setProperty('--intro-progress', introProgress.toFixed(4));
+      root.style.setProperty('--page-progress', pageProgress.toFixed(4));
+      root.style.setProperty('--intro-scale', introScale.toFixed(4));
+      root.style.setProperty('--intro-logo-scale', introLogoScale.toFixed(4));
+      root.style.setProperty('--page-scale', pageScale.toFixed(4));
+      root.style.setProperty('--nav-offset', `${navOffset.toFixed(2)}px`);
+      root.style.setProperty('--cue-opacity', cueOpacity.toFixed(4));
+      document.body.classList.toggle('intro-complete', pageProgress > 0.82);
+
+      if (intro && scrollY > window.innerHeight * 1.2) {
+        intro.setAttribute('aria-hidden', 'true');
+      } else if (intro) {
+        intro.removeAttribute('aria-hidden');
+      }
+    }
+
     for (let i = 0; i < DOT_COUNT; i++) {
       dots.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        r: randomBetween(1, 2.5),
-        opacity: randomBetween(0.2, 0.6),
-        vx: randomBetween(-0.3, 0.3),
-        vy: randomBetween(-0.3, 0.3),
+        r: randomBetween(1, 2.8),
+        opacity: randomBetween(0.14, 0.52),
+        vx: randomBetween(-0.36, 0.36),
+        vy: randomBetween(-0.36, 0.36),
       });
     }
 
@@ -511,8 +1192,10 @@
 
     resize();
     window.addEventListener('resize', resize);
+    window.addEventListener('resize', updateIntro);
+    window.addEventListener('scroll', updateIntro, { passive: true });
+    updateIntro();
     draw();
   </script>
-
 </body>
 </html>
