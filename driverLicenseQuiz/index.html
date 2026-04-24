@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sebastian Tryscien</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .quiz-card {
+            width: min(420px, calc(100vw - 32px));
+            padding: 24px;
+            border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .quiz-label {
+            margin: 0 0 16px;
+            font-size: 1.2rem;
+        }
+
+        .quiz-image {
+            width: 180px;
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid #d7dce2;
+            border-radius: 10px;
+            background: #fafbfc;
+        }
+
+        .option.correct {
+            border-color: #2e8b57;
+            background: #e8f7ee;
+        }
+
+        .option.incorrect {
+            border-color: #c53b3b;
+            background: #fdecec;
+        }
+
+        .option input {
+            flex: 0 0 auto;
+            width: 18px;
+            height: 18px;
+            margin-top: 1px;
+        }
+
+        .option-content {
+            display: grid;
+            gap: 6px;
+        }
+
+        .option-explanation {
+            color: #7b1f1f;
+            font-size: 0.9rem;
+            line-height: 1.35;
+        }
+
+        .confirm-button {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            background: #1d6fdc;
+            color: #ffffff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-card">
+        <p class="quiz-label" id="quiz-label">Which statements are true?</p>
+        <img
+            id="quiz-image"
+            class="quiz-image"
+            src="https://www.transportstyrelsen.se/globalassets/global/vag/vagmarken2/a.-varningsmarken/a08.-varning-for-ojamn-vag/a8-1.png"
+            alt="Warning sign for uneven road"
+        >
+
+        <div class="options" id="quiz-options">
+            <label class="option">
+                <input type="checkbox" name="answer" value="speed-bump">
+                <span>Speed bump ahead</span>
+            </label>
+            <label class="option">
+                <input type="checkbox" name="answer" value="uneven-road">
+                <span>Uneven road surface</span>
+            </label>
+            <label class="option">
+                <input type="checkbox" name="answer" value="slippery-road">
+                <span>Slippery road</span>
+            </label>
+            <label class="option">
+                <input type="checkbox" name="answer" value="road-work">
+                <span>Road work ahead</span>
+            </label>
+        </div>
+
+        <button class="confirm-button" id="confirm-button" type="button">Confirm</button>
+    </div>
+    <script src="./quizData.js"></script>
+    <script src="./quizApp.js"></script>
+</body>
+</html>
