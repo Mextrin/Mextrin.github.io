@@ -13,13 +13,6 @@
       --smoke: #e9e2da;
       --muted: rgba(255, 255, 255, 0.66);
       --line: rgba(255, 120, 40, 0.34);
-      --intro-progress: 0;
-      --page-progress: 0;
-      --intro-scale: 1;
-      --intro-logo-scale: 1;
-      --page-scale: 1.12;
-      --nav-offset: -18px;
-      --cue-opacity: 1;
     }
 
     *, *::before, *::after {
@@ -77,86 +70,12 @@
     .page {
       position: relative;
       z-index: 1;
-      margin-top: -92vh;
     }
 
     .page main,
     .footer {
-      opacity: var(--page-progress);
-      transform: scale(var(--page-scale));
-      transform-origin: 50% 0;
-    }
-
-    .intro {
-      position: relative;
-      z-index: 5;
-      height: 192vh;
-      pointer-events: none;
-    }
-
-    .intro-sticky {
-      position: sticky;
-      top: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 46%, rgba(255, 120, 40, 0.24), transparent 28rem),
-        linear-gradient(135deg, #050505 0%, #121112 54%, #211109 100%);
-      opacity: calc(1 - var(--intro-progress));
-      transform: scale(var(--intro-scale));
-      transform-origin: center;
-    }
-
-    .intro-sticky::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      opacity: 0.18;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-      background-size: 72px 72px;
-      transform: scale(var(--intro-scale));
-    }
-
-    .intro-logo {
-      position: relative;
-      z-index: 1;
-      width: min(72vw, 760px);
-      transform: scale(var(--intro-logo-scale));
-      filter: drop-shadow(0 26px 70px rgba(255, 120, 40, 0.2));
-    }
-
-    .scroll-cue {
-      position: absolute;
-      left: 50%;
-      bottom: 34px;
-      z-index: 2;
-      width: 42px;
-      height: 42px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(255, 255, 255, 0.86);
-      border: 1px solid rgba(255, 120, 40, 0.48);
-      border-radius: 50%;
-      background: rgba(255, 120, 40, 0.12);
-      pointer-events: auto;
-      transform: translateX(-50%);
-      opacity: var(--cue-opacity);
-      animation: cue-bob 1.4s ease-in-out infinite;
-    }
-
-    .scroll-cue::before {
-      content: "";
-      width: 11px;
-      height: 11px;
-      border-right: 2px solid currentColor;
-      border-bottom: 2px solid currentColor;
-      transform: translateY(-2px) rotate(45deg);
+      opacity: 1;
+      transform: none;
     }
 
     .topbar {
@@ -172,14 +91,10 @@
       padding: 18px clamp(18px, 4vw, 56px);
       color: rgba(255, 255, 255, 0.88);
       background: linear-gradient(to bottom, rgba(5, 5, 5, 0.78), transparent);
-      opacity: var(--page-progress);
-      transform: translateY(var(--nav-offset));
-      pointer-events: none;
-      transition: opacity 120ms ease, transform 120ms ease;
-    }
-
-    body.intro-complete .topbar {
+      opacity: 1;
+      transform: none;
       pointer-events: auto;
+      transition: opacity 120ms ease, transform 120ms ease;
     }
 
     .mark {
@@ -220,11 +135,11 @@
     }
 
     .hero {
-      min-height: 96vh;
-      padding: 116px clamp(18px, 5vw, 72px) 48px;
+      min-height: calc(100vh - 96px);
+      padding: 96px clamp(18px, 5vw, 72px) 28px;
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(280px, 520px);
-      align-items: end;
+      align-items: center;
       gap: clamp(28px, 5vw, 72px);
       overflow: hidden;
     }
@@ -346,7 +261,10 @@
 
     .orbit {
       position: absolute;
-      inset: 6%;
+      top: 50%;
+      left: 50%;
+      width: min(96vw, 560px);
+      aspect-ratio: 1 / 1;
       border: 2px solid rgba(255, 120, 40, 0.72);
       border-left-color: transparent;
       border-bottom-color: rgba(255, 255, 255, 0.18);
@@ -609,7 +527,7 @@
 
     .download-options {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr);
       gap: 16px;
     }
 
@@ -640,7 +558,7 @@
       text-transform: uppercase;
     }
 
-    .platform-logo {
+    .github-logo {
       width: 54px;
       height: 54px;
       display: block;
@@ -653,16 +571,26 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(255, 255, 255, 0.54);
+      color: rgba(255, 255, 255, 0.86);
       font-size: 12px;
       font-weight: 900;
       letter-spacing: 0.08em;
       line-height: 1.2;
       text-align: center;
+      text-decoration: none;
       text-transform: uppercase;
       background: rgba(255, 120, 40, 0.16);
       border: 1px solid rgba(255, 120, 40, 0.28);
       border-radius: 8px;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .download-button:hover,
+    .download-button:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(255, 120, 40, 0.26);
+      border-color: rgba(255, 120, 40, 0.56);
+      outline: none;
     }
 
     .download-status {
@@ -735,7 +663,8 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
     }
 
     @keyframes float {
@@ -746,11 +675,6 @@
     @keyframes marquee {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
-    }
-
-    @keyframes cue-bob {
-      0%, 100% { translate: 0 0; }
-      50% { translate: 0 8px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -802,18 +726,6 @@
     }
 
     @media (max-width: 760px) {
-      .page {
-        margin-top: -86vh;
-      }
-
-      .intro {
-        height: 186vh;
-      }
-
-      .intro-logo {
-        width: min(82vw, 520px);
-      }
-
       .topbar {
         position: absolute;
         align-items: flex-start;
@@ -831,7 +743,8 @@
 
       .hero {
         min-height: auto;
-        padding-top: 106px;
+        padding-top: 92px;
+        padding-bottom: 28px;
       }
 
       h1 {
@@ -873,13 +786,6 @@
 <body>
   <canvas id="c"></canvas>
 
-  <section class="intro" aria-label="Airchestra intro">
-    <div class="intro-sticky">
-      <img class="intro-logo" src="Airchestra.svg" alt="Airchestra" />
-      <a class="scroll-cue" href="#top" aria-label="Scroll to the project"></a>
-    </div>
-  </section>
-
   <div class="page">
     <header class="topbar">
       <a class="mark" href="#top" aria-label="Airchestra home">
@@ -888,7 +794,7 @@
       <nav class="nav" aria-label="Primary navigation">
         <a href="#experience">Experience</a>
         <a href="#stage">On Stage</a>
-        <a href="#downloads">Downloads</a>
+        <a href="#downloads">Repository</a>
         <a href="#team">Team</a>
       </nav>
     </header>
@@ -901,7 +807,7 @@
           <p class="hero-text">A webcam-powered music playground where your hands become the instrument, your room becomes the stage, and motion turns into sound.</p>
           <div class="hero-actions">
             <a class="button" href="#experience">Enter the set</a>
-            <a class="button secondary" href="#downloads">Get the build</a>
+            <a class="button secondary" href="#downloads">View the code</a>
           </div>
         </div>
 
@@ -1005,32 +911,21 @@
 
       <section class="section downloads" id="downloads">
         <div>
-          <div class="section-kicker">Downloads</div>
-          <h2 class="section-title">Try the demo</h2>
-          <p class="section-lede">The builds are still warming up. When they are ready, this becomes the launch area for Windows and ARM Mac.</p>
+          <div class="section-kicker">Repository</div>
+          <h2 class="section-title">View the code</h2>
+          <p class="section-lede">The Airchestra source lives on GitHub, with the project files, implementation work, and development history in one place.</p>
         </div>
 
         <div class="download-options">
           <div class="download-card">
             <div class="platform-top">
-              <div class="platform-label">Windows 11</div>
-              <svg class="platform-logo" viewBox="0 0 64 64" aria-hidden="true">
-                <path fill="currentColor" d="M8 8h22v22H8V8Zm26 0h22v22H34V8ZM8 34h22v22H8V34Zm26 0h22v22H34V34Z" />
+              <div class="platform-label">GitHub</div>
+              <svg class="github-logo" viewBox="0 0 98 96" aria-hidden="true">
+                <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M48.9 0C21.9 0 0 22 0 49.1c0 21.7 14 40 33.5 46.5 2.4.5 3.3-1.1 3.3-2.4 0-1.2 0-4.3-.1-8.5-13.6 3-16.5-6.6-16.5-6.6-2.2-5.7-5.4-7.2-5.4-7.2-4.4-3 .3-3 .3-3 4.9.3 7.5 5.1 7.5 5.1 4.4 7.5 11.5 5.3 14.3 4.1.4-3.2 1.7-5.3 3.1-6.6-10.9-1.2-22.3-5.5-22.3-24.3 0-5.4 1.9-9.8 5-13.2-.5-1.2-2.2-6.3.5-13 0 0 4.1-1.3 13.4 5 3.9-1.1 8-1.6 12.2-1.6 4.1 0 8.3.5 12.2 1.6 9.3-6.3 13.4-5 13.4-5 2.7 6.7 1 11.8.5 13 3.1 3.4 5 7.8 5 13.2 0 18.9-11.5 23.1-22.4 24.3 1.8 1.5 3.4 4.5 3.4 9.1 0 6.6-.1 11.9-.1 13.5 0 1.3.9 2.9 3.4 2.4C83.9 89 97.8 70.7 97.8 49.1 97.8 22 75.9 0 48.9 0Z" />
               </svg>
             </div>
-            <button class="download-button" type="button" disabled>Download for Windows</button>
-            <div class="download-status">Coming soon after the next project milestone.</div>
-          </div>
-
-          <div class="download-card">
-            <div class="platform-top">
-              <div class="platform-label">ARM Mac</div>
-              <svg class="platform-logo" viewBox="0 0 64 64" aria-hidden="true">
-                <path fill="currentColor" d="M45.7 34.3c-.1-6.1 5-9.1 5.2-9.2-2.9-4.2-7.3-4.8-8.9-4.9-3.8-.4-7.4 2.2-9.3 2.2-2 0-5-2.2-8.2-2.1-4.2.1-8.1 2.5-10.3 6.3-4.4 7.6-1.1 18.8 3.1 25 2.1 3 4.6 6.4 7.8 6.3 3.1-.1 4.3-2 8.1-2 3.8 0 4.9 2 8.2 1.9 3.4-.1 5.5-3.1 7.5-6.1 2.4-3.5 3.4-6.9 3.4-7.1-.1-.1-6.5-2.5-6.6-10.3ZM39.5 16.2c1.7-2 2.8-4.8 2.5-7.6-2.4.1-5.3 1.6-7 3.6-1.5 1.8-2.9 4.7-2.5 7.4 2.7.2 5.3-1.4 7-3.4Z" />
-              </svg>
-            </div>
-            <button class="download-button" type="button" disabled>Download for Mac</button>
-            <div class="download-status">Coming soon after the next project milestone.</div>
+            <a class="download-button" href="https://github.com/Mextrin/Ultevis" target="_blank" rel="noopener noreferrer">Open on GitHub</a>
+            <div class="download-status">Visit the project source and development history.</div>
           </div>
         </div>
       </section>
@@ -1049,7 +944,7 @@
             <img src="Mugshots/IMG_20260415_163658.jpg" alt="Sachin Prabhu Ram" />
             <div class="member-info">
               <div class="member-name">Sachin Prabhu Ram</div>
-              <div class="member-role">Engagement Strategist</div>
+              <div class="member-role">Vibe specialist</div>
             </div>
           </div>
 
@@ -1057,7 +952,7 @@
             <img src="Mugshots/IMG_20260415_163705.jpg" alt="Stanislaw Jerzy Rybak" />
             <div class="member-info">
               <div class="member-name">Stanislaw Jerzy Rybak</div>
-              <div class="member-role">Waving Quality Expert</div>
+              <div class="member-role">Waving inspector</div>
             </div>
           </div>
 
@@ -1065,7 +960,7 @@
             <img src="Mugshots/IMG_20260415_163710.jpg" alt="Raghav Khurana" />
             <div class="member-info">
               <div class="member-name">Raghav Khurana</div>
-              <div class="member-role">Senior Scrum Associate</div>
+              <div class="member-role">Professional scrummer</div>
             </div>
           </div>
 
@@ -1073,7 +968,7 @@
             <img src="Mugshots/IMG_20260415_163722.jpg" alt="Dajue Qiu" />
             <div class="member-info">
               <div class="member-name">Dajue Qiu</div>
-              <div class="member-role">Tech Ops Node Yield</div>
+              <div class="member-role">Claude whisperer</div>
             </div>
           </div>
 
@@ -1089,7 +984,7 @@
             <img src="Mugshots/IMG_20260415_163749.jpg" alt="Alex Rystrom" />
             <div class="member-info">
               <div class="member-name">Alex Rystrom</div>
-              <div class="member-role">Senior Product Responsible</div>
+              <div class="member-role">Senior button press manager</div>
             </div>
           </div>
 
@@ -1097,7 +992,7 @@
             <img src="Mugshots/IMG_20260415_163845.jpg" alt="Sebastian Tryscien" />
             <div class="member-info">
               <div class="member-name">Sebastian Tryscien</div>
-              <div class="member-role">Orange Color Expert</div>
+              <div class="member-role">Orange color expert</div>
             </div>
           </div>
         </div>
@@ -1111,8 +1006,6 @@
   </div>
 
   <script>
-    const root = document.documentElement;
-    const intro = document.querySelector('.intro');
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
     const DOT_COUNT = 96;
@@ -1125,37 +1018,6 @@
 
     function randomBetween(a, b) {
       return a + Math.random() * (b - a);
-    }
-
-    function clamp(value, min, max) {
-      return Math.min(Math.max(value, min), max);
-    }
-
-    function updateIntro() {
-      const scrollY = window.scrollY || window.pageYOffset;
-      const revealDistance = Math.max(window.innerHeight * 0.92, 1);
-      const introProgress = clamp(scrollY / revealDistance, 0, 1);
-      const pageProgress = clamp((scrollY - window.innerHeight * 0.18) / (window.innerHeight * 0.62), 0, 1);
-      const introScale = 1 + introProgress * 0.14;
-      const introLogoScale = 1 - introProgress * 0.76;
-      const pageScale = 1.12 - pageProgress * 0.12;
-      const navOffset = (1 - pageProgress) * -18;
-      const cueOpacity = clamp(1 - introProgress * 2.4, 0, 1);
-
-      root.style.setProperty('--intro-progress', introProgress.toFixed(4));
-      root.style.setProperty('--page-progress', pageProgress.toFixed(4));
-      root.style.setProperty('--intro-scale', introScale.toFixed(4));
-      root.style.setProperty('--intro-logo-scale', introLogoScale.toFixed(4));
-      root.style.setProperty('--page-scale', pageScale.toFixed(4));
-      root.style.setProperty('--nav-offset', `${navOffset.toFixed(2)}px`);
-      root.style.setProperty('--cue-opacity', cueOpacity.toFixed(4));
-      document.body.classList.toggle('intro-complete', pageProgress > 0.82);
-
-      if (intro && scrollY > window.innerHeight * 1.2) {
-        intro.setAttribute('aria-hidden', 'true');
-      } else if (intro) {
-        intro.removeAttribute('aria-hidden');
-      }
     }
 
     for (let i = 0; i < DOT_COUNT; i++) {
@@ -1192,9 +1054,6 @@
 
     resize();
     window.addEventListener('resize', resize);
-    window.addEventListener('resize', updateIntro);
-    window.addEventListener('scroll', updateIntro, { passive: true });
-    updateIntro();
     draw();
   </script>
 </body>
