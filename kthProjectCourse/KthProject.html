@@ -630,6 +630,7 @@
 
     .member {
       min-height: 250px;
+      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -638,6 +639,18 @@
       background: rgba(255, 255, 255, 0.055);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 8px;
+    }
+
+    .member-crown {
+      position: absolute;
+      top: -20px;
+      left: 12px;
+      width: 34px;
+      height: 28px;
+      color: var(--orange);
+      filter: drop-shadow(0 6px 12px rgba(255, 120, 40, 0.34));
+      transform: rotate(-8deg);
+      z-index: 2;
     }
 
     .member img {
@@ -1019,6 +1032,9 @@
           </div>
 
           <div class="member">
+            <svg class="member-crown" viewBox="0 0 48 36" aria-label="Orange crown">
+              <path fill="currentColor" d="M4 32h40v4H4v-4Zm2-24 11 11 7-17 7 17L42 8l-4 21H10L6 8Z" />
+            </svg>
             <img src="Mugshots/IMG_20260415_163749.jpg" alt="Alex Rystrom" />
             <div class="member-info">
               <div class="member-name">Alex Rystrom</div>
