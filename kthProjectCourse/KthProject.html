@@ -601,6 +601,15 @@
       width: 100%;
     }
 
+    .download-option .button[aria-disabled="true"] {
+      color: rgba(255, 255, 255, 0.42);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: none;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
     .download-divider {
       width: 1px;
       min-height: 210px;
@@ -979,7 +988,7 @@
           <div class="download-option">
             <img class="download-icon" src="MacARM.svg" alt="" aria-hidden="true" />
             <div class="download-os">Mac ARM</div>
-            <a class="button" href="Airchestra-Mac.zip" download>Download</a>
+            <a class="button" aria-disabled="true" tabindex="-1">Download</a>
           </div>
         </div>
       </section>
