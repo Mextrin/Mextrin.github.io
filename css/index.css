@@ -33,10 +33,108 @@ button {
 	border:none;
 }
 
-.triangle {
-	width: 0;
-	height: 0;
-	border-left: 50px solid red;
-	border-right: 50px solid red;
-	border-bottom: 80px solid black;
+/*Header*/
+header {
+	position: relative;
+	width: 100%;
+	height: var(--headerHeight);
+
+	display: flex;
+	justify-content: center;
+}
+
+header p, header h1 {
+	display: inline-block;
+	font-size: calc(var(--headerHeight) / 2);
+	padding: 2.5vh;
+	text-align: center;
+}
+
+/*Content*/
+
+#categoryContainer {
+	position: absolute;
+	width: 150%;
+	left: -25%;
+	top: calc(var(--headerHeight));
+	bottom: 0px;
+	
+	overflow: hidden;
+
+	display: flex;
+
+	--innerTint: 0%;
+	--outerTint: 0%;
+}
+
+.gamesTint::before {
+	content:"";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: var(--outerTint);
+	right: var(--innerTint);
+
+	transition: left var(--transitionTime), right var(--transitionTime);
+	background-color:black;
+	opacity: var(--tintOpacity);
+}
+
+.racingTint::before {
+	content:"";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: var(--innerTint);
+	right: var(--outerTint);
+
+	transition: left var(--transitionTime), right var(--transitionTime);
+	background-color:black;
+	opacity: var(--tintOpacity);
+}
+
+#category {
+	position: relative;
+	width: 50%;
+	height: 100%;
+	overflow: hidden;
+
+	margin-top: calc(var(--marginWidth) * 2);
+	margin-right: var(--marginWidth);
+	margin-left: var(--marginWidth);
+
+	transition: width var(--transitionTime);
+}
+
+.gamesVideo {
+	position: absolute;
+	width: auto;
+	height: 100%;
+}
+
+.racingVideo {
+	position: absolute;
+	right: 20%;
+	height: auto;
+}
+
+#content {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	font-size: 2.5vh;
+}
+
+#gamesTextWrapper {
+	position: absolute;
+	top:50%;
+	left: 60%;
+	transform: translateY(-50%);
+}
+
+#racingTextWrapper {
+	position: absolute;
+	top:50%;
+	right: 60%;
+	transform: translateY(-50%);
 }
