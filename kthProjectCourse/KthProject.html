@@ -468,6 +468,67 @@
       line-height: 1.55;
     }
 
+    .instruments {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .instrument {
+      min-height: 430px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 22px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 8px;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .instrument:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 120, 40, 0.48);
+      background: rgba(255, 120, 40, 0.09);
+    }
+
+    .instrument-image {
+      min-height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      border-radius: 6px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255, 120, 40, 0.18), transparent 64%),
+        rgba(8, 8, 9, 0.62);
+      border: 1px solid rgba(255, 120, 40, 0.18);
+    }
+
+    .instrument-image img {
+      width: min(220px, 82%);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.46));
+    }
+
+    .instrument-copy h3 {
+      color: #fff;
+      font-size: clamp(28px, 3vw, 44px);
+      line-height: 0.9;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .instrument-copy p {
+      margin-top: 14px;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
     .feature-band {
       display: grid;
       grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
@@ -723,6 +784,10 @@
         min-height: 430px;
       }
 
+      .instruments {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .team-row {
         grid-template-columns: repeat(4, minmax(120px, 1fr));
       }
@@ -769,6 +834,7 @@
       }
 
       .stats,
+      .instruments,
       .download-options,
       .team-row {
         grid-template-columns: 1fr;
@@ -800,6 +866,7 @@
       </a>
       <nav class="nav" aria-label="Primary navigation">
         <a href="#experience">Experience</a>
+        <a href="#instruments">Instruments</a>
         <a href="#stage">On Stage</a>
         <a href="#downloads">Repository</a>
         <a href="#team">Team</a>
@@ -867,6 +934,58 @@
             <strong>Live</strong>
             <span>Real-time response</span>
           </div>
+        </div>
+      </section>
+
+      <section class="section" id="instruments">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Instruments</div>
+            <h2 class="section-title">Choose your sound</h2>
+          </div>
+          <p class="section-lede">Airchestra turns familiar instruments into gesture-controlled modes, giving each performer a different way to shape melody, rhythm, and expression through movement.</p>
+        </div>
+
+        <div class="instruments">
+          <article class="instrument">
+            <div class="instrument-image">
+              <img src="Waving_Top.jpg" alt="Theremin instrument preview" />
+            </div>
+            <div class="instrument-copy">
+              <h3>Theremin</h3>
+              <p>Play hovering tones with smooth hand movement, shaping pitch and expression without touching anything.</p>
+            </div>
+          </article>
+
+          <article class="instrument">
+            <div class="instrument-image">
+              <img src="Airchestra.svg" alt="Keyboard placeholder" />
+            </div>
+            <div class="instrument-copy">
+              <h3>Keyboard</h3>
+              <p>Trigger clear notes and simple melodies through mapped gestures that feel precise and easy to learn.</p>
+            </div>
+          </article>
+
+          <article class="instrument">
+            <div class="instrument-image">
+              <img src="Airchestra.svg" alt="Guitar placeholder" />
+            </div>
+            <div class="instrument-copy">
+              <h3>Guitar</h3>
+              <p>Strum and accent chords with broad motions, bringing a more physical performance style into the mix.</p>
+            </div>
+          </article>
+
+          <article class="instrument">
+            <div class="instrument-image">
+              <img src="Airchestra.svg" alt="Drums placeholder" />
+            </div>
+            <div class="instrument-copy">
+              <h3>Drums</h3>
+              <p>Build beats from punchy gestures, using body movement to keep time and layer rhythmic hits.</p>
+            </div>
+          </article>
         </div>
       </section>
 
