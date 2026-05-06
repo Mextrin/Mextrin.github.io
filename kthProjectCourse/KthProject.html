@@ -151,6 +151,16 @@
       gap: 22px;
     }
 
+    .hero-title-stage {
+      position: relative;
+      width: min(92vw, 860px);
+      max-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+    }
+
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -179,6 +189,47 @@
       font-weight: 950;
       letter-spacing: 0;
       text-transform: uppercase;
+    }
+
+    .hero-title-logo {
+      width: min(92vw, 860px);
+      max-width: 100%;
+      line-height: 0;
+    }
+
+    .hero-title-logo img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.42)) drop-shadow(0 0 24px rgba(255, 120, 40, 0.22));
+    }
+
+    .hero-title-stage .orbit {
+      width: min(110vw, 1040px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-title-stage .hero-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: min(104vw, 980px);
+      z-index: 1;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      animation: circle-drift 5.5s ease-in-out infinite;
+    }
+
+    .hero-title-stage .hero-title-logo {
+      z-index: 2;
+    }
+
+    .hero-title-stage .stage-tag {
+      right: -68px;
+      bottom: -82px;
+      z-index: 3;
+      pointer-events: none;
     }
 
     .hero-text {
@@ -704,6 +755,11 @@
       50% { transform: translateY(-16px) rotate(1.4deg); }
     }
 
+    @keyframes circle-drift {
+      0%, 100% { transform: translate(-50%, -50%); }
+      50% { transform: translate(-50%, calc(-50% - 24px)); }
+    }
+
     @keyframes marquee {
       from { transform: translateX(0); }
       to { transform: translateX(-50%); }
@@ -779,13 +835,26 @@
         font-size: clamp(62px, 23vw, 116px);
       }
 
-      .hero-visual {
-        min-height: 340px;
+      .hero-title-logo {
+        max-width: min(92vw, 560px);
       }
 
-      .stage-tag {
-        right: 10px;
-        bottom: 0;
+      .hero-title-stage .orbit {
+        width: min(118vw, 660px);
+      }
+
+      .hero-title-stage .hero-logo {
+        width: min(112vw, 620px);
+      }
+
+      .hero-title-stage .stage-tag {
+        right: -28px;
+        bottom: -62px;
+        width: min(190px, 48vw);
+      }
+
+      .hero-visual {
+        min-height: 340px;
       }
 
       .section-title,
@@ -836,7 +905,17 @@
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <div class="eyebrow">KTH Project Course</div>
-          <h1 id="hero-title">Air Orchestra</h1>
+          <div class="hero-title-stage">
+            <div class="orbit" aria-hidden="true"></div>
+            <div class="hero-logo" aria-hidden="true"></div>
+            <h1 id="hero-title" class="hero-title-logo">
+              <img src="Airchestra.png" alt="Airchestra" />
+            </h1>
+            <div class="stage-tag" aria-hidden="true">
+              <strong>Live</strong>
+              <span>Gesture controlled sound</span>
+            </div>
+          </div>
           <p class="hero-text">A webcam-powered music playground where your hands become the instrument, your room becomes the stage, and motion turns into sound.</p>
           <div class="hero-actions">
             <a class="button" href="#experience">Enter the set</a>
@@ -845,14 +924,6 @@
         </div>
 
         <div class="hero-visual" aria-hidden="true">
-          <div class="orbit"></div>
-          <div class="hero-logo">
-            <img src="Airchestra.svg" alt="" />
-          </div>
-          <div class="stage-tag">
-            <strong>Live</strong>
-            <span>Gesture controlled sound</span>
-          </div>
         </div>
       </section>
 
