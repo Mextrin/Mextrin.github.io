@@ -336,8 +336,7 @@
       padding: clamp(72px, 10vw, 130px) clamp(18px, 5vw, 72px);
     }
 
-    #experience,
-    .team {
+    #experience {
       background:
         linear-gradient(90deg, rgba(255, 120, 40, 0.12), transparent 44%),
         rgba(5, 5, 5, 0.08);
@@ -533,6 +532,121 @@
       font-weight: 610;
     }
 
+    .midi-section {
+      padding: clamp(72px, 10vw, 126px) clamp(18px, 5vw, 72px);
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+      gap: clamp(28px, 6vw, 86px);
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(270deg, rgba(255, 120, 40, 0.16), transparent 50%),
+        rgba(8, 8, 9, 0.34);
+    }
+
+    .midi-copy h2 {
+      max-width: 8ch;
+      color: #fff;
+      font-size: clamp(56px, 9vw, 128px);
+      line-height: 0.84;
+      font-weight: 950;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .midi-copy p {
+      max-width: 660px;
+      margin-top: 24px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.5;
+      font-weight: 610;
+    }
+
+    .midi-visual {
+      min-height: 330px;
+      position: relative;
+    }
+
+    .audio-bars {
+      position: absolute;
+      inset: 28px 0;
+      display: flex;
+      align-items: end;
+      gap: clamp(7px, 1.5vw, 14px);
+    }
+
+    .audio-bar {
+      flex: 1;
+      min-width: 8px;
+      height: var(--bar-height);
+      background: rgba(255, 120, 40, 0.92);
+      box-shadow: 0 0 18px rgba(255, 120, 40, 0.28);
+      transform-origin: bottom;
+      animation: audio-jump var(--bar-speed) ease-in-out infinite;
+      animation-delay: var(--bar-delay);
+    }
+
+    .audio-bar:nth-child(1) {
+      --bar-height: 34%;
+      --bar-speed: 2960ms;
+      --bar-delay: -120ms;
+    }
+
+    .audio-bar:nth-child(2) {
+      --bar-height: 66%;
+      --bar-speed: 2480ms;
+      --bar-delay: -420ms;
+    }
+
+    .audio-bar:nth-child(3) {
+      --bar-height: 48%;
+      --bar-speed: 3440ms;
+      --bar-delay: -260ms;
+    }
+
+    .audio-bar:nth-child(4) {
+      --bar-height: 82%;
+      --bar-speed: 2760ms;
+      --bar-delay: -560ms;
+    }
+
+    .audio-bar:nth-child(5) {
+      --bar-height: 42%;
+      --bar-speed: 3120ms;
+      --bar-delay: -340ms;
+    }
+
+    .audio-bar:nth-child(6) {
+      --bar-height: 72%;
+      --bar-speed: 2600ms;
+      --bar-delay: -170ms;
+    }
+
+    .audio-bar:nth-child(7) {
+      --bar-height: 55%;
+      --bar-speed: 3680ms;
+      --bar-delay: -620ms;
+    }
+
+    .audio-bar:nth-child(8) {
+      --bar-height: 88%;
+      --bar-speed: 2840ms;
+      --bar-delay: -450ms;
+    }
+
+    .audio-bar:nth-child(9) {
+      --bar-height: 38%;
+      --bar-speed: 3320ms;
+      --bar-delay: -230ms;
+    }
+
+    .audio-bar:nth-child(10) {
+      --bar-height: 64%;
+      --bar-speed: 3040ms;
+      --bar-delay: -690ms;
+    }
+
     .download-section {
       padding: clamp(58px, 8vw, 104px) clamp(18px, 5vw, 72px);
       display: flex;
@@ -541,7 +655,7 @@
       gap: clamp(22px, 5vw, 72px);
       border-bottom: 1px solid var(--line);
       background:
-        linear-gradient(270deg, rgba(255, 120, 40, 0.16), transparent 56%),
+        linear-gradient(90deg, rgba(255, 120, 40, 0.16), transparent 56%),
         rgba(8, 8, 9, 0.46);
     }
 
@@ -622,6 +736,9 @@
 
     .team {
       padding-bottom: clamp(74px, 9vw, 120px);
+      background:
+        linear-gradient(270deg, rgba(255, 120, 40, 0.12), transparent 44%),
+        rgba(5, 5, 5, 0.08);
     }
 
     .team-row {
@@ -711,6 +828,12 @@
       to { transform: translateX(-50%); }
     }
 
+    @keyframes audio-jump {
+      0%, 100% { transform: scaleY(0.42); opacity: 0.74; }
+      38% { transform: scaleY(1); opacity: 1; }
+      62% { transform: scaleY(0.66); opacity: 0.88; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
@@ -725,7 +848,8 @@
     @media (max-width: 1100px) {
       .hero,
       .section-header,
-      .feature-band {
+      .feature-band,
+      .midi-section {
         grid-template-columns: 1fr;
       }
 
@@ -806,7 +930,8 @@
       }
 
       .section-title,
-      .feature-copy h2 {
+      .feature-copy h2,
+      .midi-copy h2 {
         font-size: clamp(52px, 19vw, 94px);
       }
 
@@ -837,6 +962,10 @@
       .feature-image {
         min-height: 330px;
         transform: none;
+      }
+
+      .midi-visual {
+        min-height: 280px;
       }
 
       .footer {
@@ -978,6 +1107,28 @@
         <div class="feature-copy">
           <h2 id="concept-title">Music without walls</h2>
           <p>The core idea is to make music more accessible, playful, and immediate. Many instruments are expensive, hard to store, or intimidating at first. Airchestra removes that barrier by letting anyone experiment with instrumental sound using only a camera, a screen, and their own movement.</p>
+        </div>
+      </section>
+
+      <section class="midi-section" aria-labelledby="midi-title">
+        <div class="midi-copy">
+          <div class="section-kicker">MIDI Playback</div>
+          <h2 id="midi-title">Play it back</h2>
+          <p>What you play in Airchestra can then be played back in other DAWs like Ableton, so gestures can become editable MIDI performances in your regular music workflow.</p>
+        </div>
+        <div class="midi-visual" aria-hidden="true">
+          <div class="audio-bars">
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+            <span class="audio-bar"></span>
+          </div>
         </div>
       </section>
 
