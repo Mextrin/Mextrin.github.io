@@ -1,30 +1,38 @@
-let innerTint = 25;
-let outerTint = 57;
+const turnTable = document.querySelector(".turnTable");
+const boxes = document.querySelectorAll(".leftBox, .topBox, .rightBox");
 
-//Resizable buttons
-var buttons = document.getElementsByClassName("resizableButton");
+let maxSpeed = 0.1;
+let speedChange = 0.001;
+let speed = 0.1;
+let angle = 0;
+let isHovering = false;
 
-for (var i = 0; i < buttons.length; i++) {
-    var videoElement = buttons[i].querySelector(".interactiveVideo");
-        videoElement.pause();
+function update() {
+    animate();
+    changeSpeed();
+	checkHover();
 
-    buttons[i].addEventListener("mouseover", function() {
-        var videoElement = this.querySelector(".interactiveVideo");
-        videoElement.play();
-
-        this.style.width = '75%';
-
-        this.style.setProperty('--innerTint', innerTint + '%');
-        this.style.setProperty('--outerTint', outerTint + '%');
-    });
-
-    buttons[i].addEventListener("mouseleave", function() {
-        var videoElement = this.querySelector(".interactiveVideo");
-        videoElement.pause();
-        videoElement.currentTime = 0;
-
-        this.style.width = '50%';
-        this.style.setProperty('--innerTint', '0%');
-        this.style.setProperty('--outerTint', '0%');
-    });
+    //requestAnimationFrame(update);
 }
+
+function checkHover() {
+    isHovering = [...boxes].some(box => box.matches(":hover"));
+}
+
+function changeSpeed() {
+	if (isHovering) {
+		speed = Math.max(speed - speedChange, 0);
+	} else {
+		speed = Math.min(speed + speedChange, maxSpeed);
+	}
+}
+
+function animate() {
+	angle += speed;
+
+	turnTable.style.transform =
+		`translate(0, 0%) rotate3d(1,0,0,70deg) rotateZ(${angle}deg)`;
+	document.documentElement.style.setProperty("--turnTableAngle", `${-angle}deg`);
+}
+
+update();
