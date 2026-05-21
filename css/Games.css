@@ -106,10 +106,11 @@ header img {
 }
 
 .project > .projectHighlight {
-	height: 100%;
+	height: 120%;
 	display: none;
 
 	object-fit: cover;
+	object-position: 50% 20%;
 }
 
 .project:hover > .projectHighlight {
