@@ -40,6 +40,10 @@ header img {
     position:absolute;
 }
 
+.background {
+	position:fixed;
+}
+
 /* Back Button*/
 
 #backButton {
@@ -83,29 +87,22 @@ header img {
 #projects {
 	display: flex;
 	flex-wrap: wrap;
+
+	gap: 10vw;
+	row-gap: 5vh;
+	padding: 5vh 0 5vh 0;
+	margin-left: 10vw;
 }
 
 .project {
 	position: relative;
 
-	--size: calc((100vw - 17px) / 3);
+	--size: 20vw;
 
 	width: var(--size);
-	height: var(--size);
+	aspect-ratio: 5/7;
 
 	overflow: hidden;
-	justify-content: center;
-}
-
-@media only screen and (max-width: 1400px) {
-	.project {
-		--size: calc((100vw - 18px) / 2);
-	
-		width: var(--size);
-		height: var(--size);
-
-		overflow: hidden;
-	}
 }
 
 .project > .projectHighlight {
@@ -130,10 +127,6 @@ header img {
 .projectLogo {
 	position: absolute;
 	object-fit:contain;
-	width: 150%;
-	height: 50%;
-	left: -25%;
-	top: 25%;
 }
 
 .projectText {
