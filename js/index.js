@@ -1,38 +1,47 @@
-const turnTable = document.querySelector(".turnTable");
-const boxes = document.querySelectorAll(".leftBox, .topBox, .rightBox");
+const previewBoxes = document.querySelectorAll(
+	".selectionBox.leftBox, .selectionBox.centerBox, .selectionBox.rightBox"
+);
 
-let maxSpeed = 0.1;
-let speedChange = 0.001;
-let speed = 0.1;
-let angle = 0;
-let isHovering = false;
+const previewDuration = 2500;
+const nextImageIndexes = new Array(previewBoxes.length).fill(0);
+let previewIndex = 0;
 
-function update() {
-    animate();
-    changeSpeed();
-	checkHover();
+function setPreviewImage(box, imageIndex) {
+	const images = box.querySelectorAll("img");
 
-    //requestAnimationFrame(update);
+	images.forEach((image, index) => {
+		image.classList.toggle("isPreviewImage", index === imageIndex);
+	});
 }
 
-function checkHover() {
-    isHovering = [...boxes].some(box => box.matches(":hover"));
-}
-
-function changeSpeed() {
-	if (isHovering) {
-		speed = Math.max(speed - speedChange, 0);
-	} else {
-		speed = Math.min(speed + speedChange, maxSpeed);
+function showNextPreview() {
+	if ([...previewBoxes].some(box => box.matches(":hover"))) {
+		return;
 	}
+
+	previewBoxes.forEach((box, index) => {
+		const isActiveBox = index === previewIndex;
+		box.classList.toggle("isPreviewing", isActiveBox);
+
+		if (!isActiveBox) {
+			return;
+		}
+
+		const images = box.querySelectorAll("img");
+
+		if (images.length === 0) {
+			return;
+		}
+
+		setPreviewImage(box, nextImageIndexes[index]);
+		nextImageIndexes[index] = (nextImageIndexes[index] + 1) % images.length;
+	});
+
+	previewIndex = (previewIndex + 1) % previewBoxes.length;
 }
 
-function animate() {
-	angle += speed;
-
-	turnTable.style.transform =
-		`translate(0, 0%) rotate3d(1,0,0,70deg) rotateZ(${angle}deg)`;
-	document.documentElement.style.setProperty("--turnTableAngle", `${-angle}deg`);
+if (previewBoxes.length > 0) {
+	previewBoxes.forEach(box => setPreviewImage(box, 0));
+	showNextPreview();
+	setInterval(showNextPreview, previewDuration);
 }
-
-update();
