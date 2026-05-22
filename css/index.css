@@ -68,7 +68,7 @@ header p, header h1 {
 	object-fit: cover;
 	filter: grayscale(100%);
 	opacity: .0;
-	transition: opacity 5s ease, filter .5s ease;
+	transition: opacity 5s ease-in, filter .5s ease-in;
 }
 
 .selectionBox.isPreviewing img.isPreviewImage {
@@ -78,7 +78,7 @@ header p, header h1 {
 .selectionBox:hover img.isPreviewImage {
 	filter: grayscale(0%);
 	opacity: 1;
-	transition: opacity .5s ease, filter .5s ease;
+	transition: opacity .5s ease-in, filter .5s ease-in;
 }
 
 .container:has(.selectionBox:hover) .selectionBox:not(:hover) img {
