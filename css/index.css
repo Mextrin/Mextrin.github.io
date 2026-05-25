@@ -69,6 +69,7 @@ header p, header h1 {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
+	z-index: 2;
 	
 	transition: clip-path 1s ease-in-out;
 }
@@ -93,7 +94,7 @@ header p, header h1 {
 	--imageY: 0vh;
 }
 
-.selectionBox img {
+.selectionBox > img {
 	position: absolute;
 	inset: 0;
 	object-position: calc(var(--imageX) + var(--imageOffsetX)/4) calc(var(--imageY) + var(--imageOffsetY)/4);
@@ -118,7 +119,7 @@ header p, header h1 {
 	transition: opacity .5s ease-in, filter .5s ease-in, object-position .5s ease-in-out;
 }
 
-.container:has(.selectionBox:hover) .selectionBox:not(:hover) img {
+.container:has(.selectionBox:hover) .selectionBox:not(:hover) > img {
 	opacity: 0;
 }
 
@@ -190,15 +191,40 @@ header p, header h1 {
 	position: absolute;
 	top: var(--nameHeight);
 	left: 50vw;
+	z-index: 3;
 	transform: translate(-50%, -50%) translate(var(--boxOffsetX), var(--boxOffsetY));
 	transition: transform 1s ease-in-out;
+}
 
+.nameText {
 	color: black;
 	font-size: 2rem;
 
 	border: 0px solid white;
-	border-radius: 10px;
+	border-radius: 10px 10px 0px 10px;
 	background-color: white;
-
 	padding: .5rem 1rem;
+}
+
+.name .links {
+	display: flex;
+	justify-content: right;
+	gap: 1rem;
+	padding: 0px 1rem .5rem 1rem;
+	margin-left: auto;
+	width: fit-content;
+
+	border: 0px solid white;
+	border-radius: 0px 0px 10px 10px;
+	background-color: white;
+}
+
+.name .links a {
+	display: inline-block;
+	width: 2.5rem;
+	height: 2.5rem;
+}
+
+.name .links img {
+	filter: brightness(0);
 }
