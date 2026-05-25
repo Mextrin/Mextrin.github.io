@@ -1,8 +1,6 @@
 body {
 	margin:0;
 	padding:0;
-
-    --headerHeight: 10vh;
 }
 
 img {
@@ -31,7 +29,6 @@ button {
 header {
 	position: relative;
 	width: 100%;
-	height: var(--headerHeight);
 }
 
 header img {
@@ -44,53 +41,42 @@ header img {
 	position:fixed;
 }
 
-/* Back Button*/
-
-#backButton {
-    position: absolute;
-
-    --backButtonMul: 1.5;
-    
-    width: calc(var(--headerHeight) * var(--backButtonMul));
-    height: var(--headerHeight);
-    top: 0;
-    left: calc(var(--headerHeight) * -0.5);
-    
-    transition: width var(--transitionTime);
-    background-color: white;
-	text-decoration: none;
-
-    transform: skew(var(--skewAngle));
-	-moz-transform: skew(calc(--skewAngle));
-}
-
-#backButton h1 {
-	position: absolute;
-	top: 25%;
-	right: 25px;
-	color: black;
-}
-
-/* Content */
-
-#content {
-	position: absolute;
-	width: 100%;
-	top: var(--headerHeight);
-
-	overflow: hidden;
-	background-size: cover;
-}
-
 /* Projects */
 
 #projects {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	transform: translateY(-50%);
+
 	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	gap: 1rem;
-	row-gap: 5vh;
-	padding: 5vh 0 5vh 0;
-	margin-left: 10vw;
+	padding: 2vh 0 2vh 0;
+}
+
+#backgrounds {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+#backgrounds > img {
+	position: absolute;
+	inset: 0;
+	object-fit: cover;
+	opacity: 0;
+	transition: opacity 1.5s ease;
+}
+
+#backgrounds > img.active {
+	opacity: 1;
 }
 
 .project {
