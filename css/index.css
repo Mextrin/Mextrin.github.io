@@ -53,32 +53,69 @@ header p, header h1 {
 }
 
 /*Content*/
+.container {
+	--clickedOffsetX: 0vw;
+	--clickedOffsetY: 0vh;
+}
+
 .selectionBox {
+	--boxOffsetX: 0vw;
+	--boxOffsetY: 0vh;
+	--imageOffsetX: 0vw;
+	--imageOffsetY: 0vh;
+	
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100vw;
 	height: 100vh;
+	
+	transition: clip-path 1s ease-in-out;
+}
+
+.container.isClicked .selectionBox {
+	--boxOffsetX: var(--clickedOffsetX);
+	--boxOffsetY: var(--clickedOffsetY);
+}
+
+.container.isClicked .selectionBox:not(.isClickedBox) {
+	--imageOffsetX: var(--clickedOffsetX);
+	--imageOffsetY: var(--clickedOffsetY);
+}
+
+.container.isClicked .name {
+	--boxOffsetX: var(--clickedOffsetX);
+	--boxOffsetY: var(--clickedOffsetY);
+}
+
+.selectionBox.isClickedBox {
+	--imageX: 0vw;
+	--imageY: 0vh;
 }
 
 .selectionBox img {
 	position: absolute;
 	inset: 0;
-	object-position: var(--imageX) var(--imageY);
+	object-position: calc(var(--imageX) + var(--imageOffsetX)/4) calc(var(--imageY) + var(--imageOffsetY)/4);
 	object-fit: cover;
 	filter: grayscale(100%);
-	opacity: .0;
-	transition: opacity 5s ease-in, filter .5s ease-in;
+	opacity: 0;
+	transition: opacity 8s ease-in, filter .5s ease-in, object-position .5s ease-in-out;
 }
 
 .selectionBox.isPreviewing img.isPreviewImage {
 	opacity: 1;
 }
 
+.selectionBox.isClickedBox img.isPreviewImage {
+	filter: grayscale(0%);
+	opacity: 1;
+}
+
 .selectionBox:hover img.isPreviewImage {
 	filter: grayscale(0%);
 	opacity: 1;
-	transition: opacity .5s ease-in, filter .5s ease-in;
+	transition: opacity .5s ease-in, filter .5s ease-in, object-position .5s ease-in-out;
 }
 
 .container:has(.selectionBox:hover) .selectionBox:not(:hover) img {
@@ -92,23 +129,27 @@ header p, header h1 {
 	--imageY: 0%;
 
 	clip-path: polygon(
-		0 0,
-		50% var(--nameHeight),
-		50% 100%,
-		0 100%
+		calc(-100% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
+		calc(0% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
+		calc(50% + var(--boxOffsetX)) calc(var(--nameHeight) + var(--boxOffsetY)),
+		calc(50% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY)),
+		calc(0% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY)),
+		calc(-100% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY))
 	);
 }
 
 .centerBox {
 	--labelX: 50%;
 	--labelY: 31%;
-	--imageX: 0;
+	--imageX: 0vw;
 	--imageY: -25vh;
 
 	clip-path: polygon(
-		0 0,
-		50% var(--nameHeight),
-		100% 0
+		calc(0% + var(--boxOffsetX)) calc(-100vh + var(--boxOffsetY)),
+		calc(0% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
+		calc(50% + var(--boxOffsetX)) calc(var(--nameHeight) + var(--boxOffsetY)),
+		calc(100% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
+		calc(100% + var(--boxOffsetX)) calc(-100vh + var(--boxOffsetY))
 	);
 }
 
@@ -119,10 +160,12 @@ header p, header h1 {
 	--imageY: 0%;
 
 	clip-path: polygon(
-		100% 0,
-		50% var(--nameHeight),
-		50% 100%,
-		100% 100%
+		calc(200% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
+		calc(100% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
+		calc(50% + var(--boxOffsetX)) calc(var(--nameHeight) + var(--boxOffsetY)),
+		calc(50% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY)),
+		calc(100% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY)),
+		calc(200% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY))
 	);
 }
 
@@ -130,8 +173,9 @@ header p, header h1 {
 	position: absolute;
 	top: var(--labelY);
 	left: var(--labelX);
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%) translate(var(--boxOffsetX), var(--boxOffsetY));
 	z-index: 1;
+	transition: transform 1s ease-in-out;
 
 	color: white;
 	font: 600 clamp(1.25rem, 2vw, 2rem) 'Kanit', sans-serif;
@@ -140,10 +184,14 @@ header p, header h1 {
 }
 
 .name {
+	--boxOffsetX: 0vw;
+	--boxOffsetY: 0vh;
+
 	position: absolute;
 	top: var(--nameHeight);
 	left: 50vw;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%) translate(var(--boxOffsetX), var(--boxOffsetY));
+	transition: transform 1s ease-in-out;
 
 	color: black;
 	font-size: 2rem;
