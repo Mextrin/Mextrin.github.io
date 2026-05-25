@@ -1,0 +1,67 @@
+.racingProjects {
+	gap: 2rem;
+}
+
+.racingProject {
+	--size: min(25vw, 22rem);
+	border: 1px solid rgba(255, 255, 255, .35);
+}
+
+.racingProject .projectImage,
+.racingProject .projectHighlight {
+	width: 100%;
+	left: 0;
+	object-position: 50% 50%;
+}
+
+.racingProject .projectHighlight {
+	position: absolute;
+	inset: 0;
+	height: 100%;
+}
+
+.racingProject .projectText {
+	top: 50%;
+	transform: translateY(-50%);
+	font-size: clamp(1.5rem, 2.5vw, 3rem);
+	text-shadow: 0 3px 16px black;
+}
+
+.indexRacingProjects {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 4;
+}
+
+.indexRacingProjects.isVisible,
+.indexRacingProjects.isLeaving,
+.indexRacingReturnButton.isVisible {
+	opacity: 1;
+}
+
+.indexRacingProjects.isVisible,
+.indexRacingReturnButton.isVisible {
+	pointer-events: auto;
+}
+
+.indexRacingProjects > .project {
+	opacity: 0;
+	transform: translateX(50vw);
+	transition: transform .75s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--projectDelay, 0ms);
+}
+
+.indexRacingProjects.isLeaving > .project {
+	transition-delay: 0ms;
+}
+
+.indexRacingProjects.isVisible > .project {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.indexRacingReturnButton {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 5;
+}

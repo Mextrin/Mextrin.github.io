@@ -24,19 +24,6 @@ button {
 	background-color:transparent;
 }
 
-/*Header*/
-
-header {
-	position: relative;
-	width: 100%;
-}
-
-header img {
-    object-fit: cover;
-    object-position: 0% 20%;
-    position:absolute;
-}
-
 .background {
 	position:fixed;
 }
@@ -178,4 +165,43 @@ header img {
 	border-right: 3px solid white;
 	border-bottom: 3px solid white;
 	transform: translateY(-0.2rem) rotate(45deg);
+}
+
+.indexGamesProjects {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 4;
+}
+
+.indexGamesProjects.isVisible,
+.indexGamesProjects.isLeaving,
+.indexGamesReturnButton.isVisible {
+	opacity: 1;
+}
+
+.indexGamesProjects.isVisible,
+.indexGamesReturnButton.isVisible {
+	pointer-events: auto;
+}
+
+.indexGamesProjects > .project {
+	opacity: 0;
+	transform: translateY(-50vh);
+	transition: transform .75s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--projectDelay, 0ms);
+}
+
+.indexGamesProjects.isLeaving > .project {
+	transition-delay: 0ms;
+}
+
+.indexGamesProjects.isVisible > .project {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.indexGamesReturnButton {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 5;
 }

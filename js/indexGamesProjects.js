@@ -1,5 +1,6 @@
 const gamesProjectsSource = "Games.html";
 const gamesProjectsRevealDelay = 1000;
+const gamesProjectsExitDuration = 5000;
 const gamesProjectsUrl = "Games.html";
 const gamesProjectsBox = document.querySelector(".selectionBox.centerBox");
 const gamesProjectsContainer = document.querySelector(".container");
@@ -12,6 +13,7 @@ let gamesProjectsLoaded = false;
 let gamesProjectsElement = null;
 let gamesReturnButtonElement = null;
 let gamesProjectsRevealTimeout = null;
+let gamesProjectsExitTimeout = null;
 let restartedPreviewInterval = null;
 
 function setActiveGamesProjectBackground(index) {
@@ -22,9 +24,15 @@ function setActiveGamesProjectBackground(index) {
 
 function initializeGamesProjects(projectsElement) {
 	const projects = Array.from(projectsElement.querySelectorAll(":scope > .project"));
+	let visibleProjectIndex = 0;
 
 	projects.forEach((project, index) => {
 		project.dataset.index = index;
+
+		if (window.getComputedStyle(project).display !== "none") {
+			project.style.setProperty("--projectDelay", `${visibleProjectIndex * 350}ms`);
+			visibleProjectIndex++;
+		}
 
 		project.addEventListener("mouseenter", () => {
 			setActiveGamesProjectBackground(index);
@@ -55,6 +63,15 @@ function clearGamesProjectsRevealTimeout() {
 	gamesProjectsRevealTimeout = null;
 }
 
+function clearGamesProjectsExitTimeout() {
+	if (!gamesProjectsExitTimeout) {
+		return;
+	}
+
+	window.clearTimeout(gamesProjectsExitTimeout);
+	gamesProjectsExitTimeout = null;
+}
+
 function clearRestartedPreviewInterval() {
 	if (!restartedPreviewInterval) {
 		return;
@@ -66,9 +83,15 @@ function clearRestartedPreviewInterval() {
 
 function resetIndexGamesView() {
 	clearGamesProjectsRevealTimeout();
+	clearGamesProjectsExitTimeout();
 
 	if (gamesProjectsElement) {
+		gamesProjectsElement.classList.add("isLeaving");
 		gamesProjectsElement.classList.remove("isVisible");
+		gamesProjectsExitTimeout = window.setTimeout(() => {
+			gamesProjectsElement.classList.remove("isLeaving");
+			gamesProjectsExitTimeout = null;
+		}, gamesProjectsExitDuration);
 	}
 
 	if (gamesReturnButtonElement) {
@@ -90,6 +113,14 @@ function resetIndexGamesView() {
 		clearRestartedPreviewInterval();
 		restartedPreviewInterval = window.setInterval(showNextPreview, 5000);
 	}
+}
+
+function isIndexGamesViewActive() {
+	return Boolean(
+		gamesProjectsRevealTimeout ||
+		gamesProjectsElement?.classList.contains("isVisible") ||
+		gamesReturnButtonElement?.classList.contains("isVisible")
+	);
 }
 
 async function loadGamesProjects() {
@@ -118,6 +149,7 @@ async function loadGamesProjects() {
 
 	if (sourceReturnButton) {
 		gamesReturnButtonElement = sourceReturnButton.cloneNode(true);
+		gamesReturnButtonElement.classList.add("indexGamesReturnButton");
 		gamesReturnButtonElement.addEventListener("click", event => {
 			event.preventDefault();
 			window.history.back();
@@ -145,7 +177,9 @@ if (gamesProjectsBox) {
 		}
 
 		clearGamesProjectsRevealTimeout();
+		clearGamesProjectsExitTimeout();
 		gamesProjectsRevealTimeout = window.setTimeout(() => {
+			projectsElement.classList.remove("isLeaving");
 			projectsElement.classList.add("isVisible");
 			if (gamesReturnButtonElement) {
 				gamesReturnButtonElement.classList.add("isVisible");
@@ -160,7 +194,7 @@ gamesProjectsPreviewBoxes.forEach(box => {
 });
 
 window.addEventListener("popstate", () => {
-	if (!window.location.pathname.endsWith(gamesProjectsUrl)) {
+	if (!window.location.pathname.endsWith(gamesProjectsUrl) && isIndexGamesViewActive()) {
 		resetIndexGamesView();
 	}
 });

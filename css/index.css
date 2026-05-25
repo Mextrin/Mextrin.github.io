@@ -233,21 +233,3 @@ header p, header h1 {
 	filter: brightness(0);
 }
 
-.indexGamesProjects {
-	opacity: 0;
-	pointer-events: none;
-	z-index: 4;
-	transition: opacity .5s ease;
-}
-
-.indexGamesProjects.isVisible,
-.returnButton.isVisible {
-	opacity: 1;
-	pointer-events: auto;
-}
-
-.returnButton {
-	opacity: 0;
-	pointer-events: none;
-	z-index: 5;
-}
