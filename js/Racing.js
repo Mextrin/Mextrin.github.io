@@ -20,3 +20,41 @@ racingProjects.forEach((project, index) => {
 });
 
 setActiveRacingBackground(0);
+
+const timelineImages = Array.from(document.querySelectorAll(".timelineImages img"));
+
+timelineImages.forEach((image, index) => {
+	image.style.setProperty("--imageIndex", index);
+});
+
+const countdowns = Array.from(document.querySelectorAll(".countdown time"));
+
+function formatCountdown(milliseconds) {
+	const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+	const days = Math.floor(totalSeconds / 86400);
+	const hours = Math.floor((totalSeconds % 86400) / 3600);
+	const minutes = Math.floor((totalSeconds % 3600) / 60);
+	const seconds = totalSeconds % 60;
+
+	return `${String(days).padStart(2, "0")}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
+}
+
+function updateCountdowns() {
+	const now = Date.now();
+
+	countdowns.forEach((countdown) => {
+		const targetDate = new Date(countdown.dateTime);
+		const targetTime = targetDate.getTime();
+
+		if (Number.isNaN(targetTime)) {
+			return;
+		}
+
+		countdown.textContent = formatCountdown(targetTime - now);
+	});
+}
+
+if (countdowns.length > 0) {
+	updateCountdowns();
+	setInterval(updateCountdowns, 1000);
+}

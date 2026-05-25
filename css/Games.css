@@ -1,6 +1,8 @@
 body {
 	margin:0;
 	padding:0;
+	min-height: 100vh;
+	overflow: hidden;
 }
 
 img {
@@ -31,8 +33,8 @@ button {
 /* Projects */
 
 #projects {
-	position: absolute;
-	top: 50%;
+	position: fixed;
+	top: 50vh;
 	left: 0;
 	width: 100%;
 	transform: translateY(-50%);
@@ -46,7 +48,7 @@ button {
 }
 
 #backgrounds {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100vw;
@@ -143,6 +145,7 @@ button {
 	left: 50%;
 	width: 3.5rem;
 	height: 3.5rem;
+	flex-shrink: 0;
 	transform: translateX(-50%);
 
 	display: flex;
@@ -186,8 +189,8 @@ button {
 
 .indexGamesProjects > .project {
 	opacity: 0;
-	transform: translateY(-50vh);
-	transition: transform .75s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transform: translateY(-25vh);
+	transition: transform 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
 	transition-delay: var(--projectDelay, 0ms);
 }
 

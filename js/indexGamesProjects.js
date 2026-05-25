@@ -30,7 +30,7 @@ function initializeGamesProjects(projectsElement) {
 		project.dataset.index = index;
 
 		if (window.getComputedStyle(project).display !== "none") {
-			project.style.setProperty("--projectDelay", `${visibleProjectIndex * 350}ms`);
+			project.style.setProperty("--projectDelay", `${visibleProjectIndex * 100}ms`);
 			visibleProjectIndex++;
 		}
 

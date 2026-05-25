@@ -7,7 +7,6 @@ const racingProjectsContainer = document.querySelector(".container");
 const racingProjectsPreviewBoxes = Array.from(document.querySelectorAll(
 	".selectionBox.leftBox, .selectionBox.centerBox, .selectionBox.rightBox"
 ));
-const racingProjectBackgrounds = Array.from(document.querySelectorAll(".selectionBox.rightBox > img"));
 
 let racingProjectsLoaded = false;
 let racingProjectsElement = null;
@@ -15,35 +14,46 @@ let racingReturnButtonElement = null;
 let racingProjectsRevealTimeout = null;
 let racingProjectsExitTimeout = null;
 let racingRestartedPreviewInterval = null;
+let racingCountdownInterval = null;
 
-function setActiveRacingProjectBackground(index) {
-	racingProjectBackgrounds.forEach((background, backgroundIndex) => {
-		background.classList.toggle("isPreviewImage", backgroundIndex === index);
-	});
+function formatRacingCountdown(milliseconds) {
+	const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+	const days = Math.floor(totalSeconds / 86400);
+	const hours = Math.floor((totalSeconds % 86400) / 3600);
+	const minutes = Math.floor((totalSeconds % 3600) / 60);
+	const seconds = totalSeconds % 60;
+
+	return `${String(days).padStart(2, "0")}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
 }
 
-function initializeRacingProjects(projectsElement) {
-	const projects = Array.from(projectsElement.querySelectorAll(":scope > .project"));
-	let visibleProjectIndex = 0;
+function initializeRacingTimeline(timelineElement) {
+	const timelineImages = Array.from(timelineElement.querySelectorAll(".timelineImages img"));
 
-	projects.forEach((project, index) => {
-		project.dataset.index = index;
-
-		if (window.getComputedStyle(project).display !== "none") {
-			project.style.setProperty("--projectDelay", `${visibleProjectIndex * 50}ms`);
-			visibleProjectIndex++;
-		}
-
-		project.addEventListener("mouseenter", () => {
-			setActiveRacingProjectBackground(index);
-		});
-
-		project.addEventListener("focus", () => {
-			setActiveRacingProjectBackground(index);
-		});
+	timelineImages.forEach((image, index) => {
+		image.style.setProperty("--imageIndex", index);
 	});
 
-	setActiveRacingProjectBackground(0);
+	const countdowns = Array.from(timelineElement.querySelectorAll(".countdown time"));
+
+	function updateCountdowns() {
+		const now = Date.now();
+
+		countdowns.forEach((countdown) => {
+			const targetDate = new Date(countdown.dateTime);
+			const targetTime = targetDate.getTime();
+
+			if (Number.isNaN(targetTime)) {
+				return;
+			}
+
+			countdown.textContent = formatRacingCountdown(targetTime - now);
+		});
+	}
+
+	if (countdowns.length > 0 && !racingCountdownInterval) {
+		updateCountdowns();
+		racingCountdownInterval = window.setInterval(updateCountdowns, 1000);
+	}
 }
 
 function pushRacingProjectsHistoryState() {
@@ -136,28 +146,26 @@ async function loadRacingProjects() {
 
 	const html = await response.text();
 	const sourceDocument = new DOMParser().parseFromString(html, "text/html");
-	const sourceProjects = sourceDocument.querySelector("#projects");
-	const sourceReturnButton = sourceDocument.querySelector(".returnButton");
+	const sourceTimeline = sourceDocument.querySelector("#timeline");
 
-	if (!sourceProjects) {
+	if (!sourceTimeline) {
 		return null;
 	}
 
-	racingProjectsElement = sourceProjects.cloneNode(true);
-	racingProjectsElement.classList.add("indexRacingProjects");
+	racingProjectsElement = sourceTimeline.cloneNode(true);
+	racingProjectsElement.classList.add("indexRacingTimeline");
 	document.body.appendChild(racingProjectsElement);
 
-	if (sourceReturnButton) {
-		racingReturnButtonElement = sourceReturnButton.cloneNode(true);
-		racingReturnButtonElement.classList.add("indexRacingReturnButton");
+	racingReturnButtonElement = racingProjectsElement.querySelector(".returnButton");
+
+	if (racingReturnButtonElement) {
 		racingReturnButtonElement.addEventListener("click", event => {
 			event.preventDefault();
 			window.history.back();
 		});
-		document.body.appendChild(racingReturnButtonElement);
 	}
 
-	initializeRacingProjects(racingProjectsElement);
+	initializeRacingTimeline(racingProjectsElement);
 	racingProjectsLoaded = true;
 
 	return racingProjectsElement;
