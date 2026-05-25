@@ -113,6 +113,10 @@ header p, header h1 {
 	opacity: 1;
 }
 
+.selectionBox.centerBox.isClickedBox > img {
+	transition: opacity 1.5s ease, filter .5s ease-in, object-position .5s ease-in-out;
+}
+
 .selectionBox:hover img.isPreviewImage {
 	filter: grayscale(0%);
 	opacity: 1;
@@ -227,4 +231,16 @@ header p, header h1 {
 
 .name .links img {
 	filter: brightness(0);
+}
+
+.indexGamesProjects {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 4;
+	transition: opacity .5s ease;
+}
+
+.indexGamesProjects.isVisible {
+	opacity: 1;
+	pointer-events: auto;
 }
