@@ -28,14 +28,16 @@ function formatRacingCountdown(milliseconds) {
 
 function initializeRacingTimeline(timelineElement) {
 	const timelineItems = Array.from(timelineElement.children);
-	const timelineImages = Array.from(timelineElement.querySelectorAll(".timelineImages img"));
+	const timelineImageGroups = Array.from(timelineElement.querySelectorAll(".timelineImages"));
 
 	timelineItems.forEach((item, index) => {
 		item.style.setProperty("--timelineDelay", `${index * 100}ms`);
 	});
 
-	timelineImages.forEach((image, index) => {
-		image.style.setProperty("--imageIndex", index);
+	timelineImageGroups.forEach((imageGroup) => {
+		Array.from(imageGroup.querySelectorAll("img")).forEach((image, index) => {
+			image.style.setProperty("--imageIndex", index);
+		});
 	});
 
 	const countdowns = Array.from(timelineElement.querySelectorAll(".countdown time"));

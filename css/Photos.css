@@ -1,0 +1,207 @@
+body.photosPage {
+	margin: 0;
+	padding: 0;
+
+	overflow: hidden;
+}
+
+body.photosPage #timeline,
+#timeline.indexPhotosTimeline {
+	position: absolute;
+	top: 15vh;
+	left: 0;
+
+	box-sizing: border-box;
+	width: 100vw;
+
+	padding: 1rem;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	gap: 1rem;
+}
+
+body.photosPage .timelineLine,
+.indexPhotosTimeline > .timelineLine {
+	position: relative;
+
+	width: 50%;
+	height: .25rem;
+
+	border-radius: 1rem;
+	overflow: hidden;
+	
+	background-color: white;
+}
+
+body.photosPage .timelineLine.full,
+.indexPhotosTimeline > .timelineLine.full {
+	width: 100%;
+}
+
+body.photosPage .timelineSection,
+.indexPhotosTimeline > .timelineSection {
+	position: relative;
+	width: max-content;
+	
+	color: white;
+	text-wrap: nowrap;
+	
+	display: grid;
+	justify-items: center;
+	
+	text-align: center;
+	
+	top: -1rem;
+}
+
+body.photosPage .timelineSection .date,
+.indexPhotosTimeline .timelineSection .date {
+	font-size: 1rem;
+	opacity: .75;
+	margin-bottom: 0;
+}
+
+body.photosPage .timelineSection > .event,
+.indexPhotosTimeline .timelineSection > .event {
+	margin-bottom:0rem;
+	margin-top: 0;
+}
+
+body.photosPage .timelineSection .result,
+.indexPhotosTimeline .timelineSection .result {
+	font-size: 1.25rem;
+	font-weight: bold;
+	margin: 1rem 0 1rem 0;
+}
+
+body.photosPage .timelineSection .countdown,
+.indexPhotosTimeline .timelineSection .countdown {
+	display: grid;
+	justify-items: center;
+	gap: .25rem;
+}
+
+body.photosPage .timelineSection .countdown p,
+.indexPhotosTimeline .timelineSection .countdown p {
+	margin: 1rem 0 0;
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+
+body.photosPage .timelineSection .countdown time,
+.indexPhotosTimeline .timelineSection .countdown time {
+	font-family: monospace;
+	font-size: 1.25rem;
+	letter-spacing: 0;
+}
+
+body.photosPage .timelineImages,
+.indexPhotosTimeline .timelineImages {
+	position: absolute;
+	top: 100%;
+	left: 50%;
+
+	display: grid;
+	justify-items: center;
+	gap: 1rem;
+
+	transform: translateX(-50%);
+}
+
+body.photosPage .timelineImages img,
+.indexPhotosTimeline .timelineImages img {
+	--sideOffset: 2.5rem;
+	--verticalOffset: -5rem;
+	
+	width: 20vw;
+	height: auto;
+	object-fit: cover;
+	border-radius: 1rem;
+}
+
+body.photosPage .timelineImages img:nth-of-type(odd),
+.indexPhotosTimeline .timelineImages img:nth-of-type(odd) {
+	transform: translate(var(--sideOffset), calc(var(--imageIndex, 0) * var(--verticalOffset)));
+}
+
+body.photosPage .timelineImages img:nth-of-type(even),
+.indexPhotosTimeline .timelineImages img:nth-of-type(even) {
+	transform: translate(calc(-1 * var(--sideOffset)), calc(var(--imageIndex, 0) * var(--verticalOffset)));
+}
+
+/*Return Button*/
+body.photosPage #timeline .returnButton,
+#timeline.indexPhotosTimeline .returnButton {
+	position: relative;
+	width: 3.5rem;
+	height: 3.5rem;
+	top: -1.75rem;
+	right: auto;
+	bottom: auto;
+	left: auto;
+	transform: none;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+
+	border: 2px solid rgba(255, 255, 255, 0);
+	border-radius: 1rem;
+	transition: border-color .1s ease, transform .1s ease;
+}
+
+body.photosPage #timeline .returnButton:hover,
+body.photosPage #timeline .returnButton:focus,
+#timeline.indexPhotosTimeline .returnButton:hover,
+#timeline.indexPhotosTimeline .returnButton:focus {
+	border-color: rgba(255, 255, 255, 1);
+}
+
+body.photosPage #timeline .returnButton span,
+#timeline.indexPhotosTimeline .returnButton span {
+	width: 1rem;
+	height: 1rem;
+	border-right: 3px solid white;
+	border-bottom: 3px solid white;
+	transform: translateX(-0.2rem) rotate(-45deg);
+}
+
+.indexPhotosTimeline {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 4;
+}
+
+.indexPhotosTimeline.isVisible,
+.indexPhotosTimeline.isLeaving {
+	opacity: 1;
+}
+
+.indexPhotosTimeline.isVisible {
+	pointer-events: auto;
+}
+
+#timeline.indexPhotosTimeline > .returnButton,
+.indexPhotosTimeline > .timelineLine,
+.indexPhotosTimeline > .timelineSection {
+	opacity: 0;
+	transform: translateX(-100vw);
+	transition: transform 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--timelineDelay, 0ms);
+}
+
+#timeline.indexPhotosTimeline.isLeaving > .returnButton,
+.indexPhotosTimeline.isLeaving > .timelineLine,
+.indexPhotosTimeline.isLeaving > .timelineSection {
+	transition-delay: 0ms;
+}
+
+#timeline.indexPhotosTimeline.isVisible > .returnButton,
+.indexPhotosTimeline.isVisible > .timelineLine,
+.indexPhotosTimeline.isVisible > .timelineSection {
+	opacity: 1;
+	transform: translateX(0);
+}
