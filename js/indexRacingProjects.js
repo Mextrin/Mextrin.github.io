@@ -27,7 +27,12 @@ function formatRacingCountdown(milliseconds) {
 }
 
 function initializeRacingTimeline(timelineElement) {
+	const timelineItems = Array.from(timelineElement.children);
 	const timelineImages = Array.from(timelineElement.querySelectorAll(".timelineImages img"));
+
+	timelineItems.forEach((item, index) => {
+		item.style.setProperty("--timelineDelay", `${index * 100}ms`);
+	});
 
 	timelineImages.forEach((image, index) => {
 		image.style.setProperty("--imageIndex", index);

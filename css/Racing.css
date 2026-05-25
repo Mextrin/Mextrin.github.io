@@ -154,18 +154,35 @@ body {
 	opacity: 0;
 	pointer-events: none;
 	z-index: 4;
-	transform: translateY(-15vh);
-	transition: transform 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+}
+
+.indexRacingTimeline.isVisible,
+.indexRacingTimeline.isLeaving {
+	opacity: 1;
 }
 
 .indexRacingTimeline.isVisible {
-	opacity: 1;
 	pointer-events: auto;
-	transform: translateY(0);
 }
 
-.indexRacingTimeline.isLeaving {
+#timeline.indexRacingTimeline > .returnButton,
+.indexRacingTimeline > .timelineLine,
+.indexRacingTimeline > .timelineSection {
 	opacity: 0;
-	pointer-events: none;
-	transform: translateY(-15vh);
+	transform: translateX(100vw);
+	transition: transform 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--timelineDelay, 0ms);
+}
+
+#timeline.indexRacingTimeline.isLeaving > .returnButton,
+.indexRacingTimeline.isLeaving > .timelineLine,
+.indexRacingTimeline.isLeaving > .timelineSection {
+	transition-delay: 0ms;
+}
+
+#timeline.indexRacingTimeline.isVisible > .returnButton,
+.indexRacingTimeline.isVisible > .timelineLine,
+.indexRacingTimeline.isVisible > .timelineSection {
+	opacity: 1;
+	transform: translateX(0);
 }
