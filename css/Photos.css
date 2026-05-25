@@ -10,6 +10,7 @@ body.photosPage #timeline,
 	position: absolute;
 	top: 15vh;
 	left: 0;
+	z-index: 2;
 
 	box-sizing: border-box;
 	width: 100vw;
@@ -20,6 +21,11 @@ body.photosPage #timeline,
 	flex-direction: row;
 	justify-content: flex-end;
 	gap: 1rem;
+}
+
+body.photosPage #backgrounds,
+body.photosPage .tint {
+	pointer-events: none;
 }
 
 body.photosPage .timelineLine,
@@ -121,6 +127,11 @@ body.photosPage .timelineImages img,
 	border-radius: 1rem;
 }
 
+body.photosPage .timelineImages img,
+.indexPhotosTimeline .timelineImages img {
+	cursor: pointer;
+}
+
 body.photosPage .timelineImages img:nth-of-type(odd),
 .indexPhotosTimeline .timelineImages img:nth-of-type(odd) {
 	transform: translate(var(--sideOffset), calc(var(--imageIndex, 0) * var(--verticalOffset)));
@@ -129,6 +140,36 @@ body.photosPage .timelineImages img:nth-of-type(odd),
 body.photosPage .timelineImages img:nth-of-type(even),
 .indexPhotosTimeline .timelineImages img:nth-of-type(even) {
 	transform: translate(calc(-1 * var(--sideOffset)), calc(var(--imageIndex, 0) * var(--verticalOffset)));
+}
+
+.photoLightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0;
+	background-color: rgba(0, 0, 0, .9);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .2s ease;
+}
+
+.photoLightbox.isOpen {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.photoLightbox img {
+	max-width: 100vw;
+	max-height: 100vh;
+	width: auto;
+	height: auto;
+	object-fit: contain;
+	cursor: pointer;
 }
 
 /*Return Button*/

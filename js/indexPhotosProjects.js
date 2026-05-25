@@ -15,6 +15,8 @@ let photosProjectsRevealTimeout = null;
 let photosProjectsExitTimeout = null;
 let photosRestartedPreviewInterval = null;
 let photosCountdownInterval = null;
+let photosLightboxElement = null;
+let photosLightboxImage = null;
 
 function formatPhotosCountdown(milliseconds) {
 	const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
@@ -64,6 +66,61 @@ function initializePhotosTimeline(timelineElement) {
 	}
 }
 
+function closeIndexPhotosLightbox() {
+	if (!photosLightboxElement || !photosLightboxImage) {
+		return;
+	}
+
+	photosLightboxElement.classList.remove("isOpen");
+	photosLightboxElement.setAttribute("aria-hidden", "true");
+	photosLightboxImage.removeAttribute("src");
+	photosLightboxImage.alt = "";
+}
+
+function openIndexPhotosLightbox(image) {
+	if (!photosLightboxElement || !photosLightboxImage) {
+		return;
+	}
+
+	photosLightboxImage.src = image.currentSrc || image.src;
+	photosLightboxImage.alt = image.alt || "Photo";
+	photosLightboxElement.classList.add("isOpen");
+	photosLightboxElement.setAttribute("aria-hidden", "false");
+}
+
+function initializeIndexPhotosLightbox(timelineElement) {
+	if (!photosLightboxElement) {
+		photosLightboxElement = document.createElement("div");
+		photosLightboxImage = document.createElement("img");
+
+		photosLightboxElement.className = "photoLightbox";
+		photosLightboxElement.setAttribute("aria-hidden", "true");
+
+		photosLightboxImage.alt = "";
+		photosLightboxElement.appendChild(photosLightboxImage);
+		document.body.appendChild(photosLightboxElement);
+
+		photosLightboxElement.addEventListener("click", closeIndexPhotosLightbox);
+
+		window.addEventListener("keydown", (event) => {
+			if (event.key === "Escape" && photosLightboxElement.classList.contains("isOpen")) {
+				closeIndexPhotosLightbox();
+			}
+		});
+	}
+
+	timelineElement.addEventListener("click", (event) => {
+		const image = event.target.closest(".timelineImages img");
+
+		if (!image) {
+			return;
+		}
+
+		event.preventDefault();
+		openIndexPhotosLightbox(image);
+	});
+}
+
 function pushPhotosProjectsHistoryState() {
 	if (window.location.pathname.endsWith(photosProjectsUrl)) {
 		return;
@@ -102,6 +159,7 @@ function clearPhotosRestartedPreviewInterval() {
 function resetIndexPhotosView() {
 	clearPhotosProjectsRevealTimeout();
 	clearPhotosProjectsExitTimeout();
+	closeIndexPhotosLightbox();
 
 	if (photosProjectsElement) {
 		photosProjectsElement.classList.add("isLeaving");
@@ -174,6 +232,7 @@ async function loadPhotosProjects() {
 	}
 
 	initializePhotosTimeline(photosProjectsElement);
+	initializeIndexPhotosLightbox(photosProjectsElement);
 	photosProjectsLoaded = true;
 
 	return photosProjectsElement;

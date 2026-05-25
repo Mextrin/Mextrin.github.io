@@ -29,6 +29,54 @@ timelineImageGroups.forEach((imageGroup) => {
 	});
 });
 
+if (document.body.classList.contains("photosPage")) {
+	const timeline = document.querySelector("body.photosPage #timeline");
+	const lightbox = document.createElement("div");
+	const lightboxImage = document.createElement("img");
+
+	lightbox.className = "photoLightbox";
+	lightbox.setAttribute("aria-hidden", "true");
+
+	lightboxImage.alt = "";
+	lightbox.appendChild(lightboxImage);
+	document.body.appendChild(lightbox);
+
+	function closePhotoLightbox() {
+		lightbox.classList.remove("isOpen");
+		lightbox.setAttribute("aria-hidden", "true");
+		lightboxImage.removeAttribute("src");
+		lightboxImage.alt = "";
+	}
+
+	function openPhotoLightbox(image) {
+		lightboxImage.src = image.currentSrc || image.src;
+		lightboxImage.alt = image.alt || "Photo";
+		lightbox.classList.add("isOpen");
+		lightbox.setAttribute("aria-hidden", "false");
+	}
+
+	if (timeline) {
+		timeline.addEventListener("click", (event) => {
+			const image = event.target.closest(".timelineImages img");
+
+			if (!image) {
+				return;
+			}
+
+			event.preventDefault();
+			openPhotoLightbox(image);
+		});
+	}
+
+	lightbox.addEventListener("click", closePhotoLightbox);
+
+	window.addEventListener("keydown", (event) => {
+		if (event.key === "Escape" && lightbox.classList.contains("isOpen")) {
+			closePhotoLightbox();
+		}
+	});
+}
+
 const countdowns = Array.from(document.querySelectorAll(".countdown time"));
 
 function formatCountdown(milliseconds) {
