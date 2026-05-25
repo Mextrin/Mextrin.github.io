@@ -10,6 +10,7 @@ const gamesProjectBackgrounds = Array.from(document.querySelectorAll(".selection
 
 let gamesProjectsLoaded = false;
 let gamesProjectsElement = null;
+let gamesReturnButtonElement = null;
 let gamesProjectsRevealTimeout = null;
 let restartedPreviewInterval = null;
 
@@ -70,6 +71,10 @@ function resetIndexGamesView() {
 		gamesProjectsElement.classList.remove("isVisible");
 	}
 
+	if (gamesReturnButtonElement) {
+		gamesReturnButtonElement.classList.remove("isVisible");
+	}
+
 	if (gamesProjectsContainer) {
 		gamesProjectsContainer.classList.remove("isClicked");
 		gamesProjectsContainer.style.setProperty("--clickedOffsetX", "0vw");
@@ -101,6 +106,7 @@ async function loadGamesProjects() {
 	const html = await response.text();
 	const sourceDocument = new DOMParser().parseFromString(html, "text/html");
 	const sourceProjects = sourceDocument.querySelector("#projects");
+	const sourceReturnButton = sourceDocument.querySelector(".returnButton");
 
 	if (!sourceProjects) {
 		return null;
@@ -109,6 +115,16 @@ async function loadGamesProjects() {
 	gamesProjectsElement = sourceProjects.cloneNode(true);
 	gamesProjectsElement.classList.add("indexGamesProjects");
 	document.body.appendChild(gamesProjectsElement);
+
+	if (sourceReturnButton) {
+		gamesReturnButtonElement = sourceReturnButton.cloneNode(true);
+		gamesReturnButtonElement.addEventListener("click", event => {
+			event.preventDefault();
+			window.history.back();
+		});
+		document.body.appendChild(gamesReturnButtonElement);
+	}
+
 	initializeGamesProjects(gamesProjectsElement);
 	gamesProjectsLoaded = true;
 
@@ -131,6 +147,9 @@ if (gamesProjectsBox) {
 		clearGamesProjectsRevealTimeout();
 		gamesProjectsRevealTimeout = window.setTimeout(() => {
 			projectsElement.classList.add("isVisible");
+			if (gamesReturnButtonElement) {
+				gamesReturnButtonElement.classList.add("isVisible");
+			}
 			gamesProjectsRevealTimeout = null;
 		}, gamesProjectsRevealDelay);
 	});

@@ -240,7 +240,14 @@ header p, header h1 {
 	transition: opacity .5s ease;
 }
 
-.indexGamesProjects.isVisible {
+.indexGamesProjects.isVisible,
+.returnButton.isVisible {
 	opacity: 1;
 	pointer-events: auto;
+}
+
+.returnButton {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 5;
 }
