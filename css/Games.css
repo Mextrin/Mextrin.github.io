@@ -86,9 +86,8 @@ header img {
 
 #projects {
 	display: flex;
-	flex-wrap: wrap;
 
-	gap: 10vw;
+	gap: 1rem;
 	row-gap: 5vh;
 	padding: 5vh 0 5vh 0;
 	margin-left: 10vw;
@@ -97,7 +96,7 @@ header img {
 .project {
 	position: relative;
 
-	--size: 20vw;
+	--size: 15vw;
 
 	width: var(--size);
 	aspect-ratio: 5/7;
@@ -136,4 +135,31 @@ header img {
 	color: white;
 	width: 100%;
 	text-align: center;
+}
+
+.companyIcons {
+	position: absolute;
+	bottom: 0;
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	gap: 0.5rem;
+	padding: 0.5rem;
+	box-sizing: border-box;
+}
+
+.toolIcons {
+	position: absolute;
+	bottom: 0;
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	gap: 0.5rem;
+	padding: 0.5rem;
+	box-sizing: border-box;
+}
+
+.toolIcons img, .companyIcons img {
+	width: 2.5rem;
+	height: 2.5rem;
 }
