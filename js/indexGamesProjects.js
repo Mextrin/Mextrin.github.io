@@ -1,10 +1,17 @@
 const gamesProjectsSource = "Games.html";
 const gamesProjectsRevealDelay = 1000;
+const gamesProjectsUrl = "Games.html";
 const gamesProjectsBox = document.querySelector(".selectionBox.centerBox");
+const gamesProjectsContainer = document.querySelector(".container");
+const gamesProjectsPreviewBoxes = Array.from(document.querySelectorAll(
+	".selectionBox.leftBox, .selectionBox.centerBox, .selectionBox.rightBox"
+));
 const gamesProjectBackgrounds = Array.from(document.querySelectorAll(".selectionBox.centerBox > img"));
 
 let gamesProjectsLoaded = false;
 let gamesProjectsElement = null;
+let gamesProjectsRevealTimeout = null;
+let restartedPreviewInterval = null;
 
 function setActiveGamesProjectBackground(index) {
 	gamesProjectBackgrounds.forEach((background, backgroundIndex) => {
@@ -28,6 +35,56 @@ function initializeGamesProjects(projectsElement) {
 	});
 
 	setActiveGamesProjectBackground(0);
+}
+
+function pushGamesProjectsHistoryState() {
+	if (window.location.pathname.endsWith(gamesProjectsUrl)) {
+		return;
+	}
+
+	window.history.pushState({ gamesProjectsView: true }, "", gamesProjectsUrl);
+}
+
+function clearGamesProjectsRevealTimeout() {
+	if (!gamesProjectsRevealTimeout) {
+		return;
+	}
+
+	window.clearTimeout(gamesProjectsRevealTimeout);
+	gamesProjectsRevealTimeout = null;
+}
+
+function clearRestartedPreviewInterval() {
+	if (!restartedPreviewInterval) {
+		return;
+	}
+
+	window.clearInterval(restartedPreviewInterval);
+	restartedPreviewInterval = null;
+}
+
+function resetIndexGamesView() {
+	clearGamesProjectsRevealTimeout();
+
+	if (gamesProjectsElement) {
+		gamesProjectsElement.classList.remove("isVisible");
+	}
+
+	if (gamesProjectsContainer) {
+		gamesProjectsContainer.classList.remove("isClicked");
+		gamesProjectsContainer.style.setProperty("--clickedOffsetX", "0vw");
+		gamesProjectsContainer.style.setProperty("--clickedOffsetY", "0vh");
+	}
+
+	gamesProjectsPreviewBoxes.forEach(box => {
+		box.classList.remove("isClickedBox", "isPreviewing");
+	});
+
+	if (typeof showNextPreview === "function") {
+		showNextPreview();
+		clearRestartedPreviewInterval();
+		restartedPreviewInterval = window.setInterval(showNextPreview, 5000);
+	}
 }
 
 async function loadGamesProjects() {
@@ -62,14 +119,29 @@ const gamesProjectsLoad = loadGamesProjects().catch(() => null);
 
 if (gamesProjectsBox) {
 	gamesProjectsBox.addEventListener("click", async () => {
+		clearRestartedPreviewInterval();
+		pushGamesProjectsHistoryState();
+
 		const projectsElement = await gamesProjectsLoad;
 
 		if (!projectsElement) {
 			return;
 		}
 
-		window.setTimeout(() => {
+		clearGamesProjectsRevealTimeout();
+		gamesProjectsRevealTimeout = window.setTimeout(() => {
 			projectsElement.classList.add("isVisible");
+			gamesProjectsRevealTimeout = null;
 		}, gamesProjectsRevealDelay);
 	});
 }
+
+gamesProjectsPreviewBoxes.forEach(box => {
+	box.addEventListener("click", clearRestartedPreviewInterval);
+});
+
+window.addEventListener("popstate", () => {
+	if (!window.location.pathname.endsWith(gamesProjectsUrl)) {
+		resetIndexGamesView();
+	}
+});
