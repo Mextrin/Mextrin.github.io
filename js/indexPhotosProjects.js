@@ -159,6 +159,11 @@ async function loadPhotosProjects() {
 	}
 
 	initializePhotosCollections(photosProjectsElement);
+
+	if (typeof initializePhotoRotation === "function") {
+		initializePhotoRotation(photosProjectsElement);
+	}
+
 	photosProjectsLoaded = true;
 
 	return photosProjectsElement;
