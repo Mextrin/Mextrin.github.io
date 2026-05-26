@@ -71,7 +71,7 @@ header p, header h1 {
 	height: 100vh;
 	z-index: 2;
 	
-	/*cursor: pointer;*/
+	cursor: pointer;
 	transition: clip-path 1s ease-in-out;
 }
 
@@ -93,6 +93,7 @@ header p, header h1 {
 .selectionBox.isClickedBox {
 	--imageX: 0vw;
 	--imageY: 0vh;
+	cursor: default;
 }
 
 .selectionBox > img {
