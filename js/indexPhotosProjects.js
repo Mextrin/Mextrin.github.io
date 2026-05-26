@@ -1,6 +1,8 @@
 const photosProjectsSource = "Photos.html";
-const photosProjectsRevealDelay = 1000;
+const photosProjectsRevealDelay = 1500;
 const photosProjectsExitDuration = 5000;
+const photosCollectionColumnDelayStep = 100;
+const photosCollectionRowDelayStep = 200;
 const photosProjectsUrl = "Photos.html";
 const photosProjectsBox = document.querySelector(".selectionBox.leftBox");
 const photosProjectsContainer = document.querySelector(".container");
@@ -14,110 +16,30 @@ let photosReturnButtonElement = null;
 let photosProjectsRevealTimeout = null;
 let photosProjectsExitTimeout = null;
 let photosRestartedPreviewInterval = null;
-let photosCountdownInterval = null;
-let photosLightboxElement = null;
-let photosLightboxImage = null;
 
-function formatPhotosCountdown(milliseconds) {
-	const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
-	const days = Math.floor(totalSeconds / 86400);
-	const hours = Math.floor((totalSeconds % 86400) / 3600);
-	const minutes = Math.floor((totalSeconds % 3600) / 60);
-	const seconds = totalSeconds % 60;
+function initializePhotosCollections(collectionsElement) {
+	const collectionItems = Array.from(collectionsElement.querySelectorAll(":scope > .collection"))
+		.filter(collection => window.getComputedStyle(collection).visibility !== "hidden")
+		.map(collection => ({
+			collection,
+			rect: collection.getBoundingClientRect()
+		}));
 
-	return `${String(days).padStart(2, "0")}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
-}
+	const columns = [...new Set(collectionItems.map(item => Math.round(item.rect.left)))]
+		.sort((first, second) => first - second);
+	const rows = [...new Set(collectionItems.map(item => Math.round(item.rect.top)))]
+		.sort((first, second) => first - second);
+	const maxColumnIndex = columns.length - 1;
+	const maxRowIndex = rows.length - 1;
 
-function initializePhotosTimeline(timelineElement) {
-	const timelineItems = Array.from(timelineElement.children);
-	const timelineImageGroups = Array.from(timelineElement.querySelectorAll(".timelineImages"));
+	collectionItems.forEach(({ collection, rect }) => {
+		const columnIndex = columns.indexOf(Math.round(rect.left));
+		const rowIndex = rows.indexOf(Math.round(rect.top));
+		const columnsFromRight = maxColumnIndex - columnIndex;
+		const delay = (columnsFromRight * photosCollectionColumnDelayStep)
+			+ (rowIndex * photosCollectionRowDelayStep);
 
-	timelineItems.forEach((item, index) => {
-		const reverseIndex = timelineItems.length - 1 - index;
-		item.style.setProperty("--timelineDelay", `${reverseIndex * 100}ms`);
-	});
-
-	timelineImageGroups.forEach((imageGroup) => {
-		Array.from(imageGroup.querySelectorAll("img")).forEach((image, index) => {
-			image.style.setProperty("--imageIndex", index);
-		});
-	});
-
-	const countdowns = Array.from(timelineElement.querySelectorAll(".countdown time"));
-
-	function updateCountdowns() {
-		const now = Date.now();
-
-		countdowns.forEach((countdown) => {
-			const targetDate = new Date(countdown.dateTime);
-			const targetTime = targetDate.getTime();
-
-			if (Number.isNaN(targetTime)) {
-				return;
-			}
-
-			countdown.textContent = formatPhotosCountdown(targetTime - now);
-		});
-	}
-
-	if (countdowns.length > 0 && !photosCountdownInterval) {
-		updateCountdowns();
-		photosCountdownInterval = window.setInterval(updateCountdowns, 1000);
-	}
-}
-
-function closeIndexPhotosLightbox() {
-	if (!photosLightboxElement || !photosLightboxImage) {
-		return;
-	}
-
-	photosLightboxElement.classList.remove("isOpen");
-	photosLightboxElement.setAttribute("aria-hidden", "true");
-	photosLightboxImage.removeAttribute("src");
-	photosLightboxImage.alt = "";
-}
-
-function openIndexPhotosLightbox(image) {
-	if (!photosLightboxElement || !photosLightboxImage) {
-		return;
-	}
-
-	photosLightboxImage.src = image.currentSrc || image.src;
-	photosLightboxImage.alt = image.alt || "Photo";
-	photosLightboxElement.classList.add("isOpen");
-	photosLightboxElement.setAttribute("aria-hidden", "false");
-}
-
-function initializeIndexPhotosLightbox(timelineElement) {
-	if (!photosLightboxElement) {
-		photosLightboxElement = document.createElement("div");
-		photosLightboxImage = document.createElement("img");
-
-		photosLightboxElement.className = "photoLightbox";
-		photosLightboxElement.setAttribute("aria-hidden", "true");
-
-		photosLightboxImage.alt = "";
-		photosLightboxElement.appendChild(photosLightboxImage);
-		document.body.appendChild(photosLightboxElement);
-
-		photosLightboxElement.addEventListener("click", closeIndexPhotosLightbox);
-
-		window.addEventListener("keydown", (event) => {
-			if (event.key === "Escape" && photosLightboxElement.classList.contains("isOpen")) {
-				closeIndexPhotosLightbox();
-			}
-		});
-	}
-
-	timelineElement.addEventListener("click", (event) => {
-		const image = event.target.closest(".timelineImages img");
-
-		if (!image) {
-			return;
-		}
-
-		event.preventDefault();
-		openIndexPhotosLightbox(image);
+		collection.style.setProperty("--collectionDelay", `${delay}ms`);
 	});
 }
 
@@ -159,7 +81,6 @@ function clearPhotosRestartedPreviewInterval() {
 function resetIndexPhotosView() {
 	clearPhotosProjectsRevealTimeout();
 	clearPhotosProjectsExitTimeout();
-	closeIndexPhotosLightbox();
 
 	if (photosProjectsElement) {
 		photosProjectsElement.classList.add("isLeaving");
@@ -212,27 +133,28 @@ async function loadPhotosProjects() {
 
 	const html = await response.text();
 	const sourceDocument = new DOMParser().parseFromString(html, "text/html");
-	const sourceTimeline = sourceDocument.querySelector("#timeline");
+	const sourceCollections = sourceDocument.querySelector("#collections");
+	const sourceReturnButton = sourceDocument.querySelector(".returnButton");
 
-	if (!sourceTimeline) {
+	if (!sourceCollections) {
 		return null;
 	}
 
-	photosProjectsElement = sourceTimeline.cloneNode(true);
-	photosProjectsElement.classList.add("indexPhotosTimeline");
+	photosProjectsElement = sourceCollections.cloneNode(true);
+	photosProjectsElement.classList.add("indexPhotosCollections");
 	document.body.appendChild(photosProjectsElement);
 
-	photosReturnButtonElement = photosProjectsElement.querySelector(".returnButton");
-
-	if (photosReturnButtonElement) {
+	if (sourceReturnButton) {
+		photosReturnButtonElement = sourceReturnButton.cloneNode(true);
+		photosReturnButtonElement.classList.add("indexPhotosReturnButton");
 		photosReturnButtonElement.addEventListener("click", event => {
 			event.preventDefault();
 			window.history.back();
 		});
+		document.body.appendChild(photosReturnButtonElement);
 	}
 
-	initializePhotosTimeline(photosProjectsElement);
-	initializeIndexPhotosLightbox(photosProjectsElement);
+	initializePhotosCollections(photosProjectsElement);
 	photosProjectsLoaded = true;
 
 	return photosProjectsElement;

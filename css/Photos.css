@@ -60,12 +60,15 @@ body {
 	text-align: center;
 }
 
-.returnButton {
+#collections + .returnButton,
+.indexPhotosReturnButton {
 	position: absolute;
 	width: 3.5rem;
 	height: 3.5rem;
 	top: 50%;
 	right: 3rem;
+	bottom: auto;
+	left: auto;
 	transform: translateY(-50%);
 
 	display: flex;
@@ -78,15 +81,60 @@ body {
 	transition: border-color .1s ease, transform .1s ease;
 }
 
-.returnButton:hover,
-.returnButton:focus {
+#collections + .returnButton:hover,
+#collections + .returnButton:focus,
+.indexPhotosReturnButton:hover,
+.indexPhotosReturnButton:focus {
 	border-color: rgba(255, 255, 255, 1);
 }
 
-.returnButton span {
+#collections + .returnButton span,
+.indexPhotosReturnButton span {
 	width: 1rem;
 	height: 1rem;
 	border-right: 3px solid white;
 	border-bottom: 3px solid white;
 	transform: translateX(-.25rem) rotate(-45deg);
+}
+
+.indexPhotosCollections {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	pointer-events: none;
+	z-index: 4;
+}
+
+.indexPhotosCollections.isVisible,
+.indexPhotosCollections.isLeaving,
+.indexPhotosReturnButton.isVisible {
+	opacity: 1;
+}
+
+.indexPhotosCollections.isVisible,
+.indexPhotosReturnButton.isVisible {
+	pointer-events: auto;
+}
+
+.indexPhotosCollections > .collection {
+	opacity: 0;
+	transform: translateX(-25vw);
+	transition: transform 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--collectionDelay, 0ms);
+}
+
+.indexPhotosCollections.isLeaving > .collection {
+	transition-delay: 0ms;
+}
+
+.indexPhotosCollections.isVisible > .collection {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.indexPhotosReturnButton {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 5;
 }
