@@ -28,20 +28,22 @@ function initializeGamesProjects(projectsElement) {
 	const projects = Array.from(projectsElement.querySelectorAll(":scope > .project"));
 	let visibleProjectIndex = 0;
 
-	projects.forEach((project, index) => {
-		project.dataset.index = index;
-
-		if (window.getComputedStyle(project).display !== "none") {
-			project.style.setProperty("--projectDelay", `${visibleProjectIndex * 100}ms`);
-			visibleProjectIndex++;
+	projects.forEach(project => {
+		if (window.getComputedStyle(project).display === "none") {
+			return;
 		}
 
+		const projectIndex = visibleProjectIndex;
+		visibleProjectIndex++;
+		project.dataset.index = projectIndex;
+		project.style.setProperty("--projectDelay", `${projectIndex * 100}ms`);
+
 		project.addEventListener("mouseenter", () => {
-			setActiveGamesProjectBackground(index);
+			setActiveGamesProjectBackground(projectIndex);
 		});
 
 		project.addEventListener("focus", () => {
-			setActiveGamesProjectBackground(index);
+			setActiveGamesProjectBackground(projectIndex);
 		});
 	});
 

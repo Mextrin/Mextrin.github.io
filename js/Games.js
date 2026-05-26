@@ -7,15 +7,23 @@ function setActiveBackground(index) {
 	});
 }
 
-projects.forEach((project, index) => {
-	project.dataset.index = index;
+let visibleProjectIndex = 0;
+
+projects.forEach(project => {
+	if (window.getComputedStyle(project).display === "none") {
+		return;
+	}
+
+	const projectIndex = visibleProjectIndex;
+	visibleProjectIndex++;
+	project.dataset.index = projectIndex;
 
 	project.addEventListener("mouseenter", () => {
-		setActiveBackground(index);
+		setActiveBackground(projectIndex);
 	});
 
 	project.addEventListener("focus", () => {
-		setActiveBackground(index);
+		setActiveBackground(projectIndex);
 	});
 });
 
