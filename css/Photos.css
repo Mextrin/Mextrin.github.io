@@ -136,5 +136,25 @@ body {
 .indexPhotosReturnButton {
 	opacity: 0;
 	pointer-events: none;
+	transform: translateY(-50%) translateX(-25vw);
+	transition: border-color .1s ease;
 	z-index: 5;
+}
+
+.indexPhotosReturnButton.isVisible {
+	animation: photosReturnButtonSlideIn 1s cubic-bezier(.2, .9, .25, 1) both;
+	opacity: 1;
+	transform: translateY(-50%) translateX(0);
+}
+
+@keyframes photosReturnButtonSlideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-50%) translateX(-25vw);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(-50%) translateX(0);
+	}
 }

@@ -57,10 +57,7 @@ All elements inside it will also recieve a tint if their position type is static
 	backdrop-filter: blur(var(--blurSize));
 }
 
-/*
-Creates a line in the middle of the container
-*/
-
+/*Creates a line in the middle of the container*/
 .line::before {
 	content:"";
     position: absolute;

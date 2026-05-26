@@ -187,5 +187,25 @@ p {
 .indexGamesReturnButton {
 	opacity: 0;
 	pointer-events: none;
+	transform: translateX(-50%) translateY(-25vh);
+	transition: border-color .1s ease;
 	z-index: 5;
+}
+
+.indexGamesReturnButton.isVisible {
+	animation: gamesReturnButtonSlideIn 1s cubic-bezier(.2, .9, .25, 1) both;
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
+}
+
+@keyframes gamesReturnButtonSlideIn {
+	from {
+		opacity: 0;
+		transform: translateX(-50%) translateY(-25vh);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
 }
