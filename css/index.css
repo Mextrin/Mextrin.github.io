@@ -71,6 +71,7 @@ header p, header h1 {
 	height: 100vh;
 	z-index: 2;
 	
+	/*cursor: pointer;*/
 	transition: clip-path 1s ease-in-out;
 }
 
@@ -96,6 +97,8 @@ header p, header h1 {
 
 .selectionBox > img {
 	position: absolute;
+	width: 100vw;
+	height: 100vh;
 	inset: 0;
 	object-position: calc(var(--imageX) + var(--imageOffsetX)/4) calc(var(--imageY) + var(--imageOffsetY)/4);
 	object-fit: cover;
@@ -178,14 +181,15 @@ header p, header h1 {
 	position: absolute;
 	top: var(--labelY);
 	left: var(--labelX);
-	transform: translate(-50%, -50%) translate(var(--boxOffsetX), var(--boxOffsetY));
 	z-index: 1;
+
+	transform: translate(-50%, -50%) translate(var(--boxOffsetX), var(--boxOffsetY));
 	transition: transform 1s ease-in-out;
 
 	color: white;
 	font: 600 clamp(1.25rem, 2vw, 2rem) 'Kanit', sans-serif;
 	text-shadow: 0 2px 12px black;
-	pointer-events: none;
+	pointer-events:none;
 }
 
 .name {
@@ -232,4 +236,3 @@ header p, header h1 {
 .name .links img {
 	filter: brightness(0);
 }
-

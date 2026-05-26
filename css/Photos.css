@@ -1,188 +1,72 @@
-body.photosPage {
-	margin: 0;
-	padding: 0;
-
+body {
 	overflow: hidden;
 }
 
-body.photosPage #timeline,
-#timeline.indexPhotosTimeline {
+#backgrounds {
 	position: absolute;
-	top: 15vh;
-	left: 0;
-	z-index: 2;
-
-	box-sizing: border-box;
 	width: 100vw;
+	height: 100vh;
+}
 
-	padding: 1rem;
+#backgrounds img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/*Content*/
+#collections {
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	
+	padding: 10rem;
+	box-sizing: border-box;
 
 	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-	gap: 1rem;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	gap: 2rem;
 }
 
-body.photosPage #backgrounds,
-body.photosPage .tint {
-	pointer-events: none;
-}
-
-body.photosPage .timelineLine,
-.indexPhotosTimeline > .timelineLine {
+.collection {
 	position: relative;
+	flex: 0 0 calc((100% - (2rem * 4)) / 4);
 
-	width: 50%;
-	height: .25rem;
+	aspect-ratio: 16/9;
+	background-color: blue;
 
 	border-radius: 1rem;
 	overflow: hidden;
-	
-	background-color: white;
 }
 
-body.photosPage .timelineLine.full,
-.indexPhotosTimeline > .timelineLine.full {
-	width: 100%;
-}
-
-body.photosPage .timelineSection,
-.indexPhotosTimeline > .timelineSection {
-	position: relative;
-	width: max-content;
-	
-	color: white;
-	text-wrap: nowrap;
-	
-	display: grid;
-	justify-items: center;
-	
-	text-align: center;
-	
-	top: -1rem;
-}
-
-body.photosPage .timelineSection .date,
-.indexPhotosTimeline .timelineSection .date {
-	font-size: 1rem;
-	opacity: .75;
-	margin-bottom: 0;
-}
-
-body.photosPage .timelineSection > .event,
-.indexPhotosTimeline .timelineSection > .event {
-	margin-bottom:0rem;
-	margin-top: 0;
-}
-
-body.photosPage .timelineSection .result,
-.indexPhotosTimeline .timelineSection .result {
-	font-size: 1.25rem;
-	font-weight: bold;
-	margin: 1rem 0 1rem 0;
-}
-
-body.photosPage .timelineSection .countdown,
-.indexPhotosTimeline .timelineSection .countdown {
-	display: grid;
-	justify-items: center;
-	gap: .25rem;
-}
-
-body.photosPage .timelineSection .countdown p,
-.indexPhotosTimeline .timelineSection .countdown p {
-	margin: 1rem 0 0;
-	font-size: 1.25rem;
-	font-weight: bold;
-}
-
-body.photosPage .timelineSection .countdown time,
-.indexPhotosTimeline .timelineSection .countdown time {
-	font-family: monospace;
-	font-size: 1.25rem;
-	letter-spacing: 0;
-}
-
-body.photosPage .timelineImages,
-.indexPhotosTimeline .timelineImages {
+.collection > img {
 	position: absolute;
-	top: 100%;
-	left: 50%;
-
-	display: grid;
-	justify-items: center;
-	gap: 1rem;
-
-	transform: translateX(-50%);
-}
-
-body.photosPage .timelineImages img,
-.indexPhotosTimeline .timelineImages img {
-	--sideOffset: 2.5rem;
-	--verticalOffset: -5rem;
-	
-	width: 20vw;
-	height: auto;
+	width: 100%;
+	height: 100%;
 	object-fit: cover;
-	border-radius: 1rem;
 }
 
-body.photosPage .timelineImages img,
-.indexPhotosTimeline .timelineImages img {
-	cursor: pointer;
+.collection > p {
+	position: absolute;
+	color: white;
+
+	width: 100%;
+	margin-top: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	font: 200 clamp(1.25rem, 2vw, 2rem) 'Kanit', sans-serif;
+	text-shadow: 0 2px 12px black;
+	text-align: center;
 }
 
-body.photosPage .timelineImages img:nth-of-type(odd),
-.indexPhotosTimeline .timelineImages img:nth-of-type(odd) {
-	transform: translate(var(--sideOffset), calc(var(--imageIndex, 0) * var(--verticalOffset)));
-}
-
-body.photosPage .timelineImages img:nth-of-type(even),
-.indexPhotosTimeline .timelineImages img:nth-of-type(even) {
-	transform: translate(calc(-1 * var(--sideOffset)), calc(var(--imageIndex, 0) * var(--verticalOffset)));
-}
-
-.photoLightbox {
-	position: fixed;
-	inset: 0;
-	z-index: 100;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	padding: 0;
-	background-color: rgba(0, 0, 0, .9);
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity .2s ease;
-}
-
-.photoLightbox.isOpen {
-	opacity: 1;
-	pointer-events: auto;
-}
-
-.photoLightbox img {
-	max-width: 100vw;
-	max-height: 100vh;
-	width: auto;
-	height: auto;
-	object-fit: contain;
-	cursor: pointer;
-}
-
-/*Return Button*/
-body.photosPage #timeline .returnButton,
-#timeline.indexPhotosTimeline .returnButton {
-	position: relative;
+.returnButton {
+	position: absolute;
 	width: 3.5rem;
 	height: 3.5rem;
-	top: -1.75rem;
-	right: auto;
-	bottom: auto;
-	left: auto;
-	transform: none;
+	top: 50%;
+	right: 3rem;
+	transform: translateY(-50%);
 
 	display: flex;
 	align-items: center;
@@ -194,55 +78,15 @@ body.photosPage #timeline .returnButton,
 	transition: border-color .1s ease, transform .1s ease;
 }
 
-body.photosPage #timeline .returnButton:hover,
-body.photosPage #timeline .returnButton:focus,
-#timeline.indexPhotosTimeline .returnButton:hover,
-#timeline.indexPhotosTimeline .returnButton:focus {
+.returnButton:hover,
+.returnButton:focus {
 	border-color: rgba(255, 255, 255, 1);
 }
 
-body.photosPage #timeline .returnButton span,
-#timeline.indexPhotosTimeline .returnButton span {
+.returnButton span {
 	width: 1rem;
 	height: 1rem;
 	border-right: 3px solid white;
 	border-bottom: 3px solid white;
-	transform: translateX(-0.2rem) rotate(-45deg);
-}
-
-.indexPhotosTimeline {
-	opacity: 0;
-	pointer-events: none;
-	z-index: 4;
-}
-
-.indexPhotosTimeline.isVisible,
-.indexPhotosTimeline.isLeaving {
-	opacity: 1;
-}
-
-.indexPhotosTimeline.isVisible {
-	pointer-events: auto;
-}
-
-#timeline.indexPhotosTimeline > .returnButton,
-.indexPhotosTimeline > .timelineLine,
-.indexPhotosTimeline > .timelineSection {
-	opacity: 0;
-	transform: translateX(-100vw);
-	transition: transform 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
-	transition-delay: var(--timelineDelay, 0ms);
-}
-
-#timeline.indexPhotosTimeline.isLeaving > .returnButton,
-.indexPhotosTimeline.isLeaving > .timelineLine,
-.indexPhotosTimeline.isLeaving > .timelineSection {
-	transition-delay: 0ms;
-}
-
-#timeline.indexPhotosTimeline.isVisible > .returnButton,
-.indexPhotosTimeline.isVisible > .timelineLine,
-.indexPhotosTimeline.isVisible > .timelineSection {
-	opacity: 1;
-	transform: translateX(0);
+	transform: translateX(-.25rem) rotate(-45deg);
 }
