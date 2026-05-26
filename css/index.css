@@ -104,7 +104,8 @@ header p, header h1 {
 	object-fit: cover;
 	filter: grayscale(100%);
 	opacity: 0;
-	transition: opacity 8s ease-in, filter .5s ease-in, object-position .5s ease-in-out;
+	--opacityTransitionTime: 8s;
+	transition: opacity var(--opacityTransitionTime) ease-in, filter .5s ease-in, object-position .5s ease-in-out;
 }
 
 .selectionBox.isPreviewing img.isPreviewImage {
@@ -114,16 +115,17 @@ header p, header h1 {
 .selectionBox.isClickedBox img.isPreviewImage {
 	filter: grayscale(0%);
 	opacity: 1;
+	--opacityTransitionTime: 1s;
 }
 
 .selectionBox.centerBox.isClickedBox > img {
-	transition: opacity 1.5s ease, filter .5s ease-in, object-position .5s ease-in-out;
+	--opacityTransitionTime: 1s;
 }
 
 .selectionBox:hover img.isPreviewImage {
 	filter: grayscale(0%);
 	opacity: 1;
-	transition: opacity .5s ease-in, filter .5s ease-in, object-position .5s ease-in-out;
+	--opacityTransitionTime: 1s;
 }
 
 .container:has(.selectionBox:hover) .selectionBox:not(:hover) > img {
