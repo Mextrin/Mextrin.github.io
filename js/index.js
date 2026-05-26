@@ -19,6 +19,15 @@ function setPreviewImage(box, imageIndex) {
 	});
 }
 
+function setDynamicTintEnabled(activeBox = null) {
+	previewBoxes.forEach(box => {
+		box.classList.toggle(
+			"dynamicTintEnabled",
+			box === activeBox && box.classList.contains("dynamicTint")
+		);
+	});
+}
+
 function showNextPreview() {
 	if ([...previewBoxes].some(box => box.matches(":hover"))) {
 		return;
@@ -58,6 +67,8 @@ function setClickedBox(clickedBox, offsetX, offsetY) {
 	previewBoxes.forEach(box => {
 		box.classList.toggle("isClickedBox", box === clickedBox);
 	});
+
+	setDynamicTintEnabled(clickedBox);
 }
 
 if (previewBoxes.length > 0) {

@@ -108,6 +108,10 @@ function resetIndexGamesView() {
 		box.classList.remove("isClickedBox", "isPreviewing");
 	});
 
+	if (typeof setDynamicTintEnabled === "function") {
+		setDynamicTintEnabled();
+	}
+
 	if (typeof showNextPreview === "function") {
 		showNextPreview();
 		clearRestartedPreviewInterval();

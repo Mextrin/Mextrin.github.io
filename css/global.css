@@ -15,6 +15,7 @@ body {
     --weakTintOpacity: 0.3;
     --tintOpacity: 0.4;
     --codeTintOpacity: 0.8;
+    --dynamicTintOpacity: 0.0;
     --blurSize: 10px;
     margin:0;
     padding:0;
