@@ -36,6 +36,23 @@ All elements inside it will also recieve a tint if their position type is static
 	opacity: var(--codeTintOpacity);
 }
 
+.dynamicTintEnabled {
+	--dynamicTintOpacity: var(--tintOpacity);
+}
+
+.dynamicTint::before {
+	content:"";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	background-color:black;
+	opacity: var(--dynamicTintOpacity);
+	transition: opacity 1s ease;
+}
+
 .blur {
 	backdrop-filter: blur(var(--blurSize));
 }
