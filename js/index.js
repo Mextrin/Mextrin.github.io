@@ -7,6 +7,7 @@ const gamesBox = document.querySelector(".selectionBox.centerBox");
 const racingBox = document.querySelector(".selectionBox.rightBox");
 
 const previewDuration = 5000;
+const indexBackAnimationStepDelay = 250;
 const nextImageIndexes = new Array(previewBoxes.length).fill(0);
 let previewIndex = 0;
 let previewInterval;

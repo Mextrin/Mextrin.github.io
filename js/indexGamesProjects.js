@@ -14,6 +14,8 @@ let gamesProjectsElement = null;
 let gamesReturnButtonElement = null;
 let gamesProjectsRevealTimeout = null;
 let gamesProjectsExitTimeout = null;
+let gamesBackTilesTimeout = null;
+let gamesBackSelectionTimeout = null;
 let restartedPreviewInterval = null;
 
 function setActiveGamesProjectBackground(index) {
@@ -72,6 +74,18 @@ function clearGamesProjectsExitTimeout() {
 	gamesProjectsExitTimeout = null;
 }
 
+function clearGamesBackAnimationTimeouts() {
+	if (gamesBackTilesTimeout) {
+		window.clearTimeout(gamesBackTilesTimeout);
+		gamesBackTilesTimeout = null;
+	}
+
+	if (gamesBackSelectionTimeout) {
+		window.clearTimeout(gamesBackSelectionTimeout);
+		gamesBackSelectionTimeout = null;
+	}
+}
+
 function clearRestartedPreviewInterval() {
 	if (!restartedPreviewInterval) {
 		return;
@@ -84,6 +98,7 @@ function clearRestartedPreviewInterval() {
 function resetIndexGamesView() {
 	clearGamesProjectsRevealTimeout();
 	clearGamesProjectsExitTimeout();
+	clearGamesBackAnimationTimeouts();
 
 	if (gamesProjectsElement) {
 		gamesProjectsElement.classList.add("isLeaving");
@@ -98,25 +113,33 @@ function resetIndexGamesView() {
 		gamesReturnButtonElement.classList.remove("isVisible");
 	}
 
-	if (gamesProjectsContainer) {
-		gamesProjectsContainer.classList.remove("isClicked");
-		gamesProjectsContainer.style.setProperty("--clickedOffsetX", "0vw");
-		gamesProjectsContainer.style.setProperty("--clickedOffsetY", "0vh");
-	}
+	gamesBackTilesTimeout = window.setTimeout(() => {
+		if (gamesProjectsContainer) {
+			gamesProjectsContainer.classList.remove("isClicked");
+			gamesProjectsContainer.style.setProperty("--clickedOffsetX", "0vw");
+			gamesProjectsContainer.style.setProperty("--clickedOffsetY", "0vh");
+		}
 
-	gamesProjectsPreviewBoxes.forEach(box => {
-		box.classList.remove("isClickedBox", "isPreviewing");
-	});
+		gamesBackTilesTimeout = null;
+	}, indexBackAnimationStepDelay);
 
-	if (typeof setDynamicTintEnabled === "function") {
-		setDynamicTintEnabled();
-	}
+	gamesBackSelectionTimeout = window.setTimeout(() => {
+		gamesProjectsPreviewBoxes.forEach(box => {
+			box.classList.remove("isClickedBox", "isPreviewing");
+		});
 
-	if (typeof showNextPreview === "function") {
-		showNextPreview();
-		clearRestartedPreviewInterval();
-		restartedPreviewInterval = window.setInterval(showNextPreview, 5000);
-	}
+		if (typeof setDynamicTintEnabled === "function") {
+			setDynamicTintEnabled();
+		}
+
+		if (typeof showNextPreview === "function") {
+			showNextPreview();
+			clearRestartedPreviewInterval();
+			restartedPreviewInterval = window.setInterval(showNextPreview, 5000);
+		}
+
+		gamesBackSelectionTimeout = null;
+	}, indexBackAnimationStepDelay * 2);
 }
 
 function isIndexGamesViewActive() {
@@ -171,6 +194,7 @@ const gamesProjectsLoad = loadGamesProjects().catch(() => null);
 
 if (gamesProjectsBox) {
 	gamesProjectsBox.addEventListener("click", async () => {
+		clearGamesBackAnimationTimeouts();
 		clearRestartedPreviewInterval();
 		pushGamesProjectsHistoryState();
 

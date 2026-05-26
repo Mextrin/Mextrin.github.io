@@ -15,6 +15,8 @@ let photosProjectsElement = null;
 let photosReturnButtonElement = null;
 let photosProjectsRevealTimeout = null;
 let photosProjectsExitTimeout = null;
+let photosBackTilesTimeout = null;
+let photosBackSelectionTimeout = null;
 let photosRestartedPreviewInterval = null;
 
 function initializePhotosCollections(collectionsElement) {
@@ -69,6 +71,18 @@ function clearPhotosProjectsExitTimeout() {
 	photosProjectsExitTimeout = null;
 }
 
+function clearPhotosBackAnimationTimeouts() {
+	if (photosBackTilesTimeout) {
+		window.clearTimeout(photosBackTilesTimeout);
+		photosBackTilesTimeout = null;
+	}
+
+	if (photosBackSelectionTimeout) {
+		window.clearTimeout(photosBackSelectionTimeout);
+		photosBackSelectionTimeout = null;
+	}
+}
+
 function clearPhotosRestartedPreviewInterval() {
 	if (!photosRestartedPreviewInterval) {
 		return;
@@ -81,6 +95,7 @@ function clearPhotosRestartedPreviewInterval() {
 function resetIndexPhotosView() {
 	clearPhotosProjectsRevealTimeout();
 	clearPhotosProjectsExitTimeout();
+	clearPhotosBackAnimationTimeouts();
 
 	if (photosProjectsElement) {
 		photosProjectsElement.classList.add("isLeaving");
@@ -95,25 +110,33 @@ function resetIndexPhotosView() {
 		photosReturnButtonElement.classList.remove("isVisible");
 	}
 
-	if (photosProjectsContainer) {
-		photosProjectsContainer.classList.remove("isClicked");
-		photosProjectsContainer.style.setProperty("--clickedOffsetX", "0vw");
-		photosProjectsContainer.style.setProperty("--clickedOffsetY", "0vh");
-	}
+	photosBackTilesTimeout = window.setTimeout(() => {
+		if (photosProjectsContainer) {
+			photosProjectsContainer.classList.remove("isClicked");
+			photosProjectsContainer.style.setProperty("--clickedOffsetX", "0vw");
+			photosProjectsContainer.style.setProperty("--clickedOffsetY", "0vh");
+		}
 
-	photosProjectsPreviewBoxes.forEach(box => {
-		box.classList.remove("isClickedBox", "isPreviewing");
-	});
+		photosBackTilesTimeout = null;
+	}, indexBackAnimationStepDelay);
 
-	if (typeof setDynamicTintEnabled === "function") {
-		setDynamicTintEnabled();
-	}
+	photosBackSelectionTimeout = window.setTimeout(() => {
+		photosProjectsPreviewBoxes.forEach(box => {
+			box.classList.remove("isClickedBox", "isPreviewing");
+		});
 
-	if (typeof showNextPreview === "function") {
-		showNextPreview();
-		clearPhotosRestartedPreviewInterval();
-		photosRestartedPreviewInterval = window.setInterval(showNextPreview, 5000);
-	}
+		if (typeof setDynamicTintEnabled === "function") {
+			setDynamicTintEnabled();
+		}
+
+		if (typeof showNextPreview === "function") {
+			showNextPreview();
+			clearPhotosRestartedPreviewInterval();
+			photosRestartedPreviewInterval = window.setInterval(showNextPreview, 5000);
+		}
+
+		photosBackSelectionTimeout = null;
+	}, indexBackAnimationStepDelay * 2);
 }
 
 function isIndexPhotosViewActive() {
@@ -173,6 +196,7 @@ const photosProjectsLoad = loadPhotosProjects().catch(() => null);
 
 if (photosProjectsBox) {
 	photosProjectsBox.addEventListener("click", async () => {
+		clearPhotosBackAnimationTimeouts();
 		clearPhotosRestartedPreviewInterval();
 		pushPhotosProjectsHistoryState();
 

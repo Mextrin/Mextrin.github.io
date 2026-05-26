@@ -13,6 +13,8 @@ let racingProjectsElement = null;
 let racingReturnButtonElement = null;
 let racingProjectsRevealTimeout = null;
 let racingProjectsExitTimeout = null;
+let racingBackTilesTimeout = null;
+let racingBackSelectionTimeout = null;
 let racingRestartedPreviewInterval = null;
 let racingCountdownInterval = null;
 
@@ -89,6 +91,18 @@ function clearRacingProjectsExitTimeout() {
 	racingProjectsExitTimeout = null;
 }
 
+function clearRacingBackAnimationTimeouts() {
+	if (racingBackTilesTimeout) {
+		window.clearTimeout(racingBackTilesTimeout);
+		racingBackTilesTimeout = null;
+	}
+
+	if (racingBackSelectionTimeout) {
+		window.clearTimeout(racingBackSelectionTimeout);
+		racingBackSelectionTimeout = null;
+	}
+}
+
 function clearRacingRestartedPreviewInterval() {
 	if (!racingRestartedPreviewInterval) {
 		return;
@@ -101,6 +115,7 @@ function clearRacingRestartedPreviewInterval() {
 function resetIndexRacingView() {
 	clearRacingProjectsRevealTimeout();
 	clearRacingProjectsExitTimeout();
+	clearRacingBackAnimationTimeouts();
 
 	if (racingProjectsElement) {
 		racingProjectsElement.classList.add("isLeaving");
@@ -115,25 +130,33 @@ function resetIndexRacingView() {
 		racingReturnButtonElement.classList.remove("isVisible");
 	}
 
-	if (racingProjectsContainer) {
-		racingProjectsContainer.classList.remove("isClicked");
-		racingProjectsContainer.style.setProperty("--clickedOffsetX", "0vw");
-		racingProjectsContainer.style.setProperty("--clickedOffsetY", "0vh");
-	}
+	racingBackTilesTimeout = window.setTimeout(() => {
+		if (racingProjectsContainer) {
+			racingProjectsContainer.classList.remove("isClicked");
+			racingProjectsContainer.style.setProperty("--clickedOffsetX", "0vw");
+			racingProjectsContainer.style.setProperty("--clickedOffsetY", "0vh");
+		}
 
-	racingProjectsPreviewBoxes.forEach(box => {
-		box.classList.remove("isClickedBox", "isPreviewing");
-	});
+		racingBackTilesTimeout = null;
+	}, indexBackAnimationStepDelay);
 
-	if (typeof setDynamicTintEnabled === "function") {
-		setDynamicTintEnabled();
-	}
+	racingBackSelectionTimeout = window.setTimeout(() => {
+		racingProjectsPreviewBoxes.forEach(box => {
+			box.classList.remove("isClickedBox", "isPreviewing");
+		});
 
-	if (typeof showNextPreview === "function") {
-		showNextPreview();
-		clearRacingRestartedPreviewInterval();
-		racingRestartedPreviewInterval = window.setInterval(showNextPreview, 5000);
-	}
+		if (typeof setDynamicTintEnabled === "function") {
+			setDynamicTintEnabled();
+		}
+
+		if (typeof showNextPreview === "function") {
+			showNextPreview();
+			clearRacingRestartedPreviewInterval();
+			racingRestartedPreviewInterval = window.setInterval(showNextPreview, 5000);
+		}
+
+		racingBackSelectionTimeout = null;
+	}, indexBackAnimationStepDelay * 2);
 }
 
 function isIndexRacingViewActive() {
@@ -186,6 +209,7 @@ const racingProjectsLoad = loadRacingProjects().catch(() => null);
 
 if (racingProjectsBox) {
 	racingProjectsBox.addEventListener("click", async () => {
+		clearRacingBackAnimationTimeouts();
 		clearRacingRestartedPreviewInterval();
 		pushRacingProjectsHistoryState();
 
