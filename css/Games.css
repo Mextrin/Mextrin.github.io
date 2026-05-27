@@ -61,18 +61,37 @@ p {
 }
 
 .project > .projectHighlight {
+	position: absolute;
+	inset: 0;
+	width: 100%;
 	height: 100%;
-	display: none;
+	opacity: 0;
+	z-index: 1;
+	pointer-events: none;
 
 	object-fit: cover;
+	transition: opacity .2s ease;
+}
+
+.project:hover > .projectHighlight,
+.project:focus > .projectHighlight {
+	opacity: 1;
 }
 
 .projectImage {
 	position: absolute;
 	width: 100%;
 	height: 101%; /*+1% fixes black line*/
+	z-index: 0;
 
 	object-fit: cover;
+}
+
+.project > .tint {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	pointer-events: none;
 }
 
 .projectLogo {
@@ -81,6 +100,7 @@ p {
 	width: 100%;
 	height: 100%;
 	top: 50%;
+	z-index: 2;
 	--logoScale: 1;
 	transform: translateY(-50%) scale(var(--logoScale));
 }
@@ -116,6 +136,8 @@ p {
 }
 
 .toolIcons img, .companyIcons img {
+	position: relative;
+	z-index: 3;
 	width: 2.5rem;
 	height: 2.5rem;
 }
