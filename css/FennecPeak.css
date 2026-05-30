@@ -4,11 +4,17 @@ h1 {
     font-family: sans-serif;
 }
 
-#contentframe {
-    background-image: url('../Assets/Fennec_Peak/Background.png');
-    background-position-x: 50%;
-}
-
 #q {
     color: limegreen;
+}
+
+#backgrounds > img {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+
+    object-fit: cover;
 }
