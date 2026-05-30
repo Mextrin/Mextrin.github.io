@@ -17,7 +17,6 @@ p {
 }
 
 /* Projects */
-
 #projects {
 	position: fixed;
 	top: 50vh;
@@ -58,24 +57,24 @@ p {
 	aspect-ratio: 5/7;
 
 	overflow: hidden;
+
+	border-radius: 1rem;
 }
 
-.project > .projectHighlight {
+.project::after {
+	content: "";
 	position: absolute;
 	inset: 0;
-	width: 100%;
-	height: 100%;
-	opacity: 0;
-	z-index: 1;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 0 white;
+	transition: box-shadow .25s ease;
+	box-sizing: border-box;
 	pointer-events: none;
-
-	object-fit: cover;
-	transition: opacity .2s ease;
+	z-index: 2;
 }
 
-.project:hover > .projectHighlight,
-.project:focus > .projectHighlight {
-	opacity: 1;
+.project:hover::after	{
+	box-shadow: inset 0 0 0 .5rem white;
 }
 
 .projectImage {
