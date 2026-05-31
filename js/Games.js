@@ -35,6 +35,14 @@ function isStylesheetLoaded(href) {
 	});
 }
 
+function removeLoadedProjectStylesheets() {
+	const stylesheets = Array.from(document.querySelectorAll('link[data-loaded-project-resource="true"][rel="stylesheet"]'));
+
+	stylesheets.forEach(stylesheet => {
+		stylesheet.remove();
+	});
+}
+
 function loadProjectStylesheet(stylesheet) {
 	const href = stylesheet.getAttribute("href");
 
@@ -55,6 +63,7 @@ function loadProjectStylesheet(stylesheet) {
 async function importProjectStyles(sourceDocument) {
 	const stylesheets = Array.from(sourceDocument.querySelectorAll('link[rel="stylesheet"]'));
 
+	removeLoadedProjectStylesheets();
 	await Promise.all(stylesheets.map(loadProjectStylesheet));
 }
 
@@ -150,6 +159,7 @@ function closeProjectContent() {
 		loadedProjectContent = null;
 	}
 
+	removeLoadedProjectStylesheets();
 	document.body.classList.remove("hasLoadedProjectContent");
 	document.title = initialDocumentTitle;
 	resetProjectExpansion();
