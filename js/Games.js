@@ -1,12 +1,13 @@
 const projects = Array.from(document.querySelectorAll("#projects > .project"));
 const backgrounds = Array.from(document.querySelectorAll("#backgrounds > img"));
 const standaloneGamesPage = document.body.contains(document.getElementById("backgrounds"));
-const projectExpansionLayerDuration = 1000;
-const projectExpansionImageDuration = 1000;
+const projectExpansionLayerDuration = 750;
+const projectExpansionImageDuration = 750;
 const expansionDuration = Math.max(projectExpansionLayerDuration, projectExpansionImageDuration);
 const projectAssetWaitLimit = 3000;
 const projectContentStaggerDelay = 100;
 const initialDocumentTitle = document.title;
+const projectReturnTransitionStorageKey = "gamesProjectReturnTransition";
 
 let activeExpansionLayer = null;
 let activeProject = null;
@@ -14,6 +15,7 @@ let activeContentLoad = null;
 let loadedProjectContent = null;
 let activeProjectUrl = null;
 let activeProjectReturnUrl = null;
+let isClosingProject = false;
 
 document.documentElement.style.setProperty("--projectExpansionLayerDuration", `${projectExpansionLayerDuration}ms`);
 document.documentElement.style.setProperty("--projectExpansionImageDuration", `${projectExpansionImageDuration}ms`);
@@ -152,6 +154,7 @@ function resetProjectExpansion() {
 	activeContentLoad = null;
 	activeProjectUrl = null;
 	activeProjectReturnUrl = null;
+	isClosingProject = false;
 }
 
 function closeProjectContent() {
@@ -166,6 +169,33 @@ function closeProjectContent() {
 	resetProjectExpansion();
 	document.dispatchEvent(new CustomEvent("gamesProjectClosed"));
 	window.scrollTo(0, 0);
+}
+
+function closeProjectContentWithAnimation() {
+	if (isClosingProject) {
+		return;
+	}
+
+	if (!loadedProjectContent || !activeExpansionLayer) {
+		closeProjectContent();
+		return;
+	}
+
+	isClosingProject = true;
+	loadedProjectContent.classList.add("isClosing");
+	loadedProjectContent.classList.remove("isVisible");
+	activeExpansionLayer.classList.remove("isComplete");
+	activeExpansionLayer.getBoundingClientRect();
+
+	window.requestAnimationFrame(() => {
+		if (activeExpansionLayer) {
+			activeExpansionLayer.classList.remove("isExpanded");
+		}
+	});
+
+	window.setTimeout(() => {
+		closeProjectContent();
+	}, expansionDuration);
 }
 
 function waitForImage(image) {
@@ -250,6 +280,27 @@ function initializeLoadedProjectContentLinks(contentContainer) {
 			target.scrollIntoView({ behavior: "smooth" });
 		});
 	});
+
+	const gamesBackLinks = Array.from(contentContainer.querySelectorAll("a[href]")).filter(link => {
+		return activeProjectReturnUrl && urlsMatch(link.href, activeProjectReturnUrl);
+	});
+
+	gamesBackLinks.forEach(link => {
+		link.addEventListener("click", event => {
+			event.preventDefault();
+
+			if (isClosingProject) {
+				return;
+			}
+
+			if (activeProjectReturnUrl && !urlsMatch(window.location.href, activeProjectReturnUrl)) {
+				window.history.back();
+				return;
+			}
+
+			closeProjectContentWithAnimation();
+		});
+	});
 }
 
 function showProjectContent(contentContainer) {
@@ -309,6 +360,82 @@ function createExpansionLayer(project, image) {
 	document.body.appendChild(expansionLayer);
 
 	return expansionLayer;
+}
+
+function findProjectByUrl(projectUrl) {
+	return Array.from(document.querySelectorAll(".project")).find(candidate => {
+		return urlsMatch(candidate.href, projectUrl);
+	});
+}
+
+function playProjectReturnTransition(project) {
+	const image = project.querySelector(".projectImage");
+
+	if (!image) {
+		return;
+	}
+
+	const projectIndex = Number(project.dataset.index);
+
+	if (!Number.isNaN(projectIndex)) {
+		setActiveBackground(projectIndex);
+	}
+
+	activeProject = project;
+	activeExpansionLayer = createExpansionLayer(project, image);
+	project.classList.add("isExpanding");
+
+	const expansionImage = activeExpansionLayer.querySelector(".projectExpansionImage");
+	activeExpansionLayer.style.transition = "none";
+	expansionImage.style.transition = "none";
+	activeExpansionLayer.classList.add("isExpanded");
+	activeExpansionLayer.getBoundingClientRect();
+	activeExpansionLayer.style.transition = "";
+	expansionImage.style.transition = "";
+
+	window.requestAnimationFrame(() => {
+		if (activeExpansionLayer) {
+			activeExpansionLayer.classList.remove("isExpanded");
+		}
+	});
+
+	window.setTimeout(() => {
+		resetProjectExpansion();
+	}, expansionDuration);
+}
+
+function playStoredProjectReturnTransition() {
+	let storedTransition = null;
+
+	try {
+		storedTransition = window.sessionStorage.getItem(projectReturnTransitionStorageKey);
+		window.sessionStorage.removeItem(projectReturnTransitionStorageKey);
+	} catch (error) {
+		// The page still works without the standalone return animation.
+		return;
+	}
+
+	if (!storedTransition) {
+		return;
+	}
+
+	let transitionDetails = null;
+
+	try {
+		transitionDetails = JSON.parse(storedTransition);
+	} catch (error) {
+		return;
+	}
+
+	if (!transitionDetails?.projectUrl) {
+		return;
+	}
+
+	const project = findProjectByUrl(transitionDetails.projectUrl);
+
+	if (project) {
+		playProjectReturnTransition(project);
+	}
 }
 
 function openProject(project, shouldPushHistory = true, returnUrl = window.location.href) {
@@ -417,14 +544,13 @@ projects.forEach(project => {
 if (standaloneGamesPage) {
 	initializeGamesProjectExpansion(document.getElementById("projects"));
 	setActiveBackground(0);
+	playStoredProjectReturnTransition();
 }
 
 window.addEventListener("popstate", event => {
 	if (!activeProjectUrl || urlsMatch(window.location.href, activeProjectUrl)) {
 		if (event.state?.gamesProjectView && !activeProjectUrl) {
-			const project = Array.from(document.querySelectorAll(".project")).find(candidate => {
-				return urlsMatch(candidate.href, event.state.projectUrl);
-			});
+			const project = findProjectByUrl(event.state.projectUrl);
 
 			if (project) {
 				openProject(project, false, event.state.returnUrl);
@@ -435,6 +561,6 @@ window.addEventListener("popstate", event => {
 	}
 
 	if (activeProjectReturnUrl && urlsMatch(window.location.href, activeProjectReturnUrl)) {
-		closeProjectContent();
+		closeProjectContentWithAnimation();
 	}
 });

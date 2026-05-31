@@ -257,6 +257,17 @@ p {
 	translate: 0 0;
 }
 
+.loadedProjectContent.isClosing {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.loadedProjectContent.isClosing .projectContentAnimatedElement {
+	opacity: 0;
+	translate: 0 25vh;
+	transition-delay: 0ms;
+}
+
 .indexGamesProjects {
 	opacity: 0;
 	pointer-events: none;
@@ -276,9 +287,7 @@ p {
 
 .indexGamesProjects.isOpeningProject,
 .indexGamesReturnButton.isOpeningProject {
-	opacity: 0;
 	pointer-events: none;
-	transition: opacity .25s ease;
 }
 
 .indexGamesProjects > .project {
