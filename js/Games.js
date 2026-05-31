@@ -5,11 +5,14 @@ const projectExpansionLayerDuration = 1500;
 const projectExpansionImageDuration = 1500;
 const expansionDuration = Math.max(projectExpansionLayerDuration, projectExpansionImageDuration);
 const projectAssetWaitLimit = 3000;
+const initialDocumentTitle = document.title;
 
 let activeExpansionLayer = null;
 let activeProject = null;
 let activeContentLoad = null;
 let loadedProjectContent = null;
+let activeProjectUrl = null;
+let activeProjectReturnUrl = null;
 
 document.documentElement.style.setProperty("--projectExpansionLayerDuration", `${projectExpansionLayerDuration}ms`);
 document.documentElement.style.setProperty("--projectExpansionImageDuration", `${projectExpansionImageDuration}ms`);
@@ -109,6 +112,51 @@ function getProjectContentFrame(sourceDocument) {
 	return sourceDocument.querySelector("#contentframe, #contentFrame");
 }
 
+function urlsMatch(firstUrl, secondUrl) {
+	return normalizeResourceUrl(firstUrl) === normalizeResourceUrl(secondUrl);
+}
+
+function pushProjectHistoryState(project) {
+	if (urlsMatch(window.location.href, project.href)) {
+		return;
+	}
+
+	window.history.pushState({
+		gamesProjectView: true,
+		projectUrl: project.href,
+		returnUrl: activeProjectReturnUrl || window.location.href
+	}, "", project.href);
+}
+
+function resetProjectExpansion() {
+	if (activeExpansionLayer) {
+		activeExpansionLayer.remove();
+		activeExpansionLayer = null;
+	}
+
+	if (activeProject) {
+		activeProject.classList.remove("isExpanding");
+		activeProject = null;
+	}
+
+	activeContentLoad = null;
+	activeProjectUrl = null;
+	activeProjectReturnUrl = null;
+}
+
+function closeProjectContent() {
+	if (loadedProjectContent) {
+		loadedProjectContent.remove();
+		loadedProjectContent = null;
+	}
+
+	document.body.classList.remove("hasLoadedProjectContent");
+	document.title = initialDocumentTitle;
+	resetProjectExpansion();
+	document.dispatchEvent(new CustomEvent("gamesProjectClosed"));
+	window.scrollTo(0, 0);
+}
+
 function waitForImage(image) {
 	if (image.complete) {
 		return Promise.resolve();
@@ -154,6 +202,7 @@ async function loadProjectContent(url) {
 	contentContainer.style.opacity = "0";
 	contentContainer.appendChild(contentFrame.cloneNode(true));
 	contentContainer.projectSourceDocument = sourceDocument;
+	contentContainer.projectTitle = sourceDocument.title;
 
 	return contentContainer;
 }
@@ -182,6 +231,7 @@ function showProjectContent(contentContainer) {
 
 	loadedProjectContent = contentContainer;
 	document.body.classList.add("hasLoadedProjectContent");
+	document.title = contentContainer.projectTitle || initialDocumentTitle;
 	document.body.appendChild(loadedProjectContent);
 	window.scrollTo(0, 0);
 	loadedProjectContent.scrollTop = 0;
@@ -230,9 +280,7 @@ function createExpansionLayer(project, image) {
 	return expansionLayer;
 }
 
-function expandProject(event, project) {
-	event.preventDefault();
-
+function openProject(project, shouldPushHistory = true, returnUrl = window.location.href) {
 	if (project.classList.contains("isExpanding")) {
 		return;
 	}
@@ -255,7 +303,14 @@ function expandProject(event, project) {
 		detail: { project }
 	}));
 
+	activeProjectReturnUrl = returnUrl;
+
+	if (shouldPushHistory) {
+		pushProjectHistoryState(project);
+	}
+
 	activeProject = project;
+	activeProjectUrl = project.href;
 	activeExpansionLayer = createExpansionLayer(project, image);
 	activeContentLoad = loadProjectContent(project.href).catch(error => {
 		console.error(error);
@@ -280,6 +335,11 @@ function expandProject(event, project) {
 			}
 		});
 	}, expansionDuration);
+}
+
+function expandProject(event, project) {
+	event.preventDefault();
+	openProject(project);
 }
 
 function initializeGamesProjectExpansion(projectsElement) {
@@ -327,3 +387,23 @@ if (standaloneGamesPage) {
 	initializeGamesProjectExpansion(document.getElementById("projects"));
 	setActiveBackground(0);
 }
+
+window.addEventListener("popstate", event => {
+	if (!activeProjectUrl || urlsMatch(window.location.href, activeProjectUrl)) {
+		if (event.state?.gamesProjectView && !activeProjectUrl) {
+			const project = Array.from(document.querySelectorAll(".project")).find(candidate => {
+				return urlsMatch(candidate.href, event.state.projectUrl);
+			});
+
+			if (project) {
+				openProject(project, false, event.state.returnUrl);
+			}
+		}
+
+		return;
+	}
+
+	if (activeProjectReturnUrl && urlsMatch(window.location.href, activeProjectReturnUrl)) {
+		closeProjectContent();
+	}
+});

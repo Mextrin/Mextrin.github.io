@@ -238,6 +238,16 @@ document.addEventListener("gamesProjectOpening", () => {
 	}
 });
 
+document.addEventListener("gamesProjectClosed", () => {
+	if (gamesProjectsElement) {
+		gamesProjectsElement.classList.remove("isOpeningProject");
+	}
+
+	if (gamesReturnButtonElement) {
+		gamesReturnButtonElement.classList.remove("isOpeningProject");
+	}
+});
+
 window.addEventListener("popstate", () => {
 	if (!window.location.pathname.endsWith(gamesProjectsUrl) && isIndexGamesViewActive()) {
 		resetIndexGamesView();
