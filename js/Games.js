@@ -1,10 +1,11 @@
 const projects = Array.from(document.querySelectorAll("#projects > .project"));
 const backgrounds = Array.from(document.querySelectorAll("#backgrounds > img"));
 const standaloneGamesPage = document.body.contains(document.getElementById("backgrounds"));
-const projectExpansionLayerDuration = 1500;
-const projectExpansionImageDuration = 1500;
+const projectExpansionLayerDuration = 1000;
+const projectExpansionImageDuration = 1000;
 const expansionDuration = Math.max(projectExpansionLayerDuration, projectExpansionImageDuration);
 const projectAssetWaitLimit = 3000;
+const projectContentStaggerDelay = 100;
 const initialDocumentTitle = document.title;
 
 let activeExpansionLayer = null;
@@ -190,6 +191,23 @@ async function waitForProjectContentImages(contentContainer) {
 	await Promise.all(images.map(waitForImage));
 }
 
+function initializeProjectContentAnimation(contentContainer) {
+	const contentFrame = contentContainer.querySelector(":scope > #contentframe");
+
+	if (!contentFrame) {
+		return;
+	}
+
+	const animatedElements = Array.from(contentFrame.querySelectorAll("*")).filter(element => {
+		return element.tagName.toLowerCase() !== "div";
+	});
+
+	animatedElements.forEach((element, index) => {
+		element.classList.add("projectContentAnimatedElement");
+		element.style.setProperty("--projectContentTransitionDelay", `${index * projectContentStaggerDelay}ms`);
+	});
+}
+
 async function loadProjectContent(url) {
 	const response = await fetch(url);
 
@@ -209,8 +227,8 @@ async function loadProjectContent(url) {
 
 	const contentContainer = document.createElement("div");
 	contentContainer.className = "loadedProjectContent";
-	contentContainer.style.opacity = "0";
 	contentContainer.appendChild(contentFrame.cloneNode(true));
+	initializeProjectContentAnimation(contentContainer);
 	contentContainer.projectSourceDocument = sourceDocument;
 	contentContainer.projectTitle = sourceDocument.title;
 

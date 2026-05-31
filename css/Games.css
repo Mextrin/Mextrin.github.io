@@ -223,7 +223,7 @@ p {
 		var(--projectClipLeft)
 		round 1rem
 	);
-	transition: clip-path var(--projectExpansionLayerDuration, 2s) ease;
+	transition: clip-path var(--projectExpansionLayerDuration, 2s) ease-in-out;
 	will-change: clip-path;
 }
 
@@ -239,10 +239,10 @@ p {
 	height: var(--projectImageHeight);
 	object-fit: cover;
 	transition:
-		left var(--projectExpansionImageDuration, 1s) ease,
-		top var(--projectExpansionImageDuration, 1s) ease,
-		width var(--projectExpansionImageDuration, 1s) ease,
-		height var(--projectExpansionImageDuration, 1s) ease;
+		left var(--projectExpansionImageDuration, 1s) ease-in-out,
+		top var(--projectExpansionImageDuration, 1s) ease-in-out,
+		width var(--projectExpansionImageDuration, 1s) ease-in-out,
+		height var(--projectExpansionImageDuration, 1s) ease-in-out;
 	will-change: left, top, width, height;
 }
 
@@ -260,12 +260,18 @@ p {
 	min-height: 100vh;
 	overflow-y: auto;
 	scroll-behavior: smooth;
-	opacity: 0;
-	transition: opacity .5s ease;
 }
 
-.loadedProjectContent.isVisible {
+.loadedProjectContent .projectContentAnimatedElement {
+	opacity: 0;
+	translate: 0 25vh;
+	transition: translate 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--projectContentTransitionDelay, 0ms);
+}
+
+.loadedProjectContent.isVisible .projectContentAnimatedElement {
 	opacity: 1;
+	translate: 0 0;
 }
 
 .indexGamesProjects {
