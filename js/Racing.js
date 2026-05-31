@@ -1,5 +1,5 @@
 const racingProjects = Array.from(document.querySelectorAll("#projects > .project"));
-const racingBackgrounds = Array.from(document.querySelectorAll("#backgrounds > img"));
+const racingBackgrounds = Array.from(document.querySelectorAll("#background > img"));
 
 function setActiveRacingBackground(index) {
 	racingBackgrounds.forEach((background, backgroundIndex) => {
