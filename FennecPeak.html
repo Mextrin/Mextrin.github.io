@@ -96,9 +96,11 @@
 				This makes it possible to create a page with custom functionality such as a Character Selection menu.
 			</p>
 			<img src="Assets/Fennec_Peak/HUD_LobbyPage.png"></img>
-			<div id="codebox" class="codeTint">
-			<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
-			<button onclick="CodeButton('CharacterSelection');">CharacterSelection.cs</button>
+			<div class="codebox codeTint">
+			<div class="codeboxTabs">
+			<button onclick="CodeButton(this, 'MenuManager');">MenuManager.cs</button>
+			<button onclick="CodeButton(this, 'CharacterSelection');">CharacterSelection.cs</button>
+			</div>
 <pre id="MenuManager"><code class="C#">public class MenuManager : MonoBehaviour 
 { 	
 	[SerializeField] Menu startMenu; 
@@ -265,8 +267,10 @@
 			<video autoplay muted loop>
 				<source src="Assets/Fennec_Peak/Gameplay.mp4" type="video/mp4">
 			</video>
-			<div id="codebox" class="codeTint">
-				<button onclick="CodeButton('AutoCamera');">AutoCamera.cs</button>				
+			<div class="codebox codeTint">
+				<div class="codeboxTabs">
+				<button onclick="CodeButton(this, 'AutoCamera');">AutoCamera.cs</button>
+				</div>
 <pre id="AutoCamera"><code class="C#">public class AutoCamera : MonoBehaviour 
 { 
 	[SerializeField] GameObject[] targetsToFollow;

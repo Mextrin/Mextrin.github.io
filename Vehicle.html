@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
 		<script src="CodeHighlight/highlight.pack.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="js/codebox.js"></script>
 	</head>
 		<body>
 		<div id="background">
@@ -61,6 +62,10 @@
 					Based on pre-set parameters, the vehicle's top-speed, acceleration, braking forces and turning ability can be easily edited to make get the desited behavior for the vehicle.
 				</p>
 				<img src="Assets/MyProjects/Car/CarComponent.png">
+				<div class="codebox codeTint">
+				<div class="codeboxTabs">
+				<button onclick="CodeButton(this, 'CarEngine');">Engine Forces</button>
+				</div>
 				<pre id="CarEngine">
 					<code class="C#">
 //Aero
@@ -90,6 +95,7 @@ float EngineTorque = MaxTorque * throttleInput;
 float DriveTorque = EngineTorque * gearRatios[currentGear] * finalDriveRatio * engineEfficiency;
 					</code>
 				</pre>
+				</div>
 				<h1>Dynamic Suspension</h1>
 				<p>
 					The suspension model actively simulates the behavior and movement of a real spring and damper that's typically found in vehicles.
@@ -101,6 +107,10 @@ float DriveTorque = EngineTorque * gearRatios[currentGear] * finalDriveRatio * e
 				<video autoplay muted loop>
 					<source src="Assets/MyProjects/Car/CarBumps.mp4" type="video/mp4">
 				</video>
+				<div class="codebox codeTint">
+				<div class="codeboxTabs">
+				<button onclick="CodeButton(this, 'Suspension');">Suspension</button>
+				</div>
 				<pre id="Suspension">
 					<code class="C#">
 //Suspension
@@ -118,6 +128,7 @@ float damper = (fixedHingeDeltaVelocity * damping);
 float wheelForce = spring - damper;
 					</code>
 				</pre>
+				</div>
 			</div>
 		</div>
 	</body>

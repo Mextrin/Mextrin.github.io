@@ -74,9 +74,11 @@
 			<video autoplay muted loop>
 				<source src="Assets/Terra_Got_Away/WorldAlignment.mp4" type="video/mp4">
 			</video>
-			<div id="codebox" class="tint">
-				<button onclick="CodeButton('Player');">Player.cs</button>
-				<button onclick="CodeButton('AlignWithSphere');">AlignWithSphere.cs</button>
+			<div class="codebox codeTint">
+				<div class="codeboxTabs">
+				<button onclick="CodeButton(this, 'Player');">Player.cs</button>
+				<button onclick="CodeButton(this, 'AlignWithSphere');">AlignWithSphere.cs</button>
+				</div>
 <pre id="Player"><code class="C#">public class Player : MonoBehaviour 
 { 
 	[SerializeField] float moveSpeed = 15; 

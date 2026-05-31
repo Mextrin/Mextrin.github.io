@@ -248,7 +248,7 @@ function initializeProjectContentAnimation(contentContainer) {
 	}
 
 	const animatedElements = Array.from(contentFrame.querySelectorAll("*")).filter(element => {
-		return element.tagName.toLowerCase() !== "div";
+		return element.tagName.toLowerCase() !== "div" && !element.closest(".codebox, #codebox");
 	});
 
 	animatedElements.forEach((element, index) => {
@@ -351,6 +351,10 @@ function showProjectContent(contentContainer) {
 	importProjectScripts(contentContainer.projectSourceDocument)
 		.then(() => {
 			if (loadedProjectContent === contentContainer) {
+				if (typeof window.InitializeCodeboxes === "function") {
+					window.InitializeCodeboxes(contentContainer);
+				}
+
 				highlightLoadedProjectCode(contentContainer);
 			}
 		})
