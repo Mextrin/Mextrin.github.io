@@ -34,9 +34,19 @@ function showNextPreview() {
 		return;
 	}
 
+	const fadingOutIndex = (previewIndex + 1) % previewBoxes.length;
+	const waitingIndex = (previewIndex + 2) % previewBoxes.length;
+
 	previewBoxes.forEach((box, index) => {
 		const isActiveBox = index === previewIndex;
-		box.classList.toggle("isPreviewing", isActiveBox);
+		const isWaitingBox = index === waitingIndex;
+
+		box.classList.toggle("isPreviewing", isActiveBox || isWaitingBox);
+
+		if (index === fadingOutIndex) {
+			box.classList.remove("isPreviewing");
+			return;
+		}
 
 		if (!isActiveBox) {
 			return;
