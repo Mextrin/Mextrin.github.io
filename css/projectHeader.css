@@ -103,8 +103,8 @@ body {
 
 .projectImages {
 	width: 30vw;
-	max-height: 80vh;
-	margin-left: 12.5vw;
+	max-height: 100%;
+	margin-left: 5vw;
 
 	display: flex;
 	flex-direction: column;
