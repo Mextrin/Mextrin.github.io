@@ -1,4 +1,8 @@
 #codebox {
+    --codebox-roll-duration: 1s;
+    --codebox-roll-easing: ease;
+    --codebox-open-height: 50vh;
+
     position: relative;
     font-size: 14px;
     tab-size: 2em;
@@ -7,11 +11,15 @@
 }
 
 #codebox pre {
-    transition: max-height 1s;
+    transition: max-height var(--codebox-roll-duration) var(--codebox-roll-easing);
     max-height: 0px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     position: relative;
     margin: 0px 0px;
+}
+
+#codebox pre.open {
+    overflow-y: auto;
 }
 
 #codebox pre::-webkit-scrollbar

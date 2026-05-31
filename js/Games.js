@@ -120,6 +120,25 @@ async function importProjectScripts(sourceDocument) {
 	}
 }
 
+function highlightLoadedProjectCode(contentContainer) {
+	if (!window.hljs) {
+		return;
+	}
+
+	const codeBlocks = Array.from(contentContainer.querySelectorAll("pre code"));
+
+	codeBlocks.forEach(codeBlock => {
+		if (typeof window.hljs.highlightElement === "function") {
+			window.hljs.highlightElement(codeBlock);
+			return;
+		}
+
+		if (typeof window.hljs.highlightBlock === "function") {
+			window.hljs.highlightBlock(codeBlock);
+		}
+	});
+}
+
 function getProjectContentFrame(sourceDocument) {
 	return sourceDocument.querySelector("#contentframe, #contentFrame");
 }
@@ -329,9 +348,15 @@ function showProjectContent(contentContainer) {
 		});
 	});
 
-	importProjectScripts(contentContainer.projectSourceDocument).catch(error => {
-		console.error(error);
-	});
+	importProjectScripts(contentContainer.projectSourceDocument)
+		.then(() => {
+			if (loadedProjectContent === contentContainer) {
+				highlightLoadedProjectCode(contentContainer);
+			}
+		})
+		.catch(error => {
+			console.error(error);
+		});
 }
 
 function createExpansionLayer(project, image) {
