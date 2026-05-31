@@ -59,10 +59,15 @@ button {
 }
 
 #content img {
+    display: inline-block;
     position: relative;
+    width: auto;
     max-width: 100%;
+    height: auto;
+    vertical-align: top;
     box-shadow: 5px 5px 5px black;
     margin: 0px 0px 15px 0px;
+    object-fit: contain;
 }
 
 #content video {
