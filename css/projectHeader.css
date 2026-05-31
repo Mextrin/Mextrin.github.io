@@ -65,9 +65,11 @@ body {
 }
 
 .cv img {
+	width: 6rem;
 	height: 6rem;
 	aspect-ratio: 1/1;
 	object-fit: contain;
+	flex-shrink: 0;
 }
 
 .cv p {

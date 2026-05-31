@@ -104,7 +104,7 @@ function resetIndexGamesView() {
 
 	if (gamesProjectsElement) {
 		gamesProjectsElement.classList.add("isLeaving");
-		gamesProjectsElement.classList.remove("isVisible");
+		gamesProjectsElement.classList.remove("isVisible", "isOpeningProject");
 		gamesProjectsExitTimeout = window.setTimeout(() => {
 			gamesProjectsElement.classList.remove("isLeaving");
 			gamesProjectsExitTimeout = null;
@@ -112,7 +112,7 @@ function resetIndexGamesView() {
 	}
 
 	if (gamesReturnButtonElement) {
-		gamesReturnButtonElement.classList.remove("isVisible");
+		gamesReturnButtonElement.classList.remove("isVisible", "isOpeningProject");
 	}
 
 	gamesBackTilesTimeout = window.setTimeout(() => {
@@ -187,6 +187,11 @@ async function loadGamesProjects() {
 	}
 
 	initializeGamesProjects(gamesProjectsElement);
+
+	if (typeof initializeGamesProjectExpansion === "function") {
+		initializeGamesProjectExpansion(gamesProjectsElement);
+	}
+
 	gamesProjectsLoaded = true;
 
 	return gamesProjectsElement;
@@ -221,6 +226,16 @@ if (gamesProjectsBox) {
 
 gamesProjectsPreviewBoxes.forEach(box => {
 	box.addEventListener("click", clearRestartedPreviewInterval);
+});
+
+document.addEventListener("gamesProjectOpening", () => {
+	if (gamesProjectsElement) {
+		gamesProjectsElement.classList.add("isOpeningProject");
+	}
+
+	if (gamesReturnButtonElement) {
+		gamesReturnButtonElement.classList.add("isOpeningProject");
+	}
 });
 
 window.addEventListener("popstate", () => {

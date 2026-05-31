@@ -3,6 +3,14 @@ body {
 	padding:0;
 	min-height: 100vh;
 	overflow: hidden;
+	--projectClipTop: 0px;
+	--projectClipRight: 0px;
+	--projectClipBottom: 0px;
+	--projectClipLeft: 0px;
+}
+
+body.hasLoadedProjectContent {
+	overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -61,6 +69,15 @@ p {
 	border-radius: 1rem;
 }
 
+.project.isExpanding {
+	pointer-events: none;
+}
+
+.project.isExpanding::after {
+	box-shadow: inset 0 0 0 0 white;
+	opacity: 0;
+}
+
 .project::after {
 	content: "";
 	position: absolute;
@@ -86,11 +103,32 @@ p {
 	object-fit: cover;
 }
 
+.project.isExpanding .projectImage {
+	opacity: 0;
+	transition: opacity .2s ease;
+}
+
 .project > .tint {
 	position: absolute;
 	inset: 0;
 	z-index: 2;
 	pointer-events: none;
+}
+
+.projectLogo,
+.projectText,
+.companyIcons,
+.toolIcons,
+.project > .tint {
+	transition: opacity .25s ease;
+}
+
+.project.isExpanding .projectLogo,
+.project.isExpanding .projectText,
+.project.isExpanding .companyIcons,
+.project.isExpanding .toolIcons,
+.project.isExpanding > .tint {
+	opacity: 0;
 }
 
 .projectLogo {
@@ -172,6 +210,64 @@ p {
 	transform: translateY(-0.2rem) rotate(45deg);
 }
 
+.projectExpansionLayer {
+	position: fixed;
+	inset: 0;
+	z-index: 10;
+	pointer-events: none;
+	overflow: hidden;
+	clip-path: inset(
+		var(--projectClipTop)
+		var(--projectClipRight)
+		var(--projectClipBottom)
+		var(--projectClipLeft)
+		round 1rem
+	);
+	transition: clip-path var(--projectExpansionLayerDuration, 2s) ease;
+	will-change: clip-path;
+}
+
+.projectExpansionLayer.isExpanded {
+	clip-path: inset(0 0 0 0 round 0);
+}
+
+.projectExpansionImage {
+	position: absolute;
+	left: var(--projectImageLeft);
+	top: var(--projectImageTop);
+	width: var(--projectImageWidth);
+	height: var(--projectImageHeight);
+	object-fit: cover;
+	transition:
+		left var(--projectExpansionImageDuration, 1s) ease,
+		top var(--projectExpansionImageDuration, 1s) ease,
+		width var(--projectExpansionImageDuration, 1s) ease,
+		height var(--projectExpansionImageDuration, 1s) ease;
+	will-change: left, top, width, height;
+}
+
+.projectExpansionLayer.isExpanded .projectExpansionImage {
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+.loadedProjectContent {
+	position: fixed;
+	inset: 0;
+	z-index: 11;
+	min-height: 100vh;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+	opacity: 0;
+	transition: opacity .5s ease;
+}
+
+.loadedProjectContent.isVisible {
+	opacity: 1;
+}
+
 .indexGamesProjects {
 	opacity: 0;
 	pointer-events: none;
@@ -187,6 +283,13 @@ p {
 .indexGamesProjects.isVisible,
 .indexGamesReturnButton.isVisible {
 	pointer-events: auto;
+}
+
+.indexGamesProjects.isOpeningProject,
+.indexGamesReturnButton.isOpeningProject {
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .25s ease;
 }
 
 .indexGamesProjects > .project {
