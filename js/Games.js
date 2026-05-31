@@ -288,9 +288,11 @@ function createExpansionLayer(project, image) {
 	const imageBounds = image.getBoundingClientRect();
 	const expansionLayer = document.createElement("div");
 	const expansionImage = image.cloneNode();
+	const expansionTint = document.createElement("div");
 
 	expansionLayer.className = "projectExpansionLayer";
 	expansionImage.className = "projectExpansionImage";
+	expansionTint.className = "projectExpansionTint tint";
 	expansionImage.removeAttribute("style");
 
 	expansionLayer.style.setProperty("--projectClipTop", `${projectBounds.top}px`);
@@ -303,6 +305,7 @@ function createExpansionLayer(project, image) {
 	expansionLayer.style.setProperty("--projectImageHeight", `${imageBounds.height}px`);
 
 	expansionLayer.appendChild(expansionImage);
+	expansionLayer.appendChild(expansionTint);
 	document.body.appendChild(expansionLayer);
 
 	return expansionLayer;
