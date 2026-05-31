@@ -183,31 +183,7 @@ p {
 	position: absolute;
 	bottom: 5vh;
 	left: 50%;
-	width: 3.5rem;
-	height: 3.5rem;
-	flex-shrink: 0;
 	transform: translateX(-50%);
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	border: 2px solid rgba(255, 255, 255, 0);
-	border-radius: 1rem;
-	transition: border-color .1s ease, transform .1s ease;
-}
-
-.returnButton:hover,
-.returnButton:focus {
-	border-color: rgba(255, 255, 255, 1);
-}
-
-.returnButton span {
-	width: 1rem;
-	height: 1rem;
-	border-right: 3px solid white;
-	border-bottom: 3px solid white;
-	transform: translateY(-0.2rem) rotate(45deg);
 }
 
 .projectExpansionLayer {
@@ -325,7 +301,6 @@ p {
 	opacity: 0;
 	pointer-events: none;
 	transform: translateX(-50%) translateY(-25vh);
-	transition: border-color .1s ease;
 	z-index: 5;
 }
 

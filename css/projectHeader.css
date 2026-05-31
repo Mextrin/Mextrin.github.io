@@ -133,43 +133,6 @@ body {
 	gap: 0.5rem;
 }
 
-.projectBack p {
-	margin: 0;
-	color: white;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1rem;
-	font-weight: 700;
-	text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
-}
-
-.projectBackButton {
-	width: 3.5rem;
-	height: 3.5rem;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	background: transparent;
-	border: 2px solid rgba(255, 255, 255, 0);
-	border-radius: 1rem;
-	cursor: pointer;
-	transition: border-color .1s ease, transform .1s ease;
-}
-
-.projectBackButton:hover,
-.projectBackButton:focus {
-	border-color: rgba(255, 255, 255, 1);
-}
-
-.projectBackButton span {
-	width: 1rem;
-	height: 1rem;
-	border-left: 3px solid white;
-	border-bottom: 3px solid white;
-	transform: translateX(0.2rem) rotate(45deg);
-}
-
 .exploreButton {
 	flex-basis: 100%;
 	width: 100%;
@@ -180,43 +143,6 @@ body {
 	align-items: center;
 	justify-content: center;
 	gap: 0.25rem;
-}
-
-.exploreButton p {
-	margin: 0;
-	color: white;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1rem;
-	font-weight: 700;
-	text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
-}
-
-.exploreArrowButton {
-	width: 3.5rem;
-	height: 3.5rem;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	background: transparent;
-	border: 2px solid rgba(255, 255, 255, 0);
-	border-radius: 1rem;
-	cursor: pointer;
-	transition: border-color .1s ease, transform .1s ease;
-}
-
-.exploreArrowButton:hover,
-.exploreArrowButton:focus {
-	border-color: rgba(255, 255, 255, 1);
-}
-
-.exploreArrowButton span {
-	width: 1rem;
-	height: 1rem;
-	border-right: 3px solid white;
-	border-bottom: 3px solid white;
-	transform: translateY(-0.2rem) rotate(45deg);
 }
 
 @media (max-width: 800px) {
