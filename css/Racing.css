@@ -159,6 +159,9 @@ body {
 #timeline .returnButton {
 	position: relative;
 	top: -1.75rem;
+	right: auto;
+	bottom: auto;
+	left: auto;
 	transform: none;
 	height: max-content;
 }
