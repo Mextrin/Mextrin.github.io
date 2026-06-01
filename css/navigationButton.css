@@ -1,0 +1,94 @@
+.navigationButtonGroup {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1rem;
+	font-weight: 700;
+	text-decoration: none;
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+}
+
+.navigationLabel {
+	margin: 0;
+	color: inherit;
+	font: inherit;
+	letter-spacing: 0;
+	text-shadow: inherit;
+	text-transform: none;
+}
+
+.navigationButtonGroup:has(.navigationLabel.up),
+.navigationButtonGroup:has(.navigationLabel.down) {
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.navigationLabel.left,
+.navigationLabel.up {
+	order: 1;
+}
+
+.navigationLabel.right,
+.navigationLabel.down {
+	order: 2;
+}
+
+.navigationButton {
+	width: 3.5rem;
+	height: 3.5rem;
+	box-sizing: border-box;
+	flex: 0 0 auto;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background: transparent;
+	border: 2px solid rgba(255, 255, 255, 0);
+	border-radius: 1rem;
+	cursor: pointer;
+	transition: border-color .1s ease, transform .1s ease;
+}
+
+.navigationButtonGroup:has(.navigationLabel.left) .navigationButton,
+.navigationButtonGroup:has(.navigationLabel.up) .navigationButton {
+	order: 2;
+}
+
+.navigationButtonGroup:has(.navigationLabel.right) .navigationButton,
+.navigationButtonGroup:has(.navigationLabel.down) .navigationButton {
+	order: 1;
+}
+
+.navigationButtonGroup:hover .navigationButton,
+.navigationButtonGroup:focus .navigationButton {
+	border-color: rgba(255, 255, 255, 1);
+}
+
+.navigationButton::before {
+	content: "";
+	width: 1rem;
+	height: 1rem;
+	box-sizing: border-box;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75));
+}
+
+.navigationButton.left::before {
+	border-left: 3px solid white;
+	border-bottom: 3px solid white;
+	transform: translateX(0.2rem) rotate(45deg);
+}
+
+.navigationButton.right::before {
+	border-right: 3px solid white;
+	border-bottom: 3px solid white;
+	transform: translateX(-0.25rem) rotate(-45deg);
+}
+
+.navigationButton.down::before {
+	border-right: 3px solid white;
+	border-bottom: 3px solid white;
+	transform: translateY(-0.2rem) rotate(45deg);
+}

@@ -3,6 +3,7 @@
 	<head>
 		<title>Vehicle Simulation</title>
 		<link rel="stylesheet" href="css/projectHeader.css">
+		<link rel="stylesheet" href="css/navigationButton.css">
 		<link rel="stylesheet" href="css/projectContent.css">
 		<link rel="stylesheet" href="css/Vehicle.css">
 		<link rel="stylesheet" href="css/specials.css">
@@ -12,42 +13,42 @@
 		<link rel="stylesheet" href="CodeHighlight/styles/vs2015.css">
 		<script src="CodeHighlight/highlight.pack.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="js/codebox.js"></script>
 	</head>
-	<body>
-		<header>
-			<img src="Assets/MyProjects/Car/VehicleBackground.png">
-			<div class="weakTint"></div>
-			<nav class="blur">
-				<div id="profile">
-					<p>Sebastian Tryscien</p>
-					<div id="links">
-						<a href="https://github.com/Mextrin"><img src="Assets/Icons/githubIcon.png"></a>
-						<a href="https://www.linkedin.com/in/sebastian-tryscien/"><img src="Assets/Icons/linkedin_icon.png"></a>
-						<a href="mailto:seba3552@hotmail.com"><img src="Assets/Icons/mail_icon.png"></a>
-						<a style="display: none;" href=""><img src="Assets/Icons/cv_icon.png"></a>
+		<body>
+		<div id="background">
+			<img src="Assets/MyProjects/Car/VehicleJumpFrame.png" alt="">
+		</div>
+		<div class="tint"></div>
+		<div id="contentframe">
+			<div class="projectBack">
+				<a class="projectBackButton navigationButtonGroup" href="Games.html" aria-label="Back to games">
+					<span class="navigationButton left"></span>
+					<p class="navigationLabel right">Return</p>
+				</a>
+			</div>
+			<div id="projectHeader">
+				<div class="projectInfoContainer">
+					<div class="projectInfo">
+						<p class="title">Vehicle Simulation</p>
+						<div class="cv">
+							<div class="cvTitles">
+								<p class="company">Personal Project</p>
+							</div>
+						</div>
 					</div>
 				</div>
-			</nav>
-			<a id="backButton" class="resizableButton" href="Games.html">
-				<h1>←</h1>
-			</a>
-			<div id="project">
-				<p class="title">Vehicle Simulation</p>
-				<hr>
-				<div class="QA line">
-					<!--Q & A-->
-					<div id="q">
-						<p>Engine</p>
-						<p>Language</p>
+				<div class="projectImagesContainer">
+					<div class="projectImages">
 					</div>
-					<div id="a">
-						<p>Unity</p>
-						<p>C#</p>
-					</div>
+				</div>
+				<div class="exploreButton">
+					<a class="exploreArrowButton navigationButtonGroup" href="#content" aria-label="Explore">
+						<p class="navigationLabel up">Explore</p>
+						<span class="navigationButton down"></span>
+					</a>
 				</div>
 			</div>
-		</header>
-		<div id="contentframe">
 			<div id="content">
 				<h1 class="topHeader">Project Overview</h1>
 				<p>
@@ -61,6 +62,10 @@
 					Based on pre-set parameters, the vehicle's top-speed, acceleration, braking forces and turning ability can be easily edited to make get the desited behavior for the vehicle.
 				</p>
 				<img src="Assets/MyProjects/Car/CarComponent.png">
+				<div class="codebox codeTint">
+				<div class="codeboxTabs">
+				<button onclick="CodeButton(this, 'CarEngine');">Engine Forces</button>
+				</div>
 				<pre id="CarEngine">
 					<code class="C#">
 //Aero
@@ -90,6 +95,7 @@ float EngineTorque = MaxTorque * throttleInput;
 float DriveTorque = EngineTorque * gearRatios[currentGear] * finalDriveRatio * engineEfficiency;
 					</code>
 				</pre>
+				</div>
 				<h1>Dynamic Suspension</h1>
 				<p>
 					The suspension model actively simulates the behavior and movement of a real spring and damper that's typically found in vehicles.
@@ -101,6 +107,10 @@ float DriveTorque = EngineTorque * gearRatios[currentGear] * finalDriveRatio * e
 				<video autoplay muted loop>
 					<source src="Assets/MyProjects/Car/CarBumps.mp4" type="video/mp4">
 				</video>
+				<div class="codebox codeTint">
+				<div class="codeboxTabs">
+				<button onclick="CodeButton(this, 'Suspension');">Suspension</button>
+				</div>
 				<pre id="Suspension">
 					<code class="C#">
 //Suspension
@@ -118,6 +128,7 @@ float damper = (fixedHingeDeltaVelocity * damping);
 float wheelForce = spring - damper;
 					</code>
 				</pre>
+				</div>
 			</div>
 		</div>
 	</body>

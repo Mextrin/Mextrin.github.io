@@ -4,6 +4,7 @@
 <head>
 	<title>Fennec Peak</title>
 	<link rel="stylesheet" href="css/projectHeader.css">
+	<link rel="stylesheet" href="css/navigationButton.css">
 	<link rel="stylesheet" href="css/projectContent.css">
 	<link rel="stylesheet" href="css/FennecPeak.css">
 	<link rel="stylesheet" href="css/specials.css">
@@ -16,51 +17,44 @@
 	<script src="js/codebox.js"></script>
 </head>
 <body>
-	<header>
-		<img src="Assets/Fennec_Peak/Poster.jpg">
-		<nav class="blur">
-			<div id="profile">
-				<p>Sebastian Tryscien</p>
-				<div id="links">
-					<a href="https://github.com/Mextrin"><img src="Assets/Icons/githubIcon.png"></a>
-					<a href="https://www.linkedin.com/in/sebastian-tryscien/"><img src="Assets/Icons/linkedin_icon.png"></a>
-					<a href="mailto:seba3552@hotmail.com"><img src="Assets/Icons/mail_icon.png"></a>
-					<a style="display: none;" href=""><img src="Assets/Icons/cv_icon.png"></a>
+	<div id="background">
+		<img src="Assets/Fennec_Peak/Poster.jpg" alt="">
+	</div>
+	<div class="tint"></div>
+	<div id="contentframe">
+		<div class="projectBack">
+			<a class="projectBackButton navigationButtonGroup" href="Games.html" aria-label="Back to games">
+				<span class="navigationButton left"></span>
+				<p class="navigationLabel right">Return</p>
+			</a>
+		</div>
+		<div id="projectHeader">
+			<div class="projectInfoContainer">
+				<div class="projectInfo">
+					<p class="title">Fennec Peak</p>
+					<div class="cv">
+						<img src="Assets/Icons/FuturegamesLogo.png" alt="Futuregames logo">
+						<div class="cvTitles">
+							<p class="company">Futuregames (Student)</p>
+							<p class="role">Lead Programmer</p>
+							<p class="duration">7 Weeks</p>
+						</div>
+					</div>
 				</div>
 			</div>
-		</nav>
-		<a id="backButton" class="resizableButton" href="Games.html">
-			<h1>←</h1>
-		</a>
-		<div id="project">
-			<p class="title">Fennec Peak</p>
-			<p class="subtitle"> Futuregames</p>
-			<hr>
-			<div class="QA line">
-				<!--<div class="line"></div>-->
-				<!--Q & A-->
-				<div id="q">
-					<p>Platform</p>
-					<p>Engine</p>
-					<p>Version Control</p>
-					<p>Language</p>
-					<p>Development Time</p>
-					<p>Team Size</p>
-					<p>My Role</p>
+			<div class="projectImagesContainer">	
+				<div class="projectImages">
+					<img src="Assets/Fennec_Peak/Screenshot.png" alt="">
+					<img src="Assets/Fennec_Peak/HUD_LobbyPage.png" alt="">
 				</div>
-				<div id="a">
-					<p>PC</p>
-					<p>Unity</p>
-					<p>Perforce</p>
-					<p>C#</p>
-					<p>7 weeks</p>
-					<p>12 (3 Programmers)</p>
-					<p>Lead Programmer</p>
-				</div>
+			</div>
+			<div class="exploreButton">
+				<a class="exploreArrowButton navigationButtonGroup" href="#content" aria-label="Explore">
+					<p class="navigationLabel up">Explore</p>
+					<span class="navigationButton down"></span>
+				</a>
 			</div>
 		</div>
-	</header>
-	<div id="contentframe" class="tint">
 		<div id="content">
 				<h1 style="margin: 0px;">Project Overview</h1>
 				<p>
@@ -102,9 +96,11 @@
 				This makes it possible to create a page with custom functionality such as a Character Selection menu.
 			</p>
 			<img src="Assets/Fennec_Peak/HUD_LobbyPage.png"></img>
-			<div id="codebox" class="codeTint">
-			<button onclick="CodeButton('MenuManager');">MenuManager.cs</button>
-			<button onclick="CodeButton('CharacterSelection');">CharacterSelection.cs</button>
+			<div class="codebox codeTint">
+			<div class="codeboxTabs">
+			<button onclick="CodeButton(this, 'MenuManager');">MenuManager.cs</button>
+			<button onclick="CodeButton(this, 'CharacterSelection');">CharacterSelection.cs</button>
+			</div>
 <pre id="MenuManager"><code class="C#">public class MenuManager : MonoBehaviour 
 { 	
 	[SerializeField] Menu startMenu; 
@@ -271,8 +267,10 @@
 			<video autoplay muted loop>
 				<source src="Assets/Fennec_Peak/Gameplay.mp4" type="video/mp4">
 			</video>
-			<div id="codebox" class="codeTint">
-				<button onclick="CodeButton('AutoCamera');">AutoCamera.cs</button>				
+			<div class="codebox codeTint">
+				<div class="codeboxTabs">
+				<button onclick="CodeButton(this, 'AutoCamera');">AutoCamera.cs</button>
+				</div>
 <pre id="AutoCamera"><code class="C#">public class AutoCamera : MonoBehaviour 
 { 
 	[SerializeField] GameObject[] targetsToFollow;

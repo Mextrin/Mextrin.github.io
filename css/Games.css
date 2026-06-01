@@ -1,13 +1,16 @@
 body {
 	margin:0;
 	padding:0;
-
-    --headerHeight: 10vh;
+	min-height: 100vh;
+	overflow: hidden;
+	--projectClipTop: 0px;
+	--projectClipRight: 0px;
+	--projectClipBottom: 0px;
+	--projectClipLeft: 0px;
 }
 
-img {
-	width:100%;
-	height:100%;
+body.hasLoadedProjectContent {
+	overflow: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -21,119 +24,310 @@ p {
 	margin: 0;
 }
 
-button {
-	border:none;
-	background-color:transparent;
-}
-
-/*Header*/
-
-header {
-	position: relative;
-	width: 100%;
-	height: var(--headerHeight);
-}
-
-header img {
-    object-fit: cover;
-    object-position: 0% 20%;
-    position:absolute;
-}
-
-.background {
-	position:fixed;
-}
-
-/* Back Button*/
-
-#backButton {
-    position: absolute;
-
-    --backButtonMul: 1.5;
-    
-    width: calc(var(--headerHeight) * var(--backButtonMul));
-    height: var(--headerHeight);
-    top: 0;
-    left: calc(var(--headerHeight) * -0.5);
-    
-    transition: width var(--transitionTime);
-    background-color: white;
-	text-decoration: none;
-
-    transform: skew(var(--skewAngle));
-	-moz-transform: skew(calc(--skewAngle));
-}
-
-#backButton h1 {
-	position: absolute;
-	top: 25%;
-	right: 25px;
-	color: black;
-}
-
-/* Content */
-
-#content {
-	position: absolute;
-	width: 100%;
-	top: var(--headerHeight);
-
-	overflow: hidden;
-	background-size: cover;
-}
-
 /* Projects */
-
 #projects {
-	display: flex;
-	flex-wrap: wrap;
+	position: fixed;
+	top: 50vh;
+	left: 0;
+	width: 100%;
+	transform: translateY(-50%);
 
-	gap: 10vw;
-	row-gap: 5vh;
-	padding: 5vh 0 5vh 0;
-	margin-left: 10vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	gap: 1rem;
+	padding: 2vh 0 2vh 0;
+}
+
+#backgrounds > img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	
+	opacity: 0;
+	transition: opacity 1s ease-in-out;
+}
+
+#backgrounds > img.active {
+	opacity: 1;
 }
 
 .project {
 	position: relative;
 
-	--size: 20vw;
+	--size: 15vw;
 
 	width: var(--size);
 	aspect-ratio: 5/7;
 
 	overflow: hidden;
+
+	border-radius: 1rem;
 }
 
-.project > .projectHighlight {
-	height: 120%;
-	display: none;
-
-	object-fit: cover;
-	object-position: 50% 20%;
+.project.isExpanding {
+	pointer-events: none;
 }
 
-.project:hover > .projectHighlight {
-	display: block;
+.project.isExpanding::after {
+	box-shadow: inset 0 0 0 0 white;
+	opacity: 0;
+}
+
+.project::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 0 white;
+	transition: box-shadow .25s ease;
+	box-sizing: border-box;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.project:hover::after	{
+	box-shadow: inset 0 0 0 .5rem white;
 }
 
 .projectImage {
 	position: absolute;
-	width: 150%;
-	left: -25%;
+	width: 100%;
+	height: 101%; /*+1% fixes black line*/
+	z-index: 0;
 
 	object-fit: cover;
+}
+
+.project.isExpanding .projectImage {
+	opacity: 0;
+	transition: opacity .2s ease;
+}
+
+.project > .tint {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	pointer-events: none;
+}
+
+.projectLogo,
+.projectText,
+.companyIcons,
+.toolIcons,
+.project > .tint {
+	transition: opacity .25s ease;
+}
+
+.project.isExpanding .projectLogo,
+.project.isExpanding .projectText,
+.project.isExpanding .companyIcons,
+.project.isExpanding .toolIcons,
+.project.isExpanding > .tint {
+	opacity: 0;
 }
 
 .projectLogo {
 	position: absolute;
 	object-fit:contain;
+	width: 100%;
+	height: 100%;
+	top: 50%;
+	z-index: 2;
+	--logoScale: 1;
+	transform: translateY(-50%) scale(var(--logoScale));
 }
 
 .projectText {
 	position: absolute;
 	top: 45%;
+	font-family: 'Kanit', Arial, Helvetica, sans-serif;
 	color: white;
 	width: 100%;
 	text-align: center;
+}
+
+.companyIcons {
+	position: absolute;
+	bottom: 0;
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	gap: 0.5rem;
+	padding: 1rem;
+	box-sizing: border-box;
+}
+
+.toolIcons {
+	position: absolute;
+	bottom: 0;
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	gap: 0.5rem;
+	padding: 1rem;
+	box-sizing: border-box;
+}
+
+.toolIcons img, .companyIcons img {
+	position: relative;
+	z-index: 3;
+	width: 2.5rem;
+	height: 2.5rem;
+}
+
+.returnButton {
+	position: absolute;
+	bottom: 5vh;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.projectExpansionLayer {
+	position: fixed;
+	inset: 0;
+	z-index: 10;
+	pointer-events: none;
+	overflow: hidden;
+	clip-path: inset(
+		var(--projectClipTop)
+		var(--projectClipRight)
+		var(--projectClipBottom)
+		var(--projectClipLeft)
+		round 1rem
+	);
+	transition: clip-path var(--projectExpansionLayerDuration, 2s) ease-in-out;
+	will-change: clip-path;
+}
+
+.projectExpansionLayer.isExpanded {
+	clip-path: inset(0 0 0 0 round 0);
+}
+
+.projectExpansionImage {
+	position: absolute;
+	left: var(--projectImageLeft);
+	top: var(--projectImageTop);
+	width: var(--projectImageWidth);
+	height: var(--projectImageHeight);
+	object-fit: cover;
+	transition:
+		left var(--projectExpansionImageDuration, 1s) ease-in-out,
+		top var(--projectExpansionImageDuration, 1s) ease-in-out,
+		width var(--projectExpansionImageDuration, 1s) ease-in-out,
+		height var(--projectExpansionImageDuration, 1s) ease-in-out;
+	will-change: left, top, width, height;
+}
+
+.projectExpansionLayer.isExpanded .projectExpansionImage {
+	left: 0;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+}
+
+.projectExpansionTint {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.loadedProjectContent {
+	position: fixed;
+	inset: 0;
+	z-index: 11;
+	min-height: 100vh;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+}
+
+.loadedProjectContent .projectContentAnimatedElement {
+	opacity: 0;
+	translate: 0 25vh;
+	transition: translate 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--projectContentTransitionDelay, 0ms);
+}
+
+.loadedProjectContent.isVisible .projectContentAnimatedElement {
+	opacity: 1;
+	translate: 0 0;
+}
+
+.loadedProjectContent.isClosing {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.loadedProjectContent.isClosing .projectContentAnimatedElement {
+	opacity: 0;
+	translate: 0 25vh;
+	transition-delay: 0ms;
+}
+
+.indexGamesProjects {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 4;
+}
+
+.indexGamesProjects.isVisible,
+.indexGamesProjects.isLeaving,
+.indexGamesReturnButton.isVisible {
+	opacity: 1;
+}
+
+.indexGamesProjects.isVisible,
+.indexGamesReturnButton.isVisible {
+	pointer-events: auto;
+}
+
+.indexGamesProjects.isOpeningProject,
+.indexGamesReturnButton.isOpeningProject {
+	pointer-events: none;
+}
+
+.indexGamesProjects > .project {
+	opacity: 0;
+	transform: translateY(-25vh);
+	transition: transform 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--projectDelay, 0ms);
+}
+
+.indexGamesProjects.isLeaving > .project {
+	transition-delay: 0ms;
+}
+
+.indexGamesProjects.isVisible > .project {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.indexGamesReturnButton {
+	opacity: 0;
+	pointer-events: none;
+	transform: translateX(-50%) translateY(-25vh);
+	z-index: 5;
+}
+
+.indexGamesReturnButton.isVisible {
+	animation: gamesReturnButtonSlideIn 1s cubic-bezier(.2, .9, .25, 1) both;
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
+}
+
+@keyframes gamesReturnButtonSlideIn {
+	from {
+		opacity: 0;
+		transform: translateX(-50%) translateY(-25vh);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
 }

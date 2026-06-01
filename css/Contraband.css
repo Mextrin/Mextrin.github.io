@@ -1,0 +1,55 @@
+#projectHeader {
+	height: auto;
+	min-height: 100vh;
+}
+.projectImagesContainer {
+	height: 100vh;
+}
+.projectImages {
+	gap: 1rem;
+}
+
+.cv img {
+	mix-blend-mode: screen;
+}
+
+.link {
+	width: 100%;
+	min-height: 3.5rem;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: .5rem;
+
+	box-sizing: border-box;
+	padding: 0 1.5rem;
+
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1rem;
+	font-weight: 700;
+	text-align: center;
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+
+	background: rgba(0, 0, 0, .35);
+	border: 2px solid rgba(255, 255, 255, .75);
+	border-radius: 1rem;
+	transition: border-color .1s ease, background-color .1s ease;
+}
+
+.link::after {
+	content: "↗";
+	font-size: 1.15rem;
+	line-height: 1;
+}
+
+.link:hover,
+.link:focus {
+	background: rgba(255, 255, 255, .12);
+	border-color: white;
+}
+
+#content {
+	padding-top: 0;
+}
