@@ -1,0 +1,204 @@
+body {
+	margin: 0;
+	padding: 0;
+
+	overflow: hidden;
+}
+
+#background img {
+	width: 100vw;
+	height: 100vh;
+	object-fit: cover;
+}
+
+#timeline {
+	position: absolute;
+	top: 15vh;
+	right: 0;
+
+	box-sizing: border-box;
+	width: 100vw;
+
+	padding: 1rem;
+
+	display: flex;
+	justify-content: flex-start;
+	gap: 1rem;
+}
+
+.timelineLine {
+	position: relative;
+
+	width: 50%;
+	height: .25rem;
+
+	border-radius: 1rem;
+	overflow: hidden;
+	
+	background-color: white;
+}
+
+.timelineLine.full {
+	width: 100%;
+}
+
+.timelineSection {
+	position: relative;
+	width: max-content;
+	
+	color: white;
+	text-wrap: nowrap;
+	text-align: center;
+	
+	height: 100%;
+
+	top: -2rem;
+}
+
+.timelineSection .date {
+	font-size: 1rem;
+	opacity: .75;
+	margin-bottom: 0;
+}
+
+.timelineSection > .event {
+	margin-bottom: 0rem;
+	margin-top: 0;
+}
+
+.timelineSection .result {
+	font-size: 1.25rem;
+	font-weight: bold;
+	margin: 0rem 0 0rem 0;
+	height: 4rem;
+	line-height: 4rem;
+	vertical-align: middle;
+}
+
+.timelineSection .countdown {
+	display: grid;
+	justify-items: center;
+	height: 4rem;
+}
+
+.timelineSection .countdown p {
+	margin: 1rem 0 0;
+	font-size: 1.25rem;
+	font-weight: bold;
+}
+
+.timelineSection .countdown time {
+	font-family: monospace;
+	font-size: 1.25rem;
+	letter-spacing: 0;
+}
+
+.eventContent {
+	position: relative;
+	left: 50%;
+
+	display: grid;
+	justify-items: center;
+	gap: .5rem;
+
+	margin-top: 1rem;
+	margin-bottom: 3rem;
+
+	transform: translateX(-50%);
+}
+
+.eventContent > img {
+	--sideOffset: 2.5rem;
+	--verticalOffset: -5rem;
+	
+	width: 20vw;
+	height: auto;
+	object-fit: cover;
+	border-radius: 1rem;
+}
+
+.eventLabel {
+	justify-self: stretch;
+	margin: 0 0 .25rem;
+	font-size: 1rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: .08em;
+	text-align: center;
+	opacity: .85;
+}
+
+.driver {
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	width: 100%;
+}
+
+.driver > .flagIcon {
+	width: 2.5rem;
+	border-radius: .25rem;
+}
+
+.eventContent p {
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: bold;
+	letter-spacing: .08em;
+}
+
+.driver > p {
+	display: flex;
+	height: 100%;
+
+	margin: 0;
+	align-items: center;
+}
+
+/*Return Button*/
+#timeline .returnButton {
+	position: relative;
+	top: -1.75rem;
+	right: auto;
+	bottom: auto;
+	left: auto;
+	transform: none;
+	height: max-content;
+}
+
+.indexRacingTimeline {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 4;
+}
+
+.indexRacingTimeline.isVisible,
+.indexRacingTimeline.isLeaving {
+	opacity: 1;
+}
+
+.indexRacingTimeline.isVisible {
+	pointer-events: auto;
+}
+
+#timeline.indexRacingTimeline > .returnButton,
+.indexRacingTimeline > .timelineLine,
+.indexRacingTimeline > .timelineSection {
+	opacity: 0;
+	transform: translateX(100vw);
+	transition: transform 1s cubic-bezier(.2, .9, .25, 1), opacity .35s ease;
+	transition-delay: var(--timelineDelay, 0ms);
+}
+
+#timeline.indexRacingTimeline.isLeaving > .returnButton,
+.indexRacingTimeline.isLeaving > .timelineLine,
+.indexRacingTimeline.isLeaving > .timelineSection {
+	transition-delay: 0ms;
+}
+
+#timeline.indexRacingTimeline.isVisible > .returnButton,
+.indexRacingTimeline.isVisible > .timelineLine,
+.indexRacingTimeline.isVisible > .timelineSection {
+	opacity: 1;
+	transform: translateX(0);
+}

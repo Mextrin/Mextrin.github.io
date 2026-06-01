@@ -3,18 +3,3 @@ h1 {
     color:white;
     font-family: sans-serif;
 }
-
-#logo {
-    position: absolute;
-    height: 80px;
-    right: 5%;
-}
-
-#contentframe {
-    background-image: url('../Assets/Terra_Got_Away/BackgroundEmpty.png');
-    background-position-x: 50%;
-}
-
-#q {
-    color: #1f75ff;
-}
