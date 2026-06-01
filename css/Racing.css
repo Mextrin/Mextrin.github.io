@@ -94,15 +94,15 @@ body {
 }
 
 .eventContent {
-	position: absolute;
-	top: 100%;
+	position: relative;
 	left: 50%;
 
 	display: grid;
-	justify-items: start;
+	justify-items: center;
 	gap: .5rem;
 
 	margin-top: 1rem;
+	margin-bottom: 3rem;
 
 	transform: translateX(-50%);
 }
@@ -117,7 +117,7 @@ body {
 	border-radius: 1rem;
 }
 
-.driverList {
+.eventLabel {
 	justify-self: stretch;
 	margin: 0 0 .25rem;
 	font-size: 1rem;
@@ -140,27 +140,27 @@ body {
 	border-radius: .25rem;
 }
 
-.driver > p {
-	display: flex;
-	height: 100%;
-
-	margin: 0;
-	align-items: center;
-	
+.eventContent p {
 	font-family: inherit;
 	font-size: 1rem;
 	font-weight: bold;
 	letter-spacing: .08em;
 }
 
+.driver > p {
+	display: flex;
+	height: 100%;
+
+	margin: 0;
+	align-items: center;
+}
+
 /*Return Button*/
 #timeline .returnButton {
 	position: relative;
-	top: -3.5rem;
-	right: auto;
-	bottom: auto;
-	left: auto;
+	top: -1.75rem;
 	transform: none;
+	height: max-content;
 }
 
 .indexRacingTimeline {
