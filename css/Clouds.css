@@ -4,3 +4,20 @@ h1 {
     font-family: sans-serif;
 }
 
+#logo {
+    position: absolute;
+    height: 80px;
+    right: 5%;
+}
+
+#contentframe {
+    background-color: #494440;
+}
+
+#QA {
+    margin-top: 20px;
+}
+
+#q {
+    color: white;
+}

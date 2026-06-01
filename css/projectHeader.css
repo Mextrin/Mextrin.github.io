@@ -1,180 +1,152 @@
 a {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 p {
-	font-size: 24px;
+    font-size: 24px;
 	margin: 0;
 }
 
 body {
-	position: relative;
-	margin: 0;
-	padding: 0;
+    position: relative;
+    margin: 0;
+    padding: 0;
 }
 
-#background > img {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	overflow: hidden;
-	object-fit: cover;
+header {
+    position: relative;
+    width: 100%;
+    height: 100vh; 
 }
 
-#projectHeader {
-	position: relative;
-	width: 100vw;
-	height: 100vh;
-
-	display: flex;
-	flex-wrap: wrap;
-	overflow: hidden;
+header img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 0px 29%;
 }
 
-.projectInfoContainer {
-	position: relative;
-	width: 50%;
-	height: 90%;
-	flex-shrink: 0;
+nav {
+    position: fixed;
+    top: 0;
+
+    z-index: 1;
+    
+    width: 100%;
+    height: var(--headerHeight);
+    box-shadow: 0px 0px 5px;
+
 }
 
-.projectInfo {
+#profile {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: space-evenly;
+
+    margin-top: calc(var(--headerHeight) / 4);
+}
+
+#profile p {
+    position: relative;
+	font-size: calc(var(--headerHeight) / 2);
+    color: white;
+    font-family: 'Kanit', sans-serif;
+}
+
+#profile img {
+    position: relative;
+    height: 100%;
+}
+
+#links a {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* Back Button*/
+
+#backButton {
+    z-index: 1;
+    position: fixed;
+
+    --backButtonMul: 1.5;
+    
+    width: calc(var(--headerHeight) * var(--backButtonMul));
+    height: var(--headerHeight);
+    top: 0;
+    left: calc(var(--headerHeight) * -0.5);
+    
+    transition: width var(--transitionTime);
+    background-color: white;
+	text-decoration: none;
+
+    transform: skew(var(--skewAngle));
+	-moz-transform: skew(calc(--skewAngle));
+}
+
+#backButton h1 {
 	position: absolute;
-	right: 2vw;
-	top: 50vh;
-	max-width: 38vw;
-	transform: translateY(-50%);
-
-	color: white;
-	text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+	top: 25%;
+	right: 25px;
+    margin: 0px;
+	color: black;
 }
 
-.projectInfo .title {
-	margin-bottom: 1rem;
-	font-size: 42px;
-	font-family: 'Kanit', Arial, Helvetica, sans-serif;
+/*Project Desc*/
+#project {
+    position: absolute;
+    width: 400px;
+    height: 250px;
+
+    bottom: 50px;
+    left: 150px;
+
+    padding: 25px;
+
+    color: white;
+    text-shadow: 0.5px 0.5px black;
 }
 
-.cv {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-	box-sizing: border-box;
+.title {
+    font-size: 42px;
+    font-family: 'Kanit', sans-serif;
 }
 
-.cv img {
-	width: 6rem;
-	height: 6rem;
-	aspect-ratio: 1/1;
-	object-fit: contain;
-	flex-shrink: 0;
+.subtitle {
+    font-family: 'Kanit', sans-serif;
 }
 
-.cv p {
-	margin: 0;
-	font-family: Arial, Helvetica, sans-serif;
+.QA {
+    position: relative;
 }
 
-.cv .company {
-	font-size: 1.25rem;
-	font-weight: 700;
+.QA p {
+    font-size: 18px;
 }
 
-.cv .role {
-	font-size: 1rem;
-	font-weight: 600;
-	margin-top: .8rem;
+#q {
+    text-align: right;
+    width: 50%;
+    padding: 0px 10px 0px 10px;
+    box-sizing: border-box;
 }
 
-.cv .duration {
-	margin-top: .3rem;
-	font-size: .8rem;
-	color: rgba(255, 255, 255, 0.68);
-}
+#a {
+    text-align: left;
+    width: 50%;
+    padding: 0px 10px 0px 10px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 0;
 
-.projectImagesContainer {
-	position: relative;
-	width: 50%;
-	height: 90%;
-
-	display: flex;
-	align-items: center;
-}
-
-.projectImages {
-	width: 30vw;
-	max-height: 100%;
-	margin-left: 5vw;
-
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	justify-content: center;
-	row-gap: 1rem;
-}
-
-.projectImages > img {
-	width: 100%;
-	max-height: calc((80vh - 1rem) / 2);
-	height: auto;
-	box-shadow: 5px 5px 5px black;
-}
-
-.projectBack {
-	position: fixed;
-	top: 2rem;
-	left: 2rem;
-	z-index: 20;
-
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-}
-
-.exploreButton {
-	flex-basis: 100%;
-	width: 100%;
-	height: 10vh;
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 0.25rem;
-}
-
-@media (max-width: 800px) {
-	#projectHeader {
-		height: auto;
-		min-height: 100vh;
-	}
-
-	.projectInfoContainer,
-	.projectImagesContainer {
-		width: 100%;
-		height: auto;
-	}
-
-	.projectInfo {
-		position: relative;
-		top: auto;
-		right: auto;
-		max-width: none;
-		padding: 18vh 2rem 2rem;
-		transform: none;
-	}
-
-	.projectImages {
-		width: auto;
-		max-height: none;
-		margin-left: 0;
-		padding: 0 2rem 2rem;
-	}
-
-	.projectImages > img {
-		width: 100%;
-		max-height: none;
-	}
+    color: white;
 }

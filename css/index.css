@@ -2,9 +2,7 @@ body {
 	margin:0;
 	padding:0;
 	
-	overflow: hidden;
-
-	--nameHeight: 75vh;
+	overflow-x: hidden;
 }
 
 a {
@@ -53,193 +51,90 @@ header p, header h1 {
 }
 
 /*Content*/
-.container {
-	--clickedOffsetX: 0vw;
-	--clickedOffsetY: 0vh;
+
+#categoryContainer {
+	position: absolute;
+	width: 150%;
+	left: -25%;
+	top: calc(var(--headerHeight));
+	bottom: 0px;
+	
+	overflow: hidden;
+
+	display: flex;
+
+	--innerTint: 0%;
+	--outerTint: 0%;
 }
 
-.selectionBox {
-	--boxOffsetX: 0vw;
-	--boxOffsetY: 0vh;
-	--imageX: 50%;
-	--imageY: 50%;
-	--imagePanX: 0vw;
-	--imagePanY: 0vh;
-	--imageOffsetX: 0vw;
-	--imageOffsetY: 0vh;
-	
+.gamesTint::before {
+	content:"";
 	position: absolute;
 	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
-	z-index: 2;
-	
-	cursor: pointer;
-	transition: clip-path 1s ease-in-out;
+	bottom: 0;
+	left: var(--outerTint);
+	right: var(--innerTint);
+
+	transition: left var(--transitionTime), right var(--transitionTime);
+	background-color:black;
+	opacity: var(--tintOpacity);
 }
 
-.container.isClicked .selectionBox {
-	--boxOffsetX: var(--clickedOffsetX);
-	--boxOffsetY: var(--clickedOffsetY);
-}
-
-.container.isClicked .selectionBox:not(.isClickedBox) {
-	--imageOffsetX: var(--clickedOffsetX);
-	--imageOffsetY: var(--clickedOffsetY);
-}
-
-.container.isClicked .name {
-	--boxOffsetX: var(--clickedOffsetX);
-	--boxOffsetY: var(--clickedOffsetY);
-}
-
-.selectionBox.isClickedBox {
-	--imagePanX: 0vw;
-	--imagePanY: 0vh;
-	cursor: default;
-}
-
-.selectionBox > img {
+.racingTint::before {
+	content:"";
 	position: absolute;
-	width: 100vw;
-	height: 100vh;
-	inset: 0;
-	object-position: calc(var(--imageX) + var(--imagePanX) + var(--imageOffsetX)/4) calc(var(--imageY) + var(--imagePanY) + var(--imageOffsetY)/4);
-	object-fit: cover;
-	filter: grayscale(100%);
-	opacity: 0;
-	--opacityTransitionTime: 4s;
-	transition: opacity var(--opacityTransitionTime) ease-in, filter .5s ease-in, object-position .5s ease-in-out;
+	top: 0;
+	bottom: 0;
+	left: var(--innerTint);
+	right: var(--outerTint);
+
+	transition: left var(--transitionTime), right var(--transitionTime);
+	background-color:black;
+	opacity: var(--tintOpacity);
 }
 
-.selectionBox.isPreviewing img.isPreviewImage {
-	opacity: 1;
+#category {
+	position: relative;
+	width: 50%;
+	height: 100%;
+	overflow: hidden;
+
+	margin-top: calc(var(--marginWidth) * 2);
+	margin-right: var(--marginWidth);
+	margin-left: var(--marginWidth);
+
+	transition: width var(--transitionTime);
 }
 
-.selectionBox.isClickedBox img.isPreviewImage {
-	filter: grayscale(0%);
-	opacity: 1;
-	--opacityTransitionTime: 1s;
-}
-
-.selectionBox.centerBox.isClickedBox > img {
-	--opacityTransitionTime: 1s;
-}
-
-.selectionBox:hover img.isPreviewImage {
-	filter: grayscale(0%);
-	opacity: 1;
-	--opacityTransitionTime: 1s;
-}
-
-.container:has(.selectionBox:hover) .selectionBox:not(:hover) > img {
-	opacity: 0;
-}
-
-.leftBox {
-	--labelX: 21%;
-	--labelY: 60%;
-	--imagePanX: -25vw;
-	--imagePanY: 0%;
-
-	clip-path: polygon(
-		calc(-100% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
-		calc(0% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
-		calc(50% + var(--boxOffsetX)) calc(var(--nameHeight) + var(--boxOffsetY)),
-		calc(50% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY)),
-		calc(0% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY)),
-		calc(-100% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY))
-	);
-}
-
-.centerBox {
-	--labelX: 50%;
-	--labelY: 31%;
-	--imagePanX: 0vw;
-	--imagePanY: -25vh;
-
-	clip-path: polygon(
-		calc(0% + var(--boxOffsetX)) calc(-100vh + var(--boxOffsetY)),
-		calc(0% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
-		calc(50% + var(--boxOffsetX)) calc(var(--nameHeight) + var(--boxOffsetY)),
-		calc(100% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
-		calc(100% + var(--boxOffsetX)) calc(-100vh + var(--boxOffsetY))
-	);
-}
-
-.rightBox {
-	--labelX: 79%;
-	--labelY: 60%;
-	--imagePanX: 25vw;
-	--imagePanY: 0%;
-
-	clip-path: polygon(
-		calc(200% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
-		calc(100% + var(--boxOffsetX)) calc(0vh + var(--boxOffsetY)),
-		calc(50% + var(--boxOffsetX)) calc(var(--nameHeight) + var(--boxOffsetY)),
-		calc(50% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY)),
-		calc(100% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY)),
-		calc(200% + var(--boxOffsetX)) calc(100% + var(--boxOffsetY))
-	);
-}
-
-.boxLabel {
+.gamesVideo {
 	position: absolute;
-	top: var(--labelY);
-	left: var(--labelX);
-	z-index: 1;
-
-	transform: translate(-50%, -50%) translate(var(--boxOffsetX), var(--boxOffsetY));
-	transition: transform 1s ease-in-out;
-
-	color: white;
-	font: 600 clamp(1.25rem, 2vw, 2rem) 'Kanit', sans-serif;
-	text-shadow: 0 2px 12px black;
-	pointer-events:none;
+	width: auto;
+	height: 100%;
 }
 
-.name {
-	--boxOffsetX: 0vw;
-	--boxOffsetY: 0vh;
-
+.racingVideo {
 	position: absolute;
-	top: var(--nameHeight);
-	left: 50vw;
-	z-index: 3;
-	transform: translate(-50%, -50%) translate(var(--boxOffsetX), var(--boxOffsetY));
-	transition: transform 1s ease-in-out;
+	right: 20%;
+	height: auto;
 }
 
-.nameText {
-	color: black;
-	font-size: 2rem;
-
-	border: 0px solid white;
-	border-radius: 10px 10px 0px 10px;
-	background-color: white;
-	padding: .5rem 1rem;
+#content {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	font-size: 2.5vh;
 }
 
-.name .links {
-	display: flex;
-	justify-content: right;
-	gap: 1rem;
-	padding: 0px 1rem .5rem 1rem;
-	margin-left: auto;
-	width: fit-content;
-
-	border: 0px solid white;
-	border-radius: 0px 0px 10px 10px;
-	background-color: white;
+#gamesTextWrapper {
+	position: absolute;
+	top:50%;
+	left: 60%;
+	transform: translateY(-50%);
 }
 
-.name .links a {
-	display: inline-block;
-	width: 2.5rem;
-	height: 2.5rem;
-}
-
-.name .links img {
-	filter: brightness(0);
+#racingTextWrapper {
+	position: absolute;
+	top:50%;
+	right: 60%;
+	transform: translateY(-50%);
 }

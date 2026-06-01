@@ -11,7 +11,7 @@ All elements inside it will also recieve a tint if their position type is static
 	left: 0;
 	right: 0;
 	background-color:black;
-	opacity: var(--weakTintOpacity);
+	opacity: 0.3;
 }
 
 .tint::before {
@@ -33,31 +33,17 @@ All elements inside it will also recieve a tint if their position type is static
 	left: 0;
 	right: 0;
 	background-color:#1E1E1E;
-	opacity: var(--codeTintOpacity);
-}
-
-.dynamicTintEnabled {
-	--dynamicTintOpacity: var(--tintOpacity);
-}
-
-.dynamicTint::before {
-	content:"";
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: 1;
-	background-color:black;
-	opacity: var(--dynamicTintOpacity);
-	transition: opacity 1s ease;
+	opacity: 0.8;
 }
 
 .blur {
 	backdrop-filter: blur(var(--blurSize));
 }
 
-/*Creates a line in the middle of the container*/
+/*
+Creates a line in the middle of the container
+*/
+
 .line::before {
 	content:"";
     position: absolute;
