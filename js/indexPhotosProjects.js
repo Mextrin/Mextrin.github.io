@@ -12,6 +12,7 @@ const photosProjectsPreviewBoxes = Array.from(document.querySelectorAll(
 
 let photosProjectsLoaded = false;
 let photosProjectsElement = null;
+let photosBackgroundsElement = null;
 let photosReturnButtonElement = null;
 let photosProjectsRevealTimeout = null;
 let photosProjectsExitTimeout = null;
@@ -97,6 +98,10 @@ function resetIndexPhotosView() {
 	clearPhotosProjectsExitTimeout();
 	clearPhotosBackAnimationTimeouts();
 
+	if (photosBackgroundsElement) {
+		photosBackgroundsElement.classList.remove("isVisible");
+	}
+
 	if (photosProjectsElement) {
 		photosProjectsElement.classList.add("isLeaving");
 		photosProjectsElement.classList.remove("isVisible");
@@ -161,10 +166,17 @@ async function loadPhotosProjects() {
 	const html = await response.text();
 	const sourceDocument = new DOMParser().parseFromString(html, "text/html");
 	const sourceCollections = sourceDocument.querySelector("#collections");
+	const sourceBackgrounds = sourceDocument.querySelector("#backgrounds");
 	const sourceReturnButton = sourceDocument.querySelector(".returnButton");
 
 	if (!sourceCollections) {
 		return null;
+	}
+
+	if (sourceBackgrounds) {
+		photosBackgroundsElement = sourceBackgrounds.cloneNode(true);
+		photosBackgroundsElement.classList.add("indexPhotosBackgrounds");
+		document.body.appendChild(photosBackgroundsElement);
 	}
 
 	photosProjectsElement = sourceCollections.cloneNode(true);
@@ -185,6 +197,10 @@ async function loadPhotosProjects() {
 
 	if (typeof initializePhotoRotation === "function") {
 		initializePhotoRotation(photosProjectsElement);
+	}
+
+	if (photosBackgroundsElement && typeof initializePhotoCollectionBackgrounds === "function") {
+		initializePhotoCollectionBackgrounds(photosProjectsElement, photosBackgroundsElement);
 	}
 
 	photosProjectsLoaded = true;
@@ -209,6 +225,10 @@ if (photosProjectsBox) {
 		clearPhotosProjectsRevealTimeout();
 		clearPhotosProjectsExitTimeout();
 		photosProjectsRevealTimeout = window.setTimeout(() => {
+			if (photosBackgroundsElement) {
+				photosBackgroundsElement.classList.add("isVisible");
+			}
+
 			projectsElement.classList.remove("isLeaving");
 			projectsElement.classList.add("isVisible");
 			if (photosReturnButtonElement) {

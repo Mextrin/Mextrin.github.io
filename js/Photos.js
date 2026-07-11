@@ -1,25 +1,103 @@
-const racingProjects = Array.from(document.querySelectorAll("#projects > .project"));
-const racingBackgrounds = Array.from(document.querySelectorAll("#backgrounds > img"));
+let activePhotoBackgroundIndex = 0;
+let activePhotoCollection = null;
+let activePhotoBackgrounds = [];
 
-function setActiveRacingBackground(index) {
-	racingBackgrounds.forEach((background, backgroundIndex) => {
-		background.classList.toggle("active", backgroundIndex === index);
-	});
+function getActiveCollectionImage(collection) {
+	const images = Array.from(collection.querySelectorAll(":scope > img"));
+
+	if (images.length === 0) {
+		return null;
+	}
+
+	const activeIndex = Number(collection.dataset.activePhotoIndex);
+
+	if (!Number.isNaN(activeIndex) && images[activeIndex]) {
+		return images[activeIndex];
+	}
+
+	return images[0];
 }
 
-racingProjects.forEach((project, index) => {
-	project.dataset.index = index;
+function setActivePhotoBackground(image) {
+	if (!image || activePhotoBackgrounds.length === 0) {
+		return;
+	}
 
-	project.addEventListener("mouseenter", () => {
-		setActiveRacingBackground(index);
+	const imageSource = image.currentSrc || image.src;
+
+	if (!imageSource) {
+		return;
+	}
+
+	const currentBackground = activePhotoBackgrounds[activePhotoBackgroundIndex];
+
+	if (currentBackground && currentBackground.classList.contains("active") && currentBackground.src === imageSource) {
+		return;
+	}
+
+	const nextPhotoBackgroundIndex = activePhotoBackgrounds.length > 1
+		? (activePhotoBackgroundIndex + 1) % activePhotoBackgrounds.length
+		: activePhotoBackgroundIndex;
+	const nextBackground = activePhotoBackgrounds[nextPhotoBackgroundIndex];
+
+	nextBackground.src = imageSource;
+	nextBackground.alt = image.alt || "";
+	activePhotoBackgrounds.forEach((background, backgroundIndex) => {
+		background.classList.toggle("active", backgroundIndex === nextPhotoBackgroundIndex);
+	});
+	activePhotoBackgroundIndex = nextPhotoBackgroundIndex;
+}
+
+function setActivePhotoCollection(collection) {
+	activePhotoCollection = collection;
+	setActivePhotoBackground(getActiveCollectionImage(collection));
+}
+
+function updateActivePhotoCollectionBackground(collection) {
+	if (collection === activePhotoCollection) {
+		setActivePhotoBackground(getActiveCollectionImage(collection));
+	}
+}
+
+function getPhotoBackgroundImages(backgroundsRoot) {
+	if (backgroundsRoot.id === "backgrounds") {
+		return Array.from(backgroundsRoot.querySelectorAll(":scope > img"));
+	}
+
+	return Array.from(backgroundsRoot.querySelectorAll("#backgrounds > img"));
+}
+
+function initializePhotoCollectionBackgrounds(collectionsRoot = document, backgroundsRoot = document) {
+	const photoCollections = Array.from(collectionsRoot.querySelectorAll("#collections > .collection, .collection"));
+	activePhotoBackgrounds = getPhotoBackgroundImages(backgroundsRoot);
+	activePhotoBackgroundIndex = 0;
+	activePhotoCollection = null;
+
+	photoCollections.forEach(collection => {
+		if (collection.dataset.photoBackgroundInitialized === "true" || window.getComputedStyle(collection).visibility === "hidden") {
+			return;
+		}
+
+		collection.dataset.photoBackgroundInitialized = "true";
+		collection.addEventListener("mouseenter", () => {
+			setActivePhotoCollection(collection);
+		});
+
+		collection.addEventListener("focusin", () => {
+			setActivePhotoCollection(collection);
+		});
 	});
 
-	project.addEventListener("focus", () => {
-		setActiveRacingBackground(index);
-	});
-});
+	const initialCollection = photoCollections.find(collection => window.getComputedStyle(collection).visibility !== "hidden");
 
-setActiveRacingBackground(0);
+	if (initialCollection) {
+		setActivePhotoCollection(initialCollection);
+	}
+}
+
+window.initializePhotoCollectionBackgrounds = initializePhotoCollectionBackgrounds;
+window.updateActivePhotoCollectionBackground = updateActivePhotoCollectionBackground;
+initializePhotoCollectionBackgrounds();
 
 const timelineImageGroups = Array.from(document.querySelectorAll(".timelineImages"));
 

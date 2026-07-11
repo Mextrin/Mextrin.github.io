@@ -65,6 +65,11 @@ function rotatePhotoCollection(rotationItem) {
 		}, photoRotationDuration);
 
 		rotationItem.activeIndex = nextIndex;
+		rotationItem.collection.dataset.activePhotoIndex = nextIndex;
+
+		if (typeof window.updateActivePhotoCollectionBackground === "function") {
+			window.updateActivePhotoCollectionBackground(rotationItem.collection);
+		}
 	});
 }
 
@@ -109,8 +114,11 @@ function initializePhotoRotation(root = document) {
 		collection.dataset.photoRotationInitialized = "true";
 		const rotationItem = {
 			activeIndex: 0,
+			collection,
 			images
 		};
+
+		collection.dataset.activePhotoIndex = rotationItem.activeIndex;
 
 		images.forEach((image, index) => {
 			const initialDirection = photoRotationDirections[(index - 1 + photoRotationDirections.length) % photoRotationDirections.length];

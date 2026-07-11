@@ -8,10 +8,19 @@ body {
 	height: 100vh;
 }
 
-#backgrounds img {
+#backgrounds > img {
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	opacity: 0;
+	transition: opacity 1s ease-in-out;
+}
+
+#backgrounds > img.active {
+	opacity: 1;
 }
 
 /*Content*/
@@ -70,6 +79,16 @@ body {
 	transform: translateY(-50%);
 }
 
+.indexPhotosBackgrounds {
+	opacity: 0;
+	pointer-events: none;
+	z-index: 3;
+	transition: opacity .35s ease;
+}
+
+.indexPhotosBackgrounds.isVisible {
+	opacity: 1;
+}
 .indexPhotosCollections {
 	position: absolute;
 	top: 0;
